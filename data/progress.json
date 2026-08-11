@@ -1,33 +1,32 @@
 {
   "unlocked_levels": [
     1,
-    2
+    2,
+    3
   ],
   "completed_levels": [
-    1
+    1,
+    2
   ],
   "high_scores": {
     "1": {
       "score": 5,
       "total": 5,
       "stars": 3
+    },
+    "2": {
+      "score": 3,
+      "total": 5,
+      "stars": 2
     }
   },
-  "total_xp": 95,
+  "total_xp": 280,
   "badges": [
     "first_step",
     "perfect_run",
-    "speedster"
+    "speedster",
+    "beginner"
   ],
-  "leaderboard": [
-    {
-      "name": "ritsel",
-      "level": 1,
-      "score": 5,
-      "total": 5,
-      "xp": 95,
-      "stars": 3
-    }
-  ],
-  "player_name": "ritsel"
+  "leaderboard": [],
+  "player_name": "koya"
 }
