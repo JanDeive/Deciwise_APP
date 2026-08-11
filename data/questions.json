@@ -1,0 +1,394 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "title": "The Young Couple",
+      "difficulty": "Easy",
+      "difficulty_color": "#2ecc71",
+      "story": "Maria and Jose just got married. They are a happy young couple excited about their future together. Before starting a family, they visit a health center to learn the basics of family planning. The friendly nurse smiles and says: 'Knowledge is the first step to a healthy family. Let's see what you already know!'",
+      "story_image": "couple",
+      "questions": [
+        {
+          "question": "What does 'family planning' mean?",
+          "options": [
+            "Planning a family vacation",
+            "Deciding when and how many children to have",
+            "Planning family finances only",
+            "Arranging family events"
+          ],
+          "answer": "Deciding when and how many children to have",
+          "explanation": "Family planning means making informed choices about if, when, and how many children to have, using contraception and other methods."
+        },
+        {
+          "question": "Which of the following is a natural method of family planning?",
+          "options": [
+            "Birth control pills",
+            "Condoms",
+            "Calendar/Rhythm method",
+            "Intrauterine Device (IUD)"
+          ],
+          "answer": "Calendar/Rhythm method",
+          "explanation": "The calendar or rhythm method is a natural family planning method where couples track the menstrual cycle to avoid pregnancy during fertile days."
+        },
+        {
+          "question": "What is the primary purpose of contraception?",
+          "options": [
+            "To cure sexually transmitted infections",
+            "To prevent unwanted pregnancy",
+            "To increase fertility",
+            "To regulate hormones only"
+          ],
+          "answer": "To prevent unwanted pregnancy",
+          "explanation": "Contraception is used to prevent unintended pregnancy, giving couples control over when they start or grow their family."
+        },
+        {
+          "question": "Who should be involved in family planning decisions?",
+          "options": [
+            "Only the woman",
+            "Only the man",
+            "Both partners together",
+            "Only the doctor"
+          ],
+          "answer": "Both partners together",
+          "explanation": "Family planning is a shared responsibility. Both partners should communicate and decide together for the best outcomes."
+        },
+        {
+          "question": "At what age is a woman generally considered to have the highest fertility?",
+          "options": [
+            "Teens (13-19)",
+            "Early to mid-20s",
+            "Late 30s",
+            "Early 40s"
+          ],
+          "answer": "Early to mid-20s",
+          "explanation": "A woman's fertility is generally highest in her early to mid-20s and gradually declines with age, especially after 35."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Health Center Visit",
+      "difficulty": "Easy",
+      "difficulty_color": "#2ecc71",
+      "story": "Ana is a 24-year-old mother of one child. She returns to the health center for her postnatal check-up. The midwife explains that proper spacing between pregnancies is very important for both mother and baby. Ana listens carefully, eager to learn more so she can make the best choices for her growing family.",
+      "story_image": "health_center",
+      "questions": [
+        {
+          "question": "What is the recommended minimum birth spacing between pregnancies?",
+          "options": [
+            "6 months",
+            "12 months",
+            "At least 2 years",
+            "5 years"
+          ],
+          "answer": "At least 2 years",
+          "explanation": "The World Health Organization recommends waiting at least 2 years (24 months) after a live birth before the next pregnancy to reduce health risks."
+        },
+        {
+          "question": "Which of these is a barrier method of contraception?",
+          "options": [
+            "Birth control pill",
+            "Condom",
+            "Hormonal injection",
+            "IUD"
+          ],
+          "answer": "Condom",
+          "explanation": "A condom is a barrier method — it physically prevents sperm from reaching the egg. It also helps protect against STIs."
+        },
+        {
+          "question": "Breastfeeding can act as a natural contraceptive method. What is this called?",
+          "options": [
+            "Natural Cycle Method",
+            "Lactational Amenorrhea Method (LAM)",
+            "Rhythm Method",
+            "Billings Method"
+          ],
+          "answer": "Lactational Amenorrhea Method (LAM)",
+          "explanation": "LAM relies on exclusive breastfeeding to suppress ovulation. It is effective only if the baby is under 6 months, the mother is exclusively breastfeeding, and menstruation has not returned."
+        },
+        {
+          "question": "Which vitamin is most important for women planning to get pregnant?",
+          "options": [
+            "Vitamin C",
+            "Vitamin D",
+            "Folic Acid (Vitamin B9)",
+            "Vitamin K"
+          ],
+          "answer": "Folic Acid (Vitamin B9)",
+          "explanation": "Folic acid helps prevent neural tube defects in the baby. Women planning pregnancy are advised to take 400mcg daily before conception and during early pregnancy."
+        },
+        {
+          "question": "What does prenatal care mean?",
+          "options": [
+            "Care given after delivery",
+            "Care given to newborns",
+            "Medical care during pregnancy",
+            "Care given to elderly parents"
+          ],
+          "answer": "Medical care during pregnancy",
+          "explanation": "Prenatal care is the healthcare a woman receives during pregnancy to monitor her health and the development of the baby."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The Community Seminar",
+      "difficulty": "Medium",
+      "difficulty_color": "#f39c12",
+      "story": "A community health worker named Lito is conducting a family planning seminar in a small village. Many couples and young adults have gathered, curious but also with many questions. Lito opens with a serious message: 'Understanding your options can save lives and build stronger families. Are you ready to go deeper?' The room goes quiet with anticipation.",
+      "story_image": "seminar",
+      "questions": [
+        {
+          "question": "What is an Intrauterine Device (IUD)?",
+          "options": [
+            "A daily oral pill to prevent pregnancy",
+            "A small device inserted into the uterus to prevent pregnancy",
+            "A hormonal patch worn on the skin",
+            "A surgical procedure for permanent contraception"
+          ],
+          "answer": "A small device inserted into the uterus to prevent pregnancy",
+          "explanation": "An IUD is a small T-shaped device placed inside the uterus by a healthcare provider. It can be hormonal or copper-based and provides long-term contraception."
+        },
+        {
+          "question": "Which contraceptive method also protects against sexually transmitted infections (STIs)?",
+          "options": [
+            "Birth control pills",
+            "IUD",
+            "Condoms",
+            "Hormonal implant"
+          ],
+          "answer": "Condoms",
+          "explanation": "Condoms are the only contraceptive method that provides dual protection — preventing both pregnancy and STIs, including HIV."
+        },
+        {
+          "question": "What is meant by 'unmet need for family planning'?",
+          "options": [
+            "Women who want more children",
+            "Women who want to avoid pregnancy but are not using contraception",
+            "Couples who cannot afford to have children",
+            "Men who refuse to discuss family planning"
+          ],
+          "answer": "Women who want to avoid pregnancy but are not using contraception",
+          "explanation": "Unmet need refers to women who are sexually active, want to delay or stop childbearing, but are not using any form of contraception."
+        },
+        {
+          "question": "What is the typical effectiveness rate of birth control pills when used correctly?",
+          "options": [
+            "Around 70%",
+            "Around 80%",
+            "Around 91-99%",
+            "100%"
+          ],
+          "answer": "Around 91-99%",
+          "explanation": "With perfect use, birth control pills are about 99% effective. With typical use (occasional missed pills), effectiveness is around 91%."
+        },
+        {
+          "question": "Which of the following is a permanent method of contraception for men?",
+          "options": [
+            "Vasectomy",
+            "Tubal ligation",
+            "Hormonal implant",
+            "Male condom"
+          ],
+          "answer": "Vasectomy",
+          "explanation": "A vasectomy is a surgical procedure that cuts or blocks the vas deferens, preventing sperm from being released. It is considered permanent contraception for men."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Teenage Dilemma",
+      "difficulty": "Medium",
+      "difficulty_color": "#f39c12",
+      "story": "In a high school health class, teacher Ms. Santos faces a room full of teenagers with big questions about reproductive health. Many of them are confused by myths they've heard from friends. Ms. Santos speaks firmly: 'The truth about your reproductive health matters more than rumors. Let's separate fact from fiction — your future depends on it.'",
+      "story_image": "classroom",
+      "questions": [
+        {
+          "question": "TRUE or FALSE: A woman can get pregnant during her period.",
+          "options": [
+            "False — it is impossible",
+            "True — it is possible, though less likely",
+            "Only if it is her first period",
+            "Only in older women"
+          ],
+          "answer": "True — it is possible, though less likely",
+          "explanation": "While less likely, pregnancy during menstruation is possible because sperm can survive up to 5 days, and some women have short cycles with early ovulation."
+        },
+        {
+          "question": "What is adolescent reproductive health?",
+          "options": [
+            "Health issues only affecting teenage boys",
+            "The physical, mental, and social well-being related to reproduction in young people aged 10-24",
+            "A program for married teenagers",
+            "Nutrition advice for teenagers"
+          ],
+          "answer": "The physical, mental, and social well-being related to reproduction in young people aged 10-24",
+          "explanation": "Adolescent reproductive health encompasses the physical, emotional, and social aspects of sexual and reproductive health for young people aged 10-24."
+        },
+        {
+          "question": "What is a common risk of teenage pregnancy?",
+          "options": [
+            "Faster recovery after birth",
+            "Higher likelihood of completing education",
+            "Higher risks of maternal and infant complications",
+            "No significant health differences"
+          ],
+          "answer": "Higher risks of maternal and infant complications",
+          "explanation": "Teenage pregnancies carry higher risks including preeclampsia, anemia, premature birth, low birth weight, and higher maternal and infant mortality."
+        },
+        {
+          "question": "Which hormone triggers ovulation in women?",
+          "options": [
+            "Estrogen",
+            "Progesterone",
+            "Luteinizing Hormone (LH)",
+            "Testosterone"
+          ],
+          "answer": "Luteinizing Hormone (LH)",
+          "explanation": "A surge in Luteinizing Hormone (LH) triggers the release of a mature egg from the ovary — this process is called ovulation."
+        },
+        {
+          "question": "What is the fertile window in a typical 28-day menstrual cycle?",
+          "options": [
+            "Days 1-5",
+            "Days 10-17",
+            "Days 20-25",
+            "Days 25-28"
+          ],
+          "answer": "Days 10-17",
+          "explanation": "In a 28-day cycle, ovulation typically occurs around day 14. The fertile window spans about 5 days before and 1-2 days after ovulation — approximately days 10-17."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "The Midwife's Challenge",
+      "difficulty": "Hard",
+      "difficulty_color": "#e74c3c",
+      "story": "You are a newly licensed midwife assigned to a remote rural health unit. Your senior midwife, Ma'am Reyes, hands you a thick case file and says with a serious look: 'These families are counting on you. You need to know more than the basics — you need expert-level knowledge. Lives depend on the advice you give.' Your training is about to be truly tested.",
+      "story_image": "midwife",
+      "questions": [
+        {
+          "question": "What is the primary mechanism of action of combined oral contraceptive pills (COCPs)?",
+          "options": [
+            "They destroy sperm in the cervix",
+            "They thicken cervical mucus only",
+            "They suppress ovulation by preventing LH and FSH surges",
+            "They prevent implantation only"
+          ],
+          "answer": "They suppress ovulation by preventing LH and FSH surges",
+          "explanation": "COCPs primarily work by suppressing the LH and FSH surges needed for ovulation. They also thicken cervical mucus and thin the endometrial lining as secondary mechanisms."
+        },
+        {
+          "question": "What is the key eligibility criterion for the Lactational Amenorrhea Method (LAM) to be effective?",
+          "options": [
+            "Baby must be under 12 months, any breastfeeding",
+            "Baby under 6 months, exclusively breastfed, and menses not resumed",
+            "Mother is taking iron supplements",
+            "Baby under 1 year and partially breastfed"
+          ],
+          "answer": "Baby under 6 months, exclusively breastfed, and menses not resumed",
+          "explanation": "LAM requires all three conditions: infant less than 6 months old, exclusively breastfeeding (no supplemental feeds), and maternal amenorrhea (no return of menstruation)."
+        },
+        {
+          "question": "Which condition is classified as a Category 4 (absolute contraindication) for combined hormonal contraceptives under WHO Medical Eligibility Criteria?",
+          "options": [
+            "Mild hypertension",
+            "History of migraines without aura",
+            "Breastfeeding a 3-month-old infant",
+            "History of deep vein thrombosis (DVT)"
+          ],
+          "answer": "History of deep vein thrombosis (DVT)",
+          "explanation": "History of DVT is WHO MEC Category 4, meaning combined hormonal contraceptives must not be used as the estrogen component significantly increases the risk of recurrent thromboembolism."
+        },
+        {
+          "question": "What is 'postpartum family planning' primarily focused on?",
+          "options": [
+            "Planning the next pregnancy immediately after birth",
+            "Preventing unintended pregnancy in the first 12 months after delivery",
+            "Nutritional planning for the newborn",
+            "Scheduling postnatal doctor visits"
+          ],
+          "answer": "Preventing unintended pregnancy in the first 12 months after delivery",
+          "explanation": "Postpartum family planning focuses on helping women avoid unintended pregnancy during the first 12 months after birth, protecting both maternal health and birth spacing."
+        },
+        {
+          "question": "According to WHO, what is the recommended interpregnancy interval after a cesarean section?",
+          "options": [
+            "At least 6 months",
+            "At least 12 months",
+            "At least 18 months",
+            "At least 24 months"
+          ],
+          "answer": "At least 24 months",
+          "explanation": "WHO recommends a minimum interpregnancy interval of 24 months after a cesarean section to allow adequate uterine scar healing and reduce risks of uterine rupture."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Expert Counselor",
+      "difficulty": "Hard",
+      "difficulty_color": "#e74c3c",
+      "story": "You are the most experienced family planning counselor in the region. A difficult case arrives: a woman with multiple health conditions seeking contraceptive advice, and a community with deeply rooted misconceptions. The Department of Health has sent you to resolve this complex situation. Your supervisor says gravely: 'Only someone with mastery of family planning can handle this. This is the final test of your expertise.'",
+      "story_image": "counselor",
+      "questions": [
+        {
+          "question": "A 35-year-old woman who smokes more than 15 cigarettes per day wants to use combined oral contraceptives. What is the WHO MEC classification?",
+          "options": [
+            "Category 1 — no restriction",
+            "Category 2 — advantages generally outweigh risks",
+            "Category 3 — risks generally outweigh advantages",
+            "Category 4 — unacceptable health risk, must not use"
+          ],
+          "answer": "Category 4 — unacceptable health risk, must not use",
+          "explanation": "A woman aged 35+ who smokes ≥15 cigarettes/day is WHO MEC Category 4 for combined hormonal contraceptives due to significantly elevated cardiovascular and thromboembolic risk."
+        },
+        {
+          "question": "What is the copper IUD's secondary mechanism that makes it effective as emergency contraception?",
+          "options": [
+            "It suppresses ovulation within 72 hours",
+            "Copper ions are spermicidal and may prevent fertilization or implantation",
+            "It releases levonorgestrel to prevent fertilization",
+            "It creates a hormonal barrier in the cervix"
+          ],
+          "answer": "Copper ions are spermicidal and may prevent fertilization or implantation",
+          "explanation": "The copper IUD works primarily by releasing copper ions that are toxic to sperm (spermicidal), impairing sperm motility and viability. It may also prevent implantation. It can be used as emergency contraception up to 5 days after unprotected sex."
+        },
+        {
+          "question": "In the context of family planning counseling, what does the GATHER model stand for?",
+          "options": [
+            "Greet, Ask, Tell, Help, Explain, Return",
+            "Guide, Assess, Treat, Help, Evaluate, Refer",
+            "Greet, Ask, Tell, Help, Educate, Request",
+            "Guide, Address, Talk, Handle, Educate, Return"
+          ],
+          "answer": "Greet, Ask, Tell, Help, Explain, Return",
+          "explanation": "The GATHER model is a family planning counseling framework: Greet the client, Ask about their needs, Tell them about options, Help them choose, Explain how to use the method, and Return/follow-up visit."
+        },
+        {
+          "question": "Which of the following best describes 'dual protection' in family planning?",
+          "options": [
+            "Using two different hormonal methods simultaneously",
+            "Using condoms to prevent both STIs and unintended pregnancy, along with another method",
+            "Protecting both partners using separate methods",
+            "Using contraception during and after pregnancy"
+          ],
+          "answer": "Using condoms to prevent both STIs and unintended pregnancy, along with another method",
+          "explanation": "Dual protection means using condoms (to prevent STI/HIV transmission) together with another reliable contraceptive method (for pregnancy prevention), providing protection against both risks."
+        },
+        {
+          "question": "What is the global unmet need for family planning primarily attributed to?",
+          "options": [
+            "Lack of desire for contraception",
+            "Barriers including access, cost, misinformation, partner opposition, and fear of side effects",
+            "Government policies banning contraception",
+            "Lack of contraceptive technology"
+          ],
+          "answer": "Barriers including access, cost, misinformation, partner opposition, and fear of side effects",
+          "explanation": "The global unmet need (affecting ~218 million women) is driven by multiple barriers: geographic access, cost, social and cultural norms, partner or family opposition, misinformation, and fear of side effects — not lack of desire."
+        }
+      ]
+    }
+  ]
+}
