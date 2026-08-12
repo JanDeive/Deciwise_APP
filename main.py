@@ -16,33 +16,33 @@ DATA_DIR     = os.path.join(os.path.dirname(__file__), "data")
 QUESTIONS_DB = os.path.join(DATA_DIR, "questions.json")
 PROGRESS_DB  = os.path.join(DATA_DIR, "progress.json")
 
-# ── Palette ───────────────────────────────────────────────────────────────────
+# ── Palette  (Light Green / Mint theme) ──────────────────────────────────────
 C = {
-    "bg":        "#071a07",
-    "card":      "#0f2b0f",
-    "card2":     "#163316",
-    "accent":    "#2ecc71",
-    "accent2":   "#1a7a3a",
-    "accent3":   "#0d4a20",
-    "easy":      "#52e088",
-    "medium":    "#f39c12",
-    "hard":      "#e74c3c",
-    "expert":    "#9b59b6",
-    "white":     "#e8f5e9",
-    "grey":      "#6a9e6a",
-    "correct":   "#27ae60",
-    "wrong":     "#c0392b",
-    "gold":      "#f1c40f",
-    "silver":    "#bdc3c7",
-    "bronze":    "#cd6133",
-    "locked":    "#142814",
-    "dark":      "#040d04",
-    "timer_ok":  "#2ecc71",
-    "timer_warn":"#f39c12",
-    "timer_bad": "#e74c3c",
-    "xp":        "#3498db",
-    "lives":     "#e74c3c",
-    "banner":    "#0a2a0a",
+    "bg":        "#f0faf2",   # near-white mint background
+    "card":      "#ffffff",   # pure white cards
+    "card2":     "#e8f5eb",   # soft mint card variant
+    "accent":    "#1e8449",   # deep green accent
+    "accent2":   "#27ae60",   # medium green
+    "accent3":   "#a9dfbf",   # pale green highlight
+    "easy":      "#1e8449",   # easy level colour
+    "medium":    "#d68910",   # amber medium
+    "hard":      "#cb4335",   # red hard
+    "expert":    "#7d3c98",   # purple expert
+    "white":     "#1a1a1a",   # near-black for text on light bg
+    "grey":      "#5d6d7e",   # mid grey text
+    "correct":   "#1e8449",   # correct green
+    "wrong":     "#cb4335",   # wrong red
+    "gold":      "#d4ac0d",   # gold stars (slightly darker for light bg)
+    "silver":    "#808b96",   # silver
+    "bronze":    "#a04000",   # bronze
+    "locked":    "#d5dbdb",   # light grey for locked elements
+    "dark":      "#f0faf2",   # matches bg (used for button text bg)
+    "timer_ok":  "#1e8449",   # timer green
+    "timer_warn":"#d68910",   # timer amber
+    "timer_bad": "#cb4335",   # timer red
+    "xp":        "#1a6fad",   # XP blue (darker for light bg)
+    "lives":     "#cb4335",   # lives red
+    "banner":    "#d5f0de",   # light mint banner/header strip
 }
 
 # Timer seconds per difficulty

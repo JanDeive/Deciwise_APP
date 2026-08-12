@@ -1,0 +1,273 @@
+================================================================================
+  DECIWISE — FAMILY PLANNING QUIZ GAME
+  Capstone Project Development Report
+================================================================================
+
+  Project Title  : DeciWise — Family Planning Quiz Game
+  Developer      : Jan Deive Marinas
+  Email          : jandeive.marinas@lorma.edu
+  Repository     : https://github.com/JanDeive/Deciwise_APP
+  Language       : Python 3.13
+  Framework      : Tkinter (built-in GUI) + pygame (sound)
+  Database       : JSON (flat-file, no server required)
+  Platform       : Windows Desktop (mobile-sized window: 430 x 800 px)
+
+================================================================================
+  SECTION 1 — PROJECT OVERVIEW
+================================================================================
+
+DeciWise is an educational quiz game centered on the theme of Family Planning.
+It was designed as a capstone-level application to demonstrate full-stack
+desktop development skills using Python, including UI design, game logic,
+data persistence, sound synthesis, and version control.
+
+The game teaches players about contraception methods, reproductive health,
+maternal care, adolescent health, and WHO guidelines — all wrapped in an
+engaging story-driven quiz format with game mechanics comparable to commercial
+mobile quiz apps.
+
+================================================================================
+  SECTION 2 — FILES ADDED / CREATED
+================================================================================
+
+  File                     Description
+  ─────────────────────────────────────────────────────────────────────────────
+  main.py                  Core application — all screens, logic, and UI
+  sound.py                 Sound engine — synthesizes all audio using pygame
+  data/questions.json      Content database — levels, stories, questions
+  data/progress.json       Player save file — XP, scores, badges, leaderboard
+  requirements.txt         Dependency list (pygame==2.6.1)
+  run.bat                  Windows launcher with dependency auto-check
+  README.md                Full setup and documentation guide
+  .gitignore               Excludes __pycache__ from version control
+  REPORT.txt               This report document
+  screenshot/              Folder containing 4 gameplay screenshots
+
+================================================================================
+  SECTION 3 — FEATURES ADDED
+================================================================================
+
+  3.1 GAME STRUCTURE
+  ──────────────────
+  - 6 levels grouped into 3 Acts based on difficulty:
+      Act I   — Foundations    (Levels 1–2, Easy,   30s per question)
+      Act II  — Intermediate   (Levels 3–4, Medium, 22s per question)
+      Act III — Expert         (Levels 5–6, Hard,   16s per question)
+  - Each level contains 5 questions with 4 options each
+  - All content is stored in data/questions.json for easy editing
+  - Total: 30 questions across 6 levels
+
+  3.2 ANIMATED STORY SCREEN
+  ─────────────────────────
+  - Every level opens with a short narrative before the quiz begins
+  - Animation sequence:
+      1. Banner fades in (colour interpolation over 14 frames)
+      2. Emoji icon bounces in (size oscillation over 8 frames)
+      3. Story text types out character-by-character (typewriter effect)
+         - 20ms per character
+         - 5x longer pause at punctuation (. ! ? ,)
+         - Subtle tick sound every 4 characters
+      4. Blinking cursor (▌) after typing finishes (3 blink cycles)
+      5. Info strip and buttons fade in smoothly
+  - "Skip ▶▶" button always visible to skip animation instantly
+  - Back button cancels all timers safely before leaving
+
+  3.3 QUIZ SCREEN
+  ───────────────
+  - Countdown timer per question (difficulty-based: 30 / 22 / 16 seconds)
+  - Timer bar shrinks in real time and changes colour:
+      Green  → more than 50% time remaining
+      Amber  → 25–50% time remaining
+      Red    → less than 25% time remaining
+  - Ticking sound plays in the last 5 seconds
+  - Time expiry counts as a wrong answer and costs one life
+  - Answer options rendered as rounded-rectangle canvas buttons
+  - After answering:
+      - Correct option turns green, wrong option turns red
+      - Explanation text revealed below the options
+      - XP gain flashed on screen
+  - Pause button (⏸) freezes the timer and shows a pause overlay
+  - Pause overlay has Resume and Quit Level options
+
+  3.4 LIVES SYSTEM
+  ────────────────
+  - Players start each level with 3 lives (❤ ❤ ❤)
+  - One life is lost for each wrong answer or timed-out question
+  - Lives displayed in the HUD and update in real time
+  - If all 3 lives are lost mid-level → Game Over screen shown
+
+  3.5 XP SYSTEM
+  ─────────────
+  - +10 XP for each correct answer
+  - +5  XP speed bonus if answered in the first half of the timer
+  - +20 XP perfect score bonus at end of level (100% correct)
+  - Session XP shown in HUD and flashed after each answer
+  - Total all-time XP accumulates and is saved to progress.json
+
+  3.6 BADGE / ACHIEVEMENT SYSTEM
+  ───────────────────────────────
+  7 badges available:
+
+  Badge             Icon  Unlock Condition
+  ──────────────────────────────────────────────────────────────
+  First Step        🌱    Complete Level 1
+  Beginner          📗    Complete Act I (Levels 1 and 2)
+  Intermediate      📘    Complete Act II (Levels 3 and 4)
+  Expert            📕    Complete Act III (Levels 5 and 6)
+  DeciWise Master   🎓    Complete all 6 levels
+  Perfect Run       🏆    Score 100% on any level
+  Speedster         ⚡    Answer 5 questions with the speed bonus
+
+  - New badges are highlighted on the Result screen when first earned
+  - Full badge gallery accessible from the Splash screen
+
+  3.7 LEADERBOARD
+  ───────────────
+  - Top 10 scores saved locally in data/progress.json
+  - Sorted by XP earned (descending), then by score
+  - Gold / Silver / Bronze medal icons for ranks 1–3
+  - Each entry shows: player name, level, score, stars, XP
+  - Accessible from Splash, Level Select, and Result screens
+  - "Clear Scores" button to reset the leaderboard
+
+  3.8 SCREENS
+  ───────────
+  Screen            Description
+  ────────────────────────────────────────────────────────────────────────────
+  Splash            Player name entry, Play button, Leaderboard/Badge links
+  Level Select      Act-based journey map with star ratings and XP display
+  Story             Animated level narrative with skip option
+  Quiz              Timed questions with full HUD (lives, timer, XP, progress)
+  Result            Score, XP, new badges, complete answer review
+  Game Over         Triggered by 0 lives — shows score so far and retry option
+  Leaderboard       Top 10 scores with medals
+  Badges            Gallery of all 7 achievements (locked/unlocked state)
+
+  3.9 SOUND EFFECTS
+  ─────────────────
+  All sounds are mathematically synthesized at runtime using pygame.
+  No audio files are bundled. The sound.py module generates waveforms
+  from pure sine waves and noise functions.
+
+  Sound Name   Trigger
+  ────────────────────────────────────────────────────────────
+  start        START GAME, BEGIN QUIZ, Retry
+  click        Open level card, Next question button
+  back         Back button, Home button
+  tick         Typewriter (every 4 chars) + last 5s countdown
+  correct      Right answer selected
+  wrong        Wrong answer, Time's up, Game Over
+  complete     Result screen (score below 100%)
+  perfect      Result screen (100% score)
+  unlock       New level unlocked after completion
+
+  3.10 DATA PERSISTENCE
+  ─────────────────────
+  All player data is saved to data/progress.json automatically:
+  - Unlocked levels
+  - Completed levels
+  - High scores (score, total, stars) per level
+  - Total all-time XP
+  - Earned badges list
+  - Top 10 leaderboard entries
+  - Last used player name
+
+  3.11 COLOUR THEME
+  ─────────────────
+  Updated to a light green / mint theme for improved readability:
+  - Background:  #f0faf2  (near-white mint)
+  - Cards:       #ffffff  (pure white)
+  - Accent:      #1e8449  (deep forest green)
+  - Banner:      #d5f0de  (soft mint header)
+  - Text:        #1a1a1a  (near-black for contrast on light backgrounds)
+
+================================================================================
+  SECTION 4 — CONTENT SUMMARY (data/questions.json)
+================================================================================
+
+  Level  Title                    Difficulty  Story Setting
+  ─────────────────────────────────────────────────────────────────────────────
+  1      The Young Couple         Easy        Newlyweds at a health center
+  2      The Health Center Visit  Easy        Postnatal check-up and spacing
+  3      The Community Seminar    Medium      Health worker educating a village
+  4      The Teenage Dilemma      Medium      High school reproductive health
+  5      The Midwife's Challenge  Hard        New midwife clinical knowledge
+  6      The Expert Counselor     Hard        WHO MEC and counseling framework
+
+  Topics covered:
+  - Definition and purpose of family planning
+  - Natural, barrier, hormonal, and permanent contraception methods
+  - Birth spacing (WHO recommendation: 24 months minimum)
+  - Lactational Amenorrhea Method (LAM) criteria
+  - Folic acid and prenatal care
+  - Adolescent reproductive health and teenage pregnancy risks
+  - Menstrual cycle, ovulation, and fertile window
+  - Mechanism of action of combined oral contraceptives (COCPs)
+  - WHO Medical Eligibility Criteria (MEC) Categories
+  - Postpartum family planning
+  - Interpregnancy interval after cesarean section
+  - Dual protection (condoms + another method)
+  - The GATHER counseling model
+  - Global unmet need for family planning
+
+================================================================================
+  SECTION 5 — TECHNICAL STACK
+================================================================================
+
+  Component          Technology         Notes
+  ─────────────────────────────────────────────────────────────────────────────
+  Language           Python 3.13        Tested on Python 3.8–3.13
+  GUI Framework      Tkinter            Built into Python, no install needed
+  Sound Engine       pygame 2.6.1       Synthesizes all sounds via math
+  Data Storage       JSON               questions.json + progress.json
+  Version Control    Git + GitHub       https://github.com/JanDeive/Deciwise_APP
+  Packaging          requirements.txt   Single dependency: pygame==2.6.1
+
+  No web server, no database server, no internet connection required
+  after initial setup.
+
+================================================================================
+  SECTION 6 — HOW TO RUN
+================================================================================
+
+  Prerequisites:
+    1. Install Python 3.8 or higher from https://www.python.org/downloads/
+       (check "Add Python to PATH" on Windows)
+    2. Run:  pip install -r requirements.txt
+
+  Launch:
+    Windows :  Double-click run.bat
+    Terminal:  python main.py
+
+  To reset all progress:
+    Replace data/progress.json with:
+    {
+      "unlocked_levels": [1],
+      "completed_levels": [],
+      "high_scores": {},
+      "total_xp": 0,
+      "badges": [],
+      "leaderboard": [],
+      "player_name": ""
+    }
+
+================================================================================
+  SECTION 7 — REPOSITORY STRUCTURE
+================================================================================
+
+  deciwise/
+  ├── main.py              Core game application
+  ├── sound.py             Synthesized sound effects
+  ├── requirements.txt     pip dependencies
+  ├── run.bat              Windows one-click launcher
+  ├── README.md            Setup and documentation
+  ├── REPORT.txt           This report
+  ├── .gitignore           Excludes __pycache__
+  ├── screenshot/          Gameplay screenshots (4 images)
+  └── data/
+      ├── questions.json   Level content and questions
+      └── progress.json    Player save data (auto-updated)
+
+================================================================================
+  END OF REPORT
+================================================================================
