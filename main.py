@@ -45,10 +45,33 @@ C = {
     "banner":    "#d5f0de",   # light mint banner/header strip
 }
 
+# Quiz modes — key matches the JSON field name
+QUIZ_MODES = [
+    {
+        "key":   "questions",
+        "label": "Standard Quiz",
+        "icon":  "📝",
+        "color": C["accent"],     # will be resolved after C is defined
+        "desc":  "Multiple-choice questions on family planning",
+    },
+    {
+        "key":   "myth_busting",
+        "label": "Myth Busting",
+        "icon":  "🔍",
+        "color": "#d68910",
+        "desc":  "Separate fact from fiction on common myths",
+    },
+    {
+        "key":   "scenario",
+        "label": "Scenario Challenge",
+        "icon":  "🎭",
+        "color": "#7d3c98",
+        "desc":  "Real-life case situations — what would you do?",
+    },
+]
+
 # Timer seconds per difficulty
 TIMER = {"Easy": 30, "Medium": 22, "Hard": 16}
-
-# XP rewards
 XP_CORRECT   = 10
 XP_BONUS_FAST = 5   # answered in first half of timer
 XP_PERFECT   = 20   # bonus for 100% level
@@ -182,6 +205,7 @@ class App(tk.Tk):
         # ── Shared quiz state ──────────────────────────────────────────────
         self.player_name   = ""
         self.current_level = None
+        self.quiz_mode     = QUIZ_MODES[0]   # default: standard quiz
         self.quiz_index    = 0
         self.quiz_score    = 0
         self.quiz_answers  = []
@@ -555,7 +579,7 @@ class StoryScreen(tk.Frame):
                                text=f"❓ {qn} Questions  |  ⏱ {timer_s}s each  |  ❤ {MAX_LIVES} lives",
                                font=("Segoe UI",10),
                                bg=C["bg"], fg=C["bg"])
-        self._info.pack(pady=12)
+        self._info.pack(pady=(12,4))
 
         # XP info
         xp_est = qn * XP_CORRECT
@@ -563,7 +587,38 @@ class StoryScreen(tk.Frame):
                                   text=f"⚡ Earn up to {xp_est + XP_PERFECT} XP on this level",
                                   font=("Segoe UI",9),
                                   bg=C["bg"], fg=C["bg"])
-        self._xp_lbl.pack(pady=(0,8))
+        self._xp_lbl.pack(pady=(0,4))
+
+        # ── Swipeable quiz mode selector ──────────────────────────────────
+        self._mode_idx = 0
+        self._swipe_hint = tk.Label(
+            inn, text="◀  swipe or tap to change quiz type  ▶",
+            font=("Segoe UI",9,"italic"),
+            bg=C["bg"], fg=C["bg"])   # invisible until revealed
+        self._swipe_hint.pack(pady=(0,4))
+
+        self._mode_cv = tk.Canvas(
+            inn, width=WINDOW_W-36, height=110,
+            bg=C["bg"], highlightthickness=0)
+        self._mode_cv.pack(pady=(0,6))
+
+        # Dot indicators
+        self._dot_frame = tk.Frame(inn, bg=C["bg"])
+        self._dot_frame.pack(pady=(0,10))
+        self._dots = []
+        for i in range(len(QUIZ_MODES)):
+            d = tk.Canvas(self._dot_frame, width=10, height=10,
+                           bg=C["bg"], highlightthickness=0)
+            d.pack(side="left", padx=3)
+            d.create_oval(1,1,9,9,
+                           fill=C["accent"] if i==0 else C["locked"],
+                           outline="", tags="dot")
+            self._dots.append(d)
+
+        # Swipe detection on mode card
+        self._drag_start = None
+        self._mode_cv.bind("<ButtonPress-1>",   self._drag_begin)
+        self._mode_cv.bind("<ButtonRelease-1>", self._drag_end)
 
         self._begin_f = Btn(inn, "  BEGIN QUIZ  ▶  ", self._start,
                             bg=C["accent"], fg=C["dark"], w=250, fs=13,
@@ -629,9 +684,14 @@ class StoryScreen(tk.Frame):
         t = min(step/n, 1.0)
         self._info.configure(fg=_lerp(C["bg"], C["grey"], t))
         self._xp_lbl.configure(fg=_lerp(C["bg"], C["xp"], t))
+        self._swipe_hint.configure(fg=_lerp(C["bg"], C["grey"], t))
+
+        # Draw the mode card on first step
         if step == 0:
+            self._draw_mode_card()
             self._begin_f.pack(pady=(0,10))
             self._back_f.pack(pady=(0,24))
+
         # Fade button colours from bg → final colour
         for btn_f, bc, tc in [(self._begin_f, C["accent"], C["dark"]),
                                (self._back_f,  C["card2"],  C["white"])]:
@@ -646,9 +706,92 @@ class StoryScreen(tk.Frame):
         if step < n:
             self._aids.append(self.after(32, lambda: self._reveal(step+1)))
         else:
-            # Restore full interactive drawing once fade is complete
             self._begin_f._draw()
             self._back_f._draw()
+
+    # ── Mode card drawing ─────────────────────────────────────────────────────
+    def _draw_mode_card(self):
+        """Render the currently selected quiz mode as a card on the canvas."""
+        cv   = self._mode_cv
+        mode = QUIZ_MODES[self._mode_idx]
+        w    = cv.winfo_width() or WINDOW_W - 36
+        h    = 110
+        cv.delete("all")
+
+        # Card background
+        rr(cv, 2, 2, w-2, h-2, r=16, fill=mode["color"], outline="")
+
+        # Dark tint overlay for readability
+        rr(cv, 2, 2, w-2, h-2, r=16,
+           fill=_darken(mode["color"], 0.45), outline="",
+           stipple="gray50")
+
+        # Icon
+        cv.create_text(50, h//2, text=mode["icon"],
+                        font=("Segoe UI Emoji", 30))
+
+        # Label
+        cv.create_text(w//2 + 16, h//2 - 18,
+                        text=mode["label"],
+                        font=("Segoe UI", 14, "bold"),
+                        fill="#ffffff", anchor="center")
+
+        # Description
+        cv.create_text(w//2 + 16, h//2 + 10,
+                        text=mode["desc"],
+                        font=("Segoe UI", 9),
+                        fill="#dddddd", anchor="center",
+                        width=w - 110)
+
+        # Left / right arrows (if more modes available)
+        if self._mode_idx > 0:
+            cv.create_text(14, h//2, text="◀",
+                            font=("Segoe UI", 14, "bold"),
+                            fill="#ffffff")
+        if self._mode_idx < len(QUIZ_MODES) - 1:
+            cv.create_text(w - 14, h//2, text="▶",
+                            font=("Segoe UI", 14, "bold"),
+                            fill="#ffffff")
+
+        # Update dot indicators
+        for i, d in enumerate(self._dots):
+            d.itemconfig("dot",
+                          fill=mode["color"] if i == self._mode_idx
+                          else C["locked"])
+
+        # Update BEGIN button colour to match mode
+        self._begin_f._bg = mode["color"]
+        self._begin_f._draw()
+
+        # Update app quiz mode
+        self.app.quiz_mode = mode
+
+    # ── Swipe / tap handling ──────────────────────────────────────────────────
+    def _drag_begin(self, event):
+        self._drag_start = event.x
+
+    def _drag_end(self, event):
+        if self._drag_start is None:
+            return
+        dx = event.x - self._drag_start
+        self._drag_start = None
+
+        if abs(dx) < 8:
+            # Treated as a tap — cycle forward
+            self._set_mode((self._mode_idx + 1) % len(QUIZ_MODES))
+        elif dx < -30:
+            # Swipe left → next mode
+            if self._mode_idx < len(QUIZ_MODES) - 1:
+                self._set_mode(self._mode_idx + 1)
+        elif dx > 30:
+            # Swipe right → previous mode
+            if self._mode_idx > 0:
+                self._set_mode(self._mode_idx - 1)
+
+    def _set_mode(self, idx):
+        self._mode_idx = idx
+        SFX.play("click")
+        self._draw_mode_card()
 
     def _skip(self):
         [self.after_cancel(a) for a in self._aids]
@@ -663,6 +806,8 @@ class StoryScreen(tk.Frame):
         self._st.configure(text=lvl["story"])
         self._info.configure(fg=C["grey"])
         self._xp_lbl.configure(fg=C["xp"])
+        self._swipe_hint.configure(fg=C["grey"])
+        self._draw_mode_card()
         if not self._begin_f.winfo_ismapped(): self._begin_f.pack(pady=(0,10))
         if not self._back_f.winfo_ismapped():  self._back_f.pack(pady=(0,24))
         self._begin_f._draw()
@@ -700,7 +845,8 @@ class QuizScreen(tk.Frame):
         app   = self.app
         lvl   = app.current_level
         idx   = app.quiz_index
-        qs    = lvl["questions"]
+        mode  = app.quiz_mode          # ← selected mode from StoryScreen
+        qs    = lvl.get(mode["key"], lvl["questions"])   # fall back to standard
         q     = qs[idx]
         total = len(qs)
 
@@ -718,10 +864,13 @@ class QuizScreen(tk.Frame):
                      bg=C["banner"],
                      fg=C["lives"] if i < app.lives else C["locked"]).pack(side="left")
 
-        # Question counter
-        tk.Label(hud, text=f"Q {idx+1}/{total}",
-                 font=("Segoe UI",11,"bold"),
-                 bg=C["banner"], fg=C["white"]).pack(side="left", padx=6)
+        # Mode badge + Question counter
+        mode_badge = tk.Label(
+            hud,
+            text=f"{mode['icon']} {mode['label']}  ·  Q {idx+1}/{total}",
+            font=("Segoe UI",10,"bold"),
+            bg=C["banner"], fg=mode["color"])
+        mode_badge.pack(side="left", padx=6)
 
         # XP
         tk.Label(hud, text=f"⚡{app.total_xp_session}",
