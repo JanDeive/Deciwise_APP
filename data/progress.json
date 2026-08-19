@@ -20,13 +20,30 @@
       "stars": 2
     }
   },
-  "total_xp": 280,
+  "total_xp": 400,
   "badges": [
     "first_step",
     "perfect_run",
     "speedster",
     "beginner"
   ],
-  "leaderboard": [],
+  "leaderboard": [
+    {
+      "name": "koya",
+      "level": 1,
+      "score": 4,
+      "total": 5,
+      "xp": 60,
+      "stars": 2
+    },
+    {
+      "name": "koya",
+      "level": 1,
+      "score": 4,
+      "total": 5,
+      "xp": 60,
+      "stars": 2
+    }
+  ],
   "player_name": "koya"
 }
