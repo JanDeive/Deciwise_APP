@@ -426,19 +426,18 @@ import random as _random
 
 class CongratsPopup:
     """
-    A Toplevel window that floats above the app with:
-      - Confetti canvas filling the whole window
-      - A congratulations card drawn on top of the confetti
-      - Auto-dismisses after 4.5 s or on any click
+    Retro CRT congratulations overlay with pixel-art card and scanline particles.
+    Auto-dismisses after 4.5 s or on any click.
     """
-    _PARTICLE_COUNT = 55
-    _COLORS = ["#2ecc71","#f1c40f","#e74c3c","#3498db",
-               "#9b59b6","#1abc9c","#e67e22","#f0f0f0",
-               "#ff6b6b","#48dbfb","#ffeaa7","#a29bfe"]
+    _PARTICLE_COUNT = 60
+    # Neon arcade pixel-confetti palette
+    _COLORS = ["#00ff41","#ffaa00","#ff3333","#00ccff",
+               "#cc44ff","#ffcc00","#ff6600","#00ff99",
+               "#ff0099","#33ffcc","#ffff00","#ff44aa"]
     _FPS_MS = 28
+    _BG     = "#000a00"   # near-black CRT green tint
 
     def __init__(self, parent, info):
-        # Find the root Tk window
         self._root    = parent.winfo_toplevel()
         self._info    = info
         self._aids    = []
@@ -446,23 +445,27 @@ class CongratsPopup:
 
         # ── Toplevel window ───────────────────────────────────────────────
         self._win = tk.Toplevel(self._root)
-        self._win.overrideredirect(True)          # no title bar
-        self._win.attributes("-topmost", True)    # always on top
+        self._win.overrideredirect(True)
+        self._win.attributes("-topmost", True)
 
-        # Position exactly over the main window
         self._root.update_idletasks()
         rx = self._root.winfo_x()
         ry = self._root.winfo_y()
         self._win.geometry(f"{WINDOW_W}x{WINDOW_H}+{rx}+{ry}")
-        self._win.configure(bg="#1a1a2e")
+        self._win.configure(bg=self._BG)
 
-        # ── Full-window canvas (confetti layer) ───────────────────────────
+        # ── Full-window canvas ────────────────────────────────────────────
         self._cv = tk.Canvas(
             self._win, width=WINDOW_W, height=WINDOW_H,
-            bg="#1a1a2e", highlightthickness=0)
+            bg=self._BG, highlightthickness=0)
         self._cv.pack(fill="both", expand=True)
 
-        # ── Spawn confetti particles ──────────────────────────────────────
+        # Draw CRT scanlines as permanent dark stripes on the background
+        for y in range(0, WINDOW_H, 4):
+            self._cv.create_line(0, y, WINDOW_W, y,
+                                 fill="#001200", width=1, tags="scanline")
+
+        # ── Spawn pixel confetti ──────────────────────────────────────────
         self._particles = []
         for _ in range(self._PARTICLE_COUNT):
             self._spawn_particle(start_above=True)
@@ -482,18 +485,14 @@ class CongratsPopup:
     def _spawn_particle(self, start_above=False):
         x  = _random.uniform(0, WINDOW_W)
         y  = _random.uniform(-WINDOW_H, 0) if start_above else _random.uniform(-80, -8)
-        vx = _random.uniform(-2.0, 2.0)
-        vy = _random.uniform(2.0, 5.5)
-        pw = _random.randint(7, 15)
-        ph = _random.randint(5, 10)
+        vx = _random.uniform(-1.5, 1.5)
+        vy = _random.uniform(2.5, 6.0)
+        # Chunky square pixels — retro feel
+        pw = _random.choice([4, 6, 8, 10])
+        ph = pw   # square
         color = _random.choice(self._COLORS)
-        shape = _random.choice(["rect", "oval"])
-        if shape == "rect":
-            oid = self._cv.create_rectangle(
-                x, y, x+pw, y+ph, fill=color, outline="")
-        else:
-            oid = self._cv.create_oval(
-                x, y, x+pw, y+ph, fill=color, outline="")
+        oid = self._cv.create_rectangle(
+            x, y, x+pw, y+ph, fill=color, outline="")
         self._particles.append({
             "id": oid, "x": x, "y": y,
             "vx": vx, "vy": vy, "w": pw, "h": ph
@@ -508,74 +507,94 @@ class CongratsPopup:
         pct   = self._info["pct"]
         dc    = lvl["difficulty_color"]
 
-        cw, ch = 310, 270
+        cw, ch = 320, 280
         cx = (WINDOW_W - cw) // 2
         cy = (WINDOW_H - ch) // 2
 
-        # Card shadow
-        self._cv.create_rectangle(
-            cx+5, cy+5, cx+cw+5, cy+ch+5,
-            fill="#000000", outline="")
+        # ── Outer neon glow border (layered outlines) ──────────────────────
+        for i in range(4):
+            self._cv.create_rectangle(
+                cx - i, cy - i, cx + cw + i, cy + ch + i,
+                outline=dc, fill="")
 
-        # Card body (white)
-        rr(self._cv, cx, cy, cx+cw, cy+ch,
-           r=20, fill="#ffffff", outline="")
-
-        # Coloured top strip
-        rr(self._cv, cx, cy, cx+cw, cy+46,
-           r=20, fill=dc, outline="")
-        # Fill bottom corners of strip so it looks like a flat bottom
+        # ── Card body — dark CRT background ───────────────────────────────
         self._cv.create_rectangle(
-            cx, cy+26, cx+cw, cy+46,
+            cx, cy, cx + cw, cy + ch,
+            fill="#000d00", outline="")
+
+        # ── Chunky pixel corners ───────────────────────────────────────────
+        corner_size = 10
+        for ox, oy in [(cx, cy), (cx+cw-corner_size, cy),
+                       (cx, cy+ch-corner_size), (cx+cw-corner_size, cy+ch-corner_size)]:
+            self._cv.create_rectangle(
+                ox, oy, ox+corner_size, oy+corner_size,
+                fill=dc, outline="")
+
+        # ── Top header strip ───────────────────────────────────────────────
+        self._cv.create_rectangle(
+            cx, cy, cx+cw, cy+38,
             fill=dc, outline="")
-
-        # Level badge text on strip
+        # Scanlines over the header strip
+        for y in range(cy, cy+38, 4):
+            self._cv.create_line(cx, y, cx+cw, y, fill="#00000044", width=1)
         self._cv.create_text(
-            WINDOW_W//2, cy+23,
-            text=f"Level {lvl['id']}  ·  {lvl['difficulty']}",
-            font=_retro(11, "bold"),
-            fill="#ffffff")
+            WINDOW_W//2, cy + 19,
+            text=f"[ LVL {lvl['id']} : {lvl['difficulty'].upper()} ]",
+            font=_retro(10, "bold"),
+            fill="#000a00", tags="card_top")
 
-        # Big emoji
+        # ── Arcade result label ────────────────────────────────────────────
+        icon = "** PERFECT **" if pct == 1.0 else "* CLEARED *"
         self._cv.create_text(
-            WINDOW_W//2, cy+90,
-            text="🎉", font=("Segoe UI Emoji", 44))
+            WINDOW_W//2, cy + 68,
+            text=icon,
+            font=_retro(13, "bold"),
+            fill=C["gold"], tags="card_top")
 
-        # Main title
-        msg = "Perfect Score!" if pct == 1.0 else "Lesson Passed!"
+        # ── Main message with pixel shadow ─────────────────────────────────
+        msg = "PERFECT SCORE!" if pct == 1.0 else "LESSON PASSED!"
         self._cv.create_text(
-            WINDOW_W//2, cy+138,
-            text=msg,
-            font=_retro(19, "bold"),
-            fill="#1a1a1a")
+            WINDOW_W//2 + 2, cy + 103,
+            text=msg, font=_retro(16, "bold"),
+            fill="#003300", tags="card_top")
+        self._cv.create_text(
+            WINDOW_W//2, cy + 101,
+            text=msg, font=_retro(16, "bold"),
+            fill=C["accent"], tags="card_top")
 
-        # Level title
+        # ── Level title ────────────────────────────────────────────────────
         self._cv.create_text(
-            WINDOW_W//2, cy+163,
+            WINDOW_W//2, cy + 128,
             text=lvl["title"],
-            font=_retro(10),
-            fill="#5d6d7e")
-
-        # Score line
-        self._cv.create_text(
-            WINDOW_W//2, cy+187,
-            text=f"{score} / {total} correct",
-            font=_retro(12, "bold"),
-            fill=dc)
-
-        # Stars
-        self._cv.create_text(
-            WINDOW_W//2, cy+214,
-            text="⭐" * stars + "☆" * (3 - stars),
-            font=_retro(20),
-            fill="#d4ac0d")
-
-        # Dismiss hint
-        self._cv.create_text(
-            WINDOW_W//2, cy+252,
-            text="Tap anywhere to continue  ✕",
             font=_retro(9),
-            fill="#999999")
+            fill=C["grey"], tags="card_top")
+
+        # ── Score ──────────────────────────────────────────────────────────
+        self._cv.create_text(
+            WINDOW_W//2, cy + 155,
+            text=f"SCORE:  {score} / {total}",
+            font=_retro(12, "bold"),
+            fill=dc, tags="card_top")
+
+        # ── Pixel star rating (ASCII block style) ──────────────────────────
+        star_str = ("[ * ]" * stars) + ("[ . ]" * (3 - stars))
+        self._cv.create_text(
+            WINDOW_W//2, cy + 182,
+            text=star_str,
+            font=_retro(11, "bold"),
+            fill=C["gold"], tags="card_top")
+
+        # ── Horizontal pixel divider ───────────────────────────────────────
+        self._cv.create_rectangle(
+            cx + 20, cy + 202, cx + cw - 20, cy + 204,
+            fill=C["accent2"], outline="", tags="card_top")
+
+        # ── Dismiss hint ───────────────────────────────────────────────────
+        self._cv.create_text(
+            WINDOW_W//2, cy + 258,
+            text="[ PRESS ANYWHERE TO CONTINUE ]",
+            font=_retro(8),
+            fill=C["grey"], tags="card_top")
 
     # ── Animation tick ────────────────────────────────────────────────────────
     def _tick(self):
