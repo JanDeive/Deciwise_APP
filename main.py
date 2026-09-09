@@ -515,12 +515,12 @@ class CongratsPopup:
         for i in range(4):
             self._cv.create_rectangle(
                 cx - i, cy - i, cx + cw + i, cy + ch + i,
-                outline=dc, fill="")
+                outline=dc, fill="", tags="card_top")
 
         # ── Card body — dark CRT background ───────────────────────────────
         self._cv.create_rectangle(
             cx, cy, cx + cw, cy + ch,
-            fill="#000d00", outline="")
+            fill="#000d00", outline="", tags="card_top")
 
         # ── Chunky pixel corners ───────────────────────────────────────────
         corner_size = 10
@@ -528,15 +528,16 @@ class CongratsPopup:
                        (cx, cy+ch-corner_size), (cx+cw-corner_size, cy+ch-corner_size)]:
             self._cv.create_rectangle(
                 ox, oy, ox+corner_size, oy+corner_size,
-                fill=dc, outline="")
+                fill=dc, outline="", tags="card_top")
 
         # ── Top header strip ───────────────────────────────────────────────
         self._cv.create_rectangle(
             cx, cy, cx+cw, cy+38,
-            fill=dc, outline="")
+            fill=dc, outline="", tags="card_top")
         # Scanlines over the header strip
         for y in range(cy, cy+38, 4):
-            self._cv.create_line(cx, y, cx+cw, y, fill="#00000044", width=1)
+            self._cv.create_line(cx, y, cx+cw, y,
+                                 fill="#00000044", width=1, tags="card_top")
         self._cv.create_text(
             WINDOW_W//2, cy + 19,
             text=f"[ LVL {lvl['id']} : {lvl['difficulty'].upper()} ]",
@@ -587,9 +588,7 @@ class CongratsPopup:
         # ── Horizontal pixel divider ───────────────────────────────────────
         self._cv.create_rectangle(
             cx + 20, cy + 202, cx + cw - 20, cy + 204,
-            fill=C["accent2"], outline="", tags="card_top")
-
-        # ── Dismiss hint ───────────────────────────────────────────────────
+            fill=C["accent2"], outline="", tags="card_top")        # ── Dismiss hint ───────────────────────────────────────────────────
         self._cv.create_text(
             WINDOW_W//2, cy + 258,
             text="[ PRESS ANYWHERE TO CONTINUE ]",
