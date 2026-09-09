@@ -62,28 +62,28 @@ QUIZ_MODES = [
     {
         "key":   "questions",
         "label": "Standard Quiz",
-        "icon":  "📝",
+        "icon":  "[?]",
         "color": C["accent"],
         "desc":  "Multiple-choice questions on family planning",
     },
     {
         "key":   "myth_busting",
         "label": "Myth Busting",
-        "icon":  "🔍",
-        "color": "#d68910",
+        "icon":  "[!]",
+        "color": "#ffaa00",
         "desc":  "Separate fact from fiction on common myths",
     },
     {
         "key":   "scenario",
         "label": "Scenario Challenge",
-        "icon":  "🎭",
-        "color": "#7d3c98",
+        "icon":  "[>]",
+        "color": "#cc44ff",
         "desc":  "Real-life case situations — what would you do?",
     },
     {
         "key":   "couple_decisions",
         "label": "Couple Decision",
-        "icon":  "💑",
+        "icon":  "[2]",
         "color": "#c0392b",
         "desc":  "2 players decide together — see how choices combine!",
     },
@@ -99,22 +99,22 @@ XP_PERFECT   = 20   # bonus for 100% level
 MAX_LIVES = 3
 
 STORY_ICONS = {
-    "couple":       "💑",
-    "health_center":"🏥",
-    "seminar":      "📋",
-    "classroom":    "🏫",
-    "midwife":      "👩‍⚕️",
-    "counselor":    "🧑‍💼",
+    "couple":       "[ <3 ]",
+    "health_center":"[ H+ ]",
+    "seminar":      "[ >> ]",
+    "classroom":    "[ ## ]",
+    "midwife":      "[ Rx ]",
+    "counselor":    "[ ?? ]",
 }
 
 BADGES = {
-    "first_step":   {"icon": "🌱", "name": "First Step",     "desc": "Complete Level 1"},
-    "beginner":     {"icon": "📗", "name": "Beginner",        "desc": "Complete Act I (Levels 1-2)"},
-    "intermediate": {"icon": "📘", "name": "Intermediate",    "desc": "Complete Act II (Levels 3-4)"},
-    "expert":       {"icon": "📕", "name": "Expert",          "desc": "Complete Act III (Levels 5-6)"},
-    "perfect_run":  {"icon": "🏆", "name": "Perfect Run",     "desc": "Score 100% on any level"},
-    "speedster":    {"icon": "⚡", "name": "Speedster",       "desc": "Answer 5 questions quickly"},
-    "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all 6 levels"},
+    "first_step":   {"icon": "[*]",  "name": "First Step",     "desc": "Complete Level 1"},
+    "beginner":     {"icon": "[B]",  "name": "Beginner",        "desc": "Complete Act I (Levels 1-2)"},
+    "intermediate": {"icon": "[I]",  "name": "Intermediate",    "desc": "Complete Act II (Levels 3-4)"},
+    "expert":       {"icon": "[X]",  "name": "Expert",          "desc": "Complete Act III (Levels 5-6)"},
+    "perfect_run":  {"icon": "[#]",  "name": "Perfect Run",     "desc": "Score 100% on any level"},
+    "speedster":    {"icon": "[!]",  "name": "Speedster",       "desc": "Answer 5 questions quickly"},
+    "deciwise":     {"icon": "[@]",  "name": "DeciWise Master", "desc": "Complete all 6 levels"},
 }
 
 ACT_MAP = {1: ("Act I",   "Foundations",  "#52e088", [1, 2]),
@@ -663,17 +663,17 @@ class LevelSelectScreen(tk.Frame):
         # ── Top bar ──────────────────────────────────────────────────────
         hdr = tk.Frame(self, bg=C["banner"], pady=10)
         hdr.pack(fill="x")
-        tk.Label(hdr, text="🌿 DeciWise",
+        tk.Label(hdr, text=">> DeciWise",
                  font=_retro(15, "bold"),
                  bg=C["banner"], fg=C["accent"]).pack(side="left", padx=14)
         # XP pill
         xp_f = tk.Frame(hdr, bg=C["banner"])
         xp_f.pack(side="right", padx=14)
-        tk.Label(xp_f, text=f"⚡ {total_xp} XP",
+        tk.Label(xp_f, text=f"XP: {total_xp}",
                  font=_retro(11, "bold"),
                  bg=C["banner"], fg=C["xp"]).pack(side="left")
         name = self.app.player_name or p.get("player_name","Player")
-        tk.Label(hdr, text=f"👤 {name}",
+        tk.Label(hdr, text=f">> {name}",
                  font=_retro(10),
                  bg=C["banner"], fg=C["grey"]).pack(side="right", padx=4)
 
@@ -688,7 +688,7 @@ class LevelSelectScreen(tk.Frame):
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
                           for i in range(1,7))
-        tk.Label(inner, text=f"⭐ {total_stars} / 18 stars",
+        tk.Label(inner, text=f"STARS: {total_stars}/18",
                  font=_retro(10),
                  bg=C["bg"], fg=C["gold"]).pack(pady=(0,12))
 
@@ -855,7 +855,8 @@ class StoryScreen(tk.Frame):
         inn.configure(padx=18)
 
         self._icon_lbl = tk.Label(inn, text="",
-                                   font=("Segoe UI Emoji",50), bg=C["bg"])
+                                   font=_retro(28, "bold"),
+                                   bg=C["bg"], fg=C["accent"])
         self._icon_lbl.pack(pady=(16,4))
 
         self._hdr_lbl = tk.Label(inn, text="📖  Story",
@@ -948,7 +949,7 @@ class StoryScreen(tk.Frame):
         sizes = self._BOUNCE
         size  = sizes[min(step, len(sizes)-1)]
         self._icon_lbl.configure(text=self._icon_char,
-                                  font=("Segoe UI Emoji", size))
+                                  font=_retro(size, "bold"))
         if step < len(sizes)-1:
             self._aids.append(self.after(52, lambda: self._anim_icon(step+1)))
         else:
@@ -1025,9 +1026,10 @@ class StoryScreen(tk.Frame):
            fill=_darken(mode["color"], 0.45), outline="",
            stipple="gray50")
 
-        # Icon
+        # Icon (ASCII retro style)
         cv.create_text(50, h//2, text=mode["icon"],
-                        font=("Segoe UI Emoji", 30))
+                        font=_retro(14, "bold"),
+                        fill="#ffffff")
 
         # Label
         cv.create_text(w//2 + 16, h//2 - 18,
@@ -1100,7 +1102,7 @@ class StoryScreen(tk.Frame):
         self._t1.configure(bg=C["banner"], fg=C["white"])
         self._t2.configure(bg=C["banner"], fg=lvl["difficulty_color"])
         self._icon_lbl.configure(text=self._icon_char,
-                                  font=("Segoe UI Emoji",50))
+                                  font=_retro(50, "bold"))
         self._hdr_lbl.configure(fg=C["accent"])
         self._st.configure(text=lvl["story"])
         self._info.configure(fg=C["grey"])
@@ -1158,8 +1160,8 @@ class QuizScreen(tk.Frame):
         lives_f.pack(side="left", padx=10)
         for i in range(MAX_LIVES):
             tk.Label(lives_f,
-                     text="❤" if i < app.lives else "🖤",
-                     font=_retro(14),
+                     text="[v]" if i < app.lives else "[ ]",
+                     font=_retro(11, "bold"),
                      bg=C["banner"],
                      fg=C["lives"] if i < app.lives else C["locked"]).pack(side="left")
 
@@ -1172,13 +1174,13 @@ class QuizScreen(tk.Frame):
         mode_badge.pack(side="left", padx=6)
 
         # XP
-        tk.Label(hud, text=f"⚡{app.total_xp_session}",
+        tk.Label(hud, text=f"XP:{app.total_xp_session}",
                  font=_retro(10, "bold"),
                  bg=C["banner"], fg=C["xp"]).pack(side="left", padx=4)
 
         # Timer
         self._timer_lbl = tk.Label(hud,
-                                    text=f"⏱ {self._t_left}s",
+                                    text=f"T:{self._t_left}s",
                                     font=_retro(12, "bold"),
                                     bg=C["banner"], fg=C["timer_ok"])
         self._timer_lbl.pack(side="right", padx=6)
@@ -1299,7 +1301,7 @@ class QuizScreen(tk.Frame):
         tc = (C["timer_ok"] if ratio > 0.5
               else C["timer_warn"] if ratio > 0.25
               else C["timer_bad"])
-        self._timer_lbl.configure(text=f"⏱ {self._t_left}s", fg=tc)
+        self._timer_lbl.configure(text=f"T:{self._t_left}s", fg=tc)
         # Timer bar
         try:
             bw = self._tbar_bg.winfo_width() or WINDOW_W-32
@@ -1446,8 +1448,8 @@ class GameOverScreen(tk.Frame):
         app = self.app
         lvl = app.current_level
 
-        tk.Label(self, text="💔", font=("Segoe UI Emoji",64),
-                 bg=C["bg"]).pack(pady=(80,8))
+        tk.Label(self, text="[ X ]", font=_retro(22, "bold"),
+                 bg=C["bg"], fg=C["wrong"]).pack(pady=(80,8))
         tk.Label(self, text="Game Over",
                  font=_retro(28, "bold"),
                  bg=C["bg"], fg=C["wrong"]).pack()
@@ -1661,8 +1663,8 @@ class CoupleGameScreen(tk.Frame):
 
         body = tk.Frame(self, bg=C["bg"])
         body.pack(expand=True)
-        tk.Label(body, text="🔄",
-                 font=("Segoe UI Emoji", 52),
+        tk.Label(body, text="[~]",
+                 font=_retro(20,"bold"),
                  bg=C["bg"]).pack(pady=(40, 10))
         tk.Label(body, text=f"Hand the device to {p2}\nand ask them to answer.",
                  font=_retro(13),
@@ -1842,9 +1844,9 @@ class CoupleGameScreen(tk.Frame):
         inn.configure(padx=18)
 
         # Score header
-        r_icon = "🏆" if pct==1.0 else ("👏" if pct>=0.6 else "📚")
+        r_icon = "[#]" if pct==1.0 else ("[+]" if pct>=0.6 else "[=]")
         tk.Label(inn, text=r_icon,
-                 font=("Segoe UI Emoji", 48),
+                 font=_retro(24,"bold"),
                  bg=C["bg"]).pack(pady=(16, 4))
         tk.Label(inn,
                  text=f"{score} / {total} Best Decisions",
@@ -2004,16 +2006,16 @@ class ResultScreen(tk.Frame):
         stars   = self._stars
         answers = app.quiz_answers
 
-        if   pct == 1.0: r_icon,r_msg,r_sub = "🏆","Perfect Score!","You're a family planning expert!"
-        elif pct >= 0.6: r_icon,r_msg,r_sub = "👏","Well Done!","Great knowledge on family planning!"
-        else:             r_icon,r_msg,r_sub = "📚","Keep Learning!","Review and try again!"
+        if   pct == 1.0: r_icon,r_msg,r_sub = "[#]","PERFECT SCORE!","You're a family planning expert!"
+        elif pct >= 0.6: r_icon,r_msg,r_sub = "[+]","WELL DONE!","Great knowledge on family planning!"
+        else:             r_icon,r_msg,r_sub = "[=]","KEEP LEARNING!","Review and try again!"
 
         sf = ScrollFrame(self, bg=C["bg"])
         sf.pack(fill="both", expand=True)
         inn = sf.inner
         inn.configure(padx=20)
 
-        tk.Label(inn, text=r_icon, font=("Segoe UI Emoji",52),
+        tk.Label(inn, text=r_icon, font=_retro(24,"bold"),
                  bg=C["bg"]).pack(pady=(20,4))
         tk.Label(inn, text=r_msg, font=_retro(22, "bold"),
                  bg=C["bg"], fg=C["white"]).pack()
@@ -2152,7 +2154,7 @@ class LeaderboardScreen(tk.Frame):
         except Exception:
             lb = []
 
-        rank_icons = ["🥇","🥈","🥉"] + ["  "]*10
+        rank_icons = ["[1]","[2]","[3]"] + ["   "]*10
         medal_cols = [C["gold"], C["silver"], C["bronze"]]
 
         if not lb:
@@ -2255,7 +2257,7 @@ class BadgesScreen(tk.Frame):
             row.pack(fill="x", pady=5)
 
             tk.Label(row, text=bd["icon"],
-                     font=("Segoe UI Emoji",26),
+                     font=_retro(14,"bold"),
                      bg=bg).pack(side="left", padx=(0,10))
 
             info = tk.Frame(row, bg=bg)
