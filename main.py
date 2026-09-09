@@ -537,7 +537,7 @@ class CongratsPopup:
         # Scanlines over the header strip
         for y in range(cy, cy+38, 4):
             self._cv.create_line(cx, y, cx+cw, y,
-                                 fill="#00000044", width=1, tags="card_top")
+                                 fill="#002200", width=1, tags="card_top")
         self._cv.create_text(
             WINDOW_W//2, cy + 19,
             text=f"[ LVL {lvl['id']} : {lvl['difficulty'].upper()} ]",
