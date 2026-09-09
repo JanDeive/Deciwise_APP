@@ -62,7 +62,7 @@ QUIZ_MODES = [
     {
         "key":   "questions",
         "label": "Standard Quiz",
-        "icon":  "[?]",
+        "icon":  "≡ƒô¥",
         "color": C["accent"],
         "desc":  "Multiple-choice questions on family planning",
     },
@@ -99,16 +99,16 @@ XP_PERFECT   = 20   # bonus for 100% level
 MAX_LIVES = 3
 
 STORY_ICONS = {
-    "couple":       "[ <3 ]",
-    "health_center":"[ H+ ]",
-    "seminar":      "[ >> ]",
-    "classroom":    "[ ## ]",
-    "midwife":      "[ Rx ]",
-    "counselor":    "[ ?? ]",
+    "couple":       "≡ƒÆæ",
+    "health_center":"≡ƒÅÑ",
+    "seminar":      "≡ƒôï",
+    "classroom":    "≡ƒÅ½",
+    "midwife":      "≡ƒæ⌐ΓÇìΓÜò∩╕Å",
+    "counselor":    "≡ƒºæΓÇì≡ƒÆ╝",
 }
 
 BADGES = {
-    "first_step":   {"icon": "[*]",  "name": "First Step",     "desc": "Complete Level 1"},
+    "first_step":   {"icon": "≡ƒî▒", "name": "First Step",     "desc": "Complete Level 1"},
     "beginner":     {"icon": "[B]",  "name": "Beginner",        "desc": "Complete Act I (Levels 1-2)"},
     "intermediate": {"icon": "[I]",  "name": "Intermediate",    "desc": "Complete Act II (Levels 3-4)"},
     "expert":       {"icon": "[X]",  "name": "Expert",          "desc": "Complete Act III (Levels 5-6)"},
@@ -855,8 +855,7 @@ class StoryScreen(tk.Frame):
         inn.configure(padx=18)
 
         self._icon_lbl = tk.Label(inn, text="",
-                                   font=_retro(28, "bold"),
-                                   bg=C["bg"], fg=C["accent"])
+                                   font=("Segoe UI Emoji",50), bg="#1a2a1a")
         self._icon_lbl.pack(pady=(16,4))
 
         self._hdr_lbl = tk.Label(inn, text="📖  Story",
@@ -949,7 +948,7 @@ class StoryScreen(tk.Frame):
         sizes = self._BOUNCE
         size  = sizes[min(step, len(sizes)-1)]
         self._icon_lbl.configure(text=self._icon_char,
-                                  font=_retro(size, "bold"))
+                                  font=("Segoe UI Emoji", size))
         if step < len(sizes)-1:
             self._aids.append(self.after(52, lambda: self._anim_icon(step+1)))
         else:
@@ -1028,8 +1027,7 @@ class StoryScreen(tk.Frame):
 
         # Icon (ASCII retro style)
         cv.create_text(50, h//2, text=mode["icon"],
-                        font=_retro(14, "bold"),
-                        fill="#ffffff")
+                        font=("Segoe UI Emoji", 30))
 
         # Label
         cv.create_text(w//2 + 16, h//2 - 18,
@@ -1102,7 +1100,7 @@ class StoryScreen(tk.Frame):
         self._t1.configure(bg=C["banner"], fg=C["white"])
         self._t2.configure(bg=C["banner"], fg=lvl["difficulty_color"])
         self._icon_lbl.configure(text=self._icon_char,
-                                  font=_retro(50, "bold"))
+                                  font=("Segoe UI Emoji",50))
         self._hdr_lbl.configure(fg=C["accent"])
         self._st.configure(text=lvl["story"])
         self._info.configure(fg=C["grey"])
@@ -1160,8 +1158,8 @@ class QuizScreen(tk.Frame):
         lives_f.pack(side="left", padx=10)
         for i in range(MAX_LIVES):
             tk.Label(lives_f,
-                     text="[v]" if i < app.lives else "[ ]",
-                     font=_retro(11, "bold"),
+                     text="❤" if i < app.lives else "🖤",
+                     font=("Segoe UI Emoji",14),
                      bg=C["banner"],
                      fg=C["lives"] if i < app.lives else C["locked"]).pack(side="left")
 
@@ -1448,8 +1446,8 @@ class GameOverScreen(tk.Frame):
         app = self.app
         lvl = app.current_level
 
-        tk.Label(self, text="[ X ]", font=_retro(22, "bold"),
-                 bg=C["bg"], fg=C["wrong"]).pack(pady=(80,8))
+        tk.Label(self, text="💔", font=("Segoe UI Emoji",64),
+                 bg="#1a2a1a").pack(pady=(80,8))
         tk.Label(self, text="Game Over",
                  font=_retro(28, "bold"),
                  bg=C["bg"], fg=C["wrong"]).pack()
@@ -1844,10 +1842,10 @@ class CoupleGameScreen(tk.Frame):
         inn.configure(padx=18)
 
         # Score header
-        r_icon = "[#]" if pct==1.0 else ("[+]" if pct>=0.6 else "[=]")
+        r_icon = "🏆" if pct==1.0 else ("👏" if pct>=0.6 else "📚")
         tk.Label(inn, text=r_icon,
-                 font=_retro(24,"bold"),
-                 bg=C["bg"]).pack(pady=(16, 4))
+                 font=("Segoe UI Emoji",48),
+                 bg="#1a2a1a").pack(pady=(16, 4))
         tk.Label(inn,
                  text=f"{score} / {total} Best Decisions",
                  font=_retro(20, "bold"),
@@ -2006,17 +2004,17 @@ class ResultScreen(tk.Frame):
         stars   = self._stars
         answers = app.quiz_answers
 
-        if   pct == 1.0: r_icon,r_msg,r_sub = "[#]","PERFECT SCORE!","You're a family planning expert!"
-        elif pct >= 0.6: r_icon,r_msg,r_sub = "[+]","WELL DONE!","Great knowledge on family planning!"
-        else:             r_icon,r_msg,r_sub = "[=]","KEEP LEARNING!","Review and try again!"
+        if   pct == 1.0: r_icon,r_msg,r_sub = "🏆","Perfect Score!","You're a family planning expert!"
+        elif pct >= 0.6: r_icon,r_msg,r_sub = "👏","Well Done!","Great knowledge on family planning!"
+        else:             r_icon,r_msg,r_sub = "📚","Keep Learning!","Review and try again!"
 
         sf = ScrollFrame(self, bg=C["bg"])
         sf.pack(fill="both", expand=True)
         inn = sf.inner
         inn.configure(padx=20)
 
-        tk.Label(inn, text=r_icon, font=_retro(24,"bold"),
-                 bg=C["bg"]).pack(pady=(20,4))
+        tk.Label(inn, text=r_icon, font=("Segoe UI Emoji",52),
+                 bg="#1a2a1a").pack(pady=(20,4))
         tk.Label(inn, text=r_msg, font=_retro(22, "bold"),
                  bg=C["bg"], fg=C["white"]).pack()
         tk.Label(inn, text=r_sub, font=_retro(11),
@@ -2257,7 +2255,7 @@ class BadgesScreen(tk.Frame):
             row.pack(fill="x", pady=5)
 
             tk.Label(row, text=bd["icon"],
-                     font=_retro(14,"bold"),
+                     font=("Segoe UI Emoji",26),
                      bg=bg).pack(side="left", padx=(0,10))
 
             info = tk.Frame(row, bg=bg)
