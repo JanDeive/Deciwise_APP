@@ -109,6 +109,59 @@ def _build_sounds():
             (784, 80), (880, 80), (988, 80), (1047, 300),
         ], volume=0.45)
 
+        # ── WIN sound — bright victory fanfare (lesson passed ≥ 60%) ──
+        # Rising chord + triumphant finish
+        _sounds["win"] = _multi_tone([
+            (392, 80),   # G4
+            (523, 80),   # C5
+            (659, 80),   # E5
+            (784, 80),   # G5
+            (0,   30),
+            (659, 60),   # E5
+            (784, 60),   # G5
+            (1047, 120), # C6
+            (0,   40),
+            (1047, 80),  # C6 echo
+            (1319, 400), # E6 — held finish
+        ], volume=0.50)
+
+        # ── PERFECT WIN — full celebratory cascade (100%) ──
+        _sounds["win_perfect"] = _multi_tone([
+            (523, 60), (587, 60), (659, 60), (698, 60),
+            (784, 60), (880, 60), (988, 60),
+            (0,   25),
+            (1047, 80), (1175, 80), (1319, 80),
+            (0,   30),
+            (1047, 60), (1175, 60),
+            (1319, 500),  # E6 long hold
+        ], volume=0.50)
+
+        # ── FAIL sound — descending sad tune (lesson failed < 60%) ──
+        # Slow descending minor-ish sequence + low thud
+        _sounds["fail"] = _multi_tone([
+            (494, 150),  # B4
+            (440, 150),  # A4
+            (392, 150),  # G4
+            (349, 150),  # F4
+            (0,   40),
+            (294, 120),  # D4
+            (0,   30),
+            (247, 500),  # B3 — long sad hold
+        ], volume=0.45)
+
+        # ── GAME OVER — deeper, more dramatic fail ──
+        _sounds["gameover"] = _multi_tone([
+            (330, 180),  # E4
+            (294, 180),  # D4
+            (262, 180),  # C4
+            (0,   50),
+            (220, 140),  # A3
+            (0,   40),
+            (185, 140),  # F#3
+            (0,   40),
+            (165, 600),  # E3 — deep long hold
+        ], volume=0.48)
+
         # Start game / begin quiz — upbeat two-note flourish
         _sounds["start"] = _multi_tone([
             (440, 90),

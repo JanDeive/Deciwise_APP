@@ -203,15 +203,16 @@ class App(tk.Tk):
         self.geometry(f"{WINDOW_W}x{WINDOW_H}+{x}+{y}")
 
         # ── Shared quiz state ──────────────────────────────────────────────
-        self.player_name   = ""
-        self.current_level = None
-        self.quiz_mode     = QUIZ_MODES[0]   # default: standard quiz
-        self.quiz_index    = 0
-        self.quiz_score    = 0
-        self.quiz_answers  = []
-        self.lives         = MAX_LIVES
+        self.player_name    = ""
+        self.current_level  = None
+        self.quiz_mode      = QUIZ_MODES[0]
+        self.quiz_index     = 0
+        self.quiz_score     = 0
+        self.quiz_answers   = []
+        self.lives          = MAX_LIVES
         self.total_xp_session = 0
-        self.fast_answers  = 0   # for speedster badge
+        self.fast_answers   = 0
+        self.congrats_level = None   # set to level dict when player just passed
 
         self._frame = None
         self.show("splash")
@@ -344,6 +345,203 @@ class SplashScreen(tk.Frame):
         self.app.show("level_select")
 
 # ══════════════════════════════════════════════════════════════════════════════
+# WIDGET — Congratulations Popup + Confetti  (Toplevel-based)
+# ══════════════════════════════════════════════════════════════════════════════
+import random as _random
+
+class CongratsPopup:
+    """
+    A Toplevel window that floats above the app with:
+      - Confetti canvas filling the whole window
+      - A congratulations card drawn on top of the confetti
+      - Auto-dismisses after 4.5 s or on any click
+    """
+    _PARTICLE_COUNT = 55
+    _COLORS = ["#2ecc71","#f1c40f","#e74c3c","#3498db",
+               "#9b59b6","#1abc9c","#e67e22","#f0f0f0",
+               "#ff6b6b","#48dbfb","#ffeaa7","#a29bfe"]
+    _FPS_MS = 28
+
+    def __init__(self, parent, info):
+        # Find the root Tk window
+        self._root    = parent.winfo_toplevel()
+        self._info    = info
+        self._aids    = []
+        self._running = True
+
+        # ── Toplevel window ───────────────────────────────────────────────
+        self._win = tk.Toplevel(self._root)
+        self._win.overrideredirect(True)          # no title bar
+        self._win.attributes("-topmost", True)    # always on top
+
+        # Position exactly over the main window
+        self._root.update_idletasks()
+        rx = self._root.winfo_x()
+        ry = self._root.winfo_y()
+        self._win.geometry(f"{WINDOW_W}x{WINDOW_H}+{rx}+{ry}")
+        self._win.configure(bg="#1a1a2e")
+
+        # ── Full-window canvas (confetti layer) ───────────────────────────
+        self._cv = tk.Canvas(
+            self._win, width=WINDOW_W, height=WINDOW_H,
+            bg="#1a1a2e", highlightthickness=0)
+        self._cv.pack(fill="both", expand=True)
+
+        # ── Spawn confetti particles ──────────────────────────────────────
+        self._particles = []
+        for _ in range(self._PARTICLE_COUNT):
+            self._spawn_particle(start_above=True)
+
+        # ── Draw the congratulations card ─────────────────────────────────
+        self._draw_card()
+
+        # ── Dismiss on click anywhere ─────────────────────────────────────
+        self._cv.bind("<Button-1>",   lambda e: self._dismiss())
+        self._win.bind("<Button-1>",  lambda e: self._dismiss())
+
+        # ── Start animation + auto-dismiss timer ──────────────────────────
+        self._aids.append(self._win.after(self._FPS_MS, self._tick))
+        self._aids.append(self._win.after(4500, self._dismiss))
+
+    # ── Particle factory ──────────────────────────────────────────────────────
+    def _spawn_particle(self, start_above=False):
+        x  = _random.uniform(0, WINDOW_W)
+        y  = _random.uniform(-WINDOW_H, 0) if start_above else _random.uniform(-80, -8)
+        vx = _random.uniform(-2.0, 2.0)
+        vy = _random.uniform(2.0, 5.5)
+        pw = _random.randint(7, 15)
+        ph = _random.randint(5, 10)
+        color = _random.choice(self._COLORS)
+        shape = _random.choice(["rect", "oval"])
+        if shape == "rect":
+            oid = self._cv.create_rectangle(
+                x, y, x+pw, y+ph, fill=color, outline="")
+        else:
+            oid = self._cv.create_oval(
+                x, y, x+pw, y+ph, fill=color, outline="")
+        self._particles.append({
+            "id": oid, "x": x, "y": y,
+            "vx": vx, "vy": vy, "w": pw, "h": ph
+        })
+
+    # ── Draw card ─────────────────────────────────────────────────────────────
+    def _draw_card(self):
+        lvl   = self._info["lvl"]
+        score = self._info["score"]
+        total = self._info["total"]
+        stars = self._info["stars"]
+        pct   = self._info["pct"]
+        dc    = lvl["difficulty_color"]
+
+        cw, ch = 310, 270
+        cx = (WINDOW_W - cw) // 2
+        cy = (WINDOW_H - ch) // 2
+
+        # Card shadow
+        self._cv.create_rectangle(
+            cx+5, cy+5, cx+cw+5, cy+ch+5,
+            fill="#000000", outline="")
+
+        # Card body (white)
+        rr(self._cv, cx, cy, cx+cw, cy+ch,
+           r=20, fill="#ffffff", outline="")
+
+        # Coloured top strip
+        rr(self._cv, cx, cy, cx+cw, cy+46,
+           r=20, fill=dc, outline="")
+        # Fill bottom corners of strip so it looks like a flat bottom
+        self._cv.create_rectangle(
+            cx, cy+26, cx+cw, cy+46,
+            fill=dc, outline="")
+
+        # Level badge text on strip
+        self._cv.create_text(
+            WINDOW_W//2, cy+23,
+            text=f"Level {lvl['id']}  ·  {lvl['difficulty']}",
+            font=("Segoe UI", 11, "bold"),
+            fill="#ffffff")
+
+        # Big emoji
+        self._cv.create_text(
+            WINDOW_W//2, cy+90,
+            text="🎉", font=("Segoe UI Emoji", 44))
+
+        # Main title
+        msg = "Perfect Score!" if pct == 1.0 else "Lesson Passed!"
+        self._cv.create_text(
+            WINDOW_W//2, cy+138,
+            text=msg,
+            font=("Segoe UI", 19, "bold"),
+            fill="#1a1a1a")
+
+        # Level title
+        self._cv.create_text(
+            WINDOW_W//2, cy+163,
+            text=lvl["title"],
+            font=("Segoe UI", 10),
+            fill="#5d6d7e")
+
+        # Score line
+        self._cv.create_text(
+            WINDOW_W//2, cy+187,
+            text=f"{score} / {total} correct",
+            font=("Segoe UI", 12, "bold"),
+            fill=dc)
+
+        # Stars
+        self._cv.create_text(
+            WINDOW_W//2, cy+214,
+            text="⭐" * stars + "☆" * (3 - stars),
+            font=("Segoe UI", 20),
+            fill="#d4ac0d")
+
+        # Dismiss hint
+        self._cv.create_text(
+            WINDOW_W//2, cy+252,
+            text="Tap anywhere to continue  ✕",
+            font=("Segoe UI", 9, "italic"),
+            fill="#999999")
+
+    # ── Animation tick ────────────────────────────────────────────────────────
+    def _tick(self):
+        if not self._running:
+            return
+        for p in self._particles:
+            p["vy"] = min(p["vy"] + 0.07, 9)
+            p["x"] += p["vx"]
+            p["y"] += p["vy"]
+            # Wrap horizontal
+            if p["x"] > WINDOW_W + 12:  p["x"] = -12
+            elif p["x"] < -12:           p["x"] = WINDOW_W + 12
+            # Reset fallen particles
+            if p["y"] > WINDOW_H + 12:
+                p["y"] = _random.uniform(-60, -8)
+                p["x"] = _random.uniform(0, WINDOW_W)
+                p["vy"] = _random.uniform(2.0, 5.5)
+            self._cv.coords(
+                p["id"],
+                p["x"], p["y"],
+                p["x"] + p["w"], p["y"] + p["h"])
+
+        # Redraw card on top so confetti doesn't cover it
+        self._cv.tag_raise("card_top")
+        self._aids.append(self._win.after(self._FPS_MS, self._tick))
+
+    # ── Dismiss ───────────────────────────────────────────────────────────────
+    def _dismiss(self):
+        if not self._running:
+            return
+        self._running = False
+        for a in self._aids:
+            try: self._win.after_cancel(a)
+            except Exception: pass
+        try:
+            self._win.destroy()
+        except Exception:
+            pass
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Level Select  (Act-based journey map)
 # ══════════════════════════════════════════════════════════════════════════════
 class LevelSelectScreen(tk.Frame):
@@ -351,6 +549,14 @@ class LevelSelectScreen(tk.Frame):
         super().__init__(parent, bg=C["bg"])
         self.app = app
         self._build()
+        # Show congratulations popup if coming from a passed level
+        if app.congrats_level:
+            self.after(400, self._show_congrats)
+
+    def _show_congrats(self):
+        info = self.app.congrats_level
+        self.app.congrats_level = None
+        CongratsPopup(self, info)
 
     def _build(self):
         p         = load_json(PROGRESS_DB)
@@ -923,9 +1129,14 @@ class QuizScreen(tk.Frame):
 
         tk.Label(inn, text="", bg=C["bg"], height=1).pack()
 
-        # Options
+        # Options — shuffled each time so the correct answer isn't always
+        # in the same position
+        import random as _r
+        shuffled_options = list(q["options"])
+        _r.shuffle(shuffled_options)
+
         self._opts = {}
-        for opt in q["options"]:
+        for opt in shuffled_options:
             bf = tk.Frame(inn, bg=C["bg"], pady=3)
             bf.pack(fill="x")
             cv = tk.Canvas(bf, height=50, bg=C["bg"], highlightthickness=0)
@@ -1136,7 +1347,7 @@ class GameOverScreen(tk.Frame):
         super().__init__(parent, bg=C["bg"])
         self.app = app
         self._build()
-        self.after(200, lambda: SFX.play("wrong"))
+        self.after(200, lambda: SFX.play("gameover"))
 
     def _build(self):
         app = self.app
@@ -1196,7 +1407,14 @@ class ResultScreen(tk.Frame):
         self._stars, self._new_badges = self._save()
         score = app.quiz_score
         total = len(app.current_level["questions"])
-        self.after(300, lambda: SFX.play("perfect" if score==total else "complete"))
+        pct   = score / total
+        # Pick win or fail sound based on pass threshold (60%)
+        if pct == 1.0:
+            self.after(300, lambda: SFX.play("win_perfect"))
+        elif pct >= 0.6:
+            self.after(300, lambda: SFX.play("win"))
+        else:
+            self.after(300, lambda: SFX.play("fail"))
         self._build()
 
     def _save(self):
@@ -1260,6 +1478,13 @@ class ResultScreen(tk.Frame):
         })
         lb.sort(key=lambda x: (-x["xp"], -x["score"]))
         p["leaderboard"] = lb[:10]
+
+        # Flag for congrats popup on level select
+        if pct >= 0.6:
+            app.congrats_level = {"lvl": lvl, "score": score,
+                                   "total": total, "stars": stars, "pct": pct}
+        else:
+            app.congrats_level = None
 
         save_json(PROGRESS_DB, p)
         return stars, new_b
