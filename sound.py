@@ -1,11 +1,13 @@
 """
-sound.py — Synthesized sound effects for DeciWise
+sound.py — 8-bit chiptune sound effects for DeciWise (Retro Edition)
 All sounds are generated mathematically via pygame — no audio files needed.
+Waveforms use square waves and arpeggio patterns to mimic classic NES/Game Boy audio.
 """
 
 import threading
 import math
 import array
+import random as _random
 
 _ENABLED = True   # set to False to mute everything
 
@@ -20,52 +22,69 @@ def _try_import_pygame():
 
 _pg = _try_import_pygame()
 
-# ── Waveform generators ───────────────────────────────────────────────────────
+# ── Chiptune waveform generators ──────────────────────────────────────────────
 
-def _sine_wave(freq, duration_ms, volume=0.5, sample_rate=44100):
-    """Return a pygame Sound of a pure sine wave."""
-    n_samples = int(sample_rate * duration_ms / 1000)
-    buf = array.array("h", [0] * n_samples)
-    peak = int(32767 * volume)
-    for i in range(n_samples):
-        t = i / sample_rate
-        buf[i] = int(peak * math.sin(2 * math.pi * freq * t))
-    sound = _pg.mixer.Sound(buffer=buf)
-    return sound
-
-
-def _multi_tone(freqs_durations, volume=0.5, sample_rate=44100):
+def _square_wave(freq, duration_ms, volume=0.4, duty=0.5, sample_rate=44100):
     """
-    Return a pygame Sound made of sequential tones.
-    freqs_durations: list of (freq_hz, duration_ms)
+    8-bit style square wave — the backbone of NES/Game Boy audio.
+    duty: pulse width 0.0–1.0 (0.5 = perfect square, 0.25 = NES pulse)
     """
-    all_samples = array.array("h")
-    peak = int(32767 * volume)
-    for freq, dur_ms in freqs_durations:
-        n = int(sample_rate * dur_ms / 1000)
-        for i in range(n):
-            t = i / sample_rate
-            if freq == 0:
-                all_samples.append(0)
-            else:
-                # Apply tiny fade-in/out (5 ms) to avoid clicks
-                fade = min(1.0, i / (sample_rate * 0.005),
-                           (n - i) / (sample_rate * 0.005))
-                all_samples.append(int(peak * fade * math.sin(
-                    2 * math.pi * freq * t)))
-    return _pg.mixer.Sound(buffer=all_samples)
-
-
-def _noise_burst(duration_ms, volume=0.3, sample_rate=44100):
-    """Short white-noise burst (used for 'wrong' answer)."""
-    import random
     n = int(sample_rate * duration_ms / 1000)
     peak = int(32767 * volume)
     buf = array.array("h")
+    period = sample_rate / freq if freq > 0 else 0
     for i in range(n):
-        fade = min(1.0, i / (sample_rate * 0.003),
-                   (n - i) / (sample_rate * 0.003))
-        buf.append(int(peak * fade * (random.random() * 2 - 1)))
+        # Hard clip fade at start/end to reduce pops
+        fade = min(1.0, i / max(1, sample_rate * 0.003),
+                   (n - i) / max(1, sample_rate * 0.003))
+        if freq == 0:
+            buf.append(0)
+        else:
+            phase = (i % period) / period
+            val = peak if phase < duty else -peak
+            buf.append(int(val * fade))
+    return _pg.mixer.Sound(buffer=buf)
+
+
+def _chip_seq(notes, volume=0.4, duty=0.5, sample_rate=44100):
+    """
+    Sequence of (freq_hz, duration_ms) square-wave notes.
+    freq=0 means silence (rest).
+    """
+    all_samples = array.array("h")
+    peak = int(32767 * volume)
+    for freq, dur_ms in notes:
+        n = int(sample_rate * dur_ms / 1000)
+        period = (sample_rate / freq) if freq > 0 else 0
+        for i in range(n):
+            fade = min(1.0, i / max(1, sample_rate * 0.003),
+                       (n - i) / max(1, sample_rate * 0.003))
+            if freq == 0:
+                all_samples.append(0)
+            else:
+                phase = (i % period) / period
+                val = peak if phase < duty else -peak
+                all_samples.append(int(val * fade))
+    return _pg.mixer.Sound(buffer=all_samples)
+
+
+def _noise_burst(duration_ms, volume=0.25, sample_rate=44100):
+    """
+    Pseudo-random noise burst — classic NES noise channel.
+    Used for wrong-answer buzz and game-over effects.
+    """
+    n = int(sample_rate * duration_ms / 1000)
+    peak = int(32767 * volume)
+    buf = array.array("h")
+    lfsr = 0x7FFF   # 15-bit LFSR seed (NES noise register style)
+    for i in range(n):
+        fade = min(1.0, i / max(1, sample_rate * 0.003),
+                   (n - i) / max(1, sample_rate * 0.003))
+        # Shift LFSR
+        bit = ((lfsr >> 0) ^ (lfsr >> 1)) & 1
+        lfsr = (lfsr >> 1) | (bit << 14)
+        val = peak if (lfsr & 1) else -peak
+        buf.append(int(val * fade))
     return _pg.mixer.Sound(buffer=buf)
 
 
@@ -76,114 +95,117 @@ def _build_sounds():
     if _pg is None:
         return
     try:
-        # Click — single short mid tone (button press)
-        _sounds["click"] = _sine_wave(660, 55, volume=0.25)
+        # ── CLICK — short NES-style blip (25% duty pulse, high pitch) ──
+        _sounds["click"] = _square_wave(880, 40, volume=0.20, duty=0.25)
 
-        # Correct answer — bright ascending two-note ding
-        _sounds["correct"] = _multi_tone([
-            (523, 80),   # C5
-            (659, 80),   # E5
-            (784, 130),  # G5
-        ], volume=0.45)
-
-        # Wrong answer — descending buzz + noise
-        _sounds["wrong"] = _multi_tone([
-            (300, 80),
-            (220, 120),
-            (180, 100),
-        ], volume=0.4)
-
-        # Level complete / result screen — triumphant fanfare
-        _sounds["complete"] = _multi_tone([
-            (523, 100),  # C5
-            (659, 100),  # E5
-            (784, 100),  # G5
-            (0,   40),
-            (784, 80),
-            (1047, 300), # C6
-        ], volume=0.45)
-
-        # Perfect score — extra celebratory run
-        _sounds["perfect"] = _multi_tone([
-            (523, 80), (587, 80), (659, 80), (698, 80),
-            (784, 80), (880, 80), (988, 80), (1047, 300),
-        ], volume=0.45)
-
-        # ── WIN sound — bright victory fanfare (lesson passed ≥ 60%) ──
-        # Rising chord + triumphant finish
-        _sounds["win"] = _multi_tone([
-            (392, 80),   # G4
-            (523, 80),   # C5
-            (659, 80),   # E5
-            (784, 80),   # G5
-            (0,   30),
+        # ── CORRECT — classic 3-note ascending arpeggio (NES coin/pickup) ──
+        _sounds["correct"] = _chip_seq([
+            (523, 60),   # C5
             (659, 60),   # E5
-            (784, 60),   # G5
-            (1047, 120), # C6
-            (0,   40),
-            (1047, 80),  # C6 echo
-            (1319, 400), # E6 — held finish
-        ], volume=0.50)
+            (784, 100),  # G5
+            (1047, 140), # C6 — held finish
+        ], volume=0.38, duty=0.5)
+
+        # ── WRONG — descending buzzy sequence + noise hit ──
+        _sounds["wrong"] = _chip_seq([
+            (220, 70),
+            (185, 70),
+            (147, 100),
+            (0,   20),
+            (110, 140),  # low thud
+        ], volume=0.38, duty=0.25)
+
+        # ── COMPLETE — short triumphant fanfare ──
+        _sounds["complete"] = _chip_seq([
+            (523, 80), (659, 80), (784, 80),
+            (0,   30),
+            (784, 60), (1047, 250),
+        ], volume=0.38, duty=0.5)
+
+        # ── PERFECT — full ascending scale run ──
+        _sounds["perfect"] = _chip_seq([
+            (523, 55), (587, 55), (659, 55), (698, 55),
+            (784, 55), (880, 55), (988, 55), (1047, 250),
+        ], volume=0.38, duty=0.5)
+
+        # ── WIN — victory fanfare (lesson passed ≥ 60%) ──
+        # Classic 8-bit win jingle feel
+        _sounds["win"] = _chip_seq([
+            (392, 70),   # G4
+            (523, 70),   # C5
+            (659, 70),   # E5
+            (784, 70),   # G5
+            (0,   25),
+            (659, 55),
+            (784, 55),
+            (1047, 100), # C6
+            (0,   35),
+            (1047, 70),
+            (1319, 380), # E6 — held
+        ], volume=0.42, duty=0.5)
 
         # ── PERFECT WIN — full celebratory cascade (100%) ──
-        _sounds["win_perfect"] = _multi_tone([
-            (523, 60), (587, 60), (659, 60), (698, 60),
-            (784, 60), (880, 60), (988, 60),
+        _sounds["win_perfect"] = _chip_seq([
+            (523, 50), (587, 50), (659, 50), (698, 50),
+            (784, 50), (880, 50), (988, 50),
+            (0,   20),
+            (1047, 65), (1175, 65), (1319, 65),
             (0,   25),
-            (1047, 80), (1175, 80), (1319, 80),
+            (1047, 50), (1175, 50),
+            (1319, 420),  # long held finish
+        ], volume=0.42, duty=0.5)
+
+        # ── FAIL — descending minor melody (lesson failed < 60%) ──
+        _sounds["fail"] = _chip_seq([
+            (494, 130),  # B4
+            (440, 130),  # A4
+            (392, 130),  # G4
+            (349, 130),  # F4
+            (0,   35),
+            (294, 110),  # D4
+            (0,   25),
+            (247, 460),  # B3 — sad low hold
+        ], volume=0.40, duty=0.25)
+
+        # ── GAME OVER — dramatic NES-style descending + noise hits ──
+        _sounds["gameover"] = _chip_seq([
+            (330, 160),  # E4
+            (294, 160),  # D4
+            (262, 160),  # C4
+            (0,   40),
+            (220, 120),  # A3
             (0,   30),
-            (1047, 60), (1175, 60),
-            (1319, 500),  # E6 long hold
-        ], volume=0.50)
-
-        # ── FAIL sound — descending sad tune (lesson failed < 60%) ──
-        # Slow descending minor-ish sequence + low thud
-        _sounds["fail"] = _multi_tone([
-            (494, 150),  # B4
-            (440, 150),  # A4
-            (392, 150),  # G4
-            (349, 150),  # F4
-            (0,   40),
-            (294, 120),  # D4
+            (185, 120),  # F#3
             (0,   30),
-            (247, 500),  # B3 — long sad hold
-        ], volume=0.45)
+            (165, 500),  # E3 — deep long hold
+        ], volume=0.42, duty=0.25)
 
-        # ── GAME OVER — deeper, more dramatic fail ──
-        _sounds["gameover"] = _multi_tone([
-            (330, 180),  # E4
-            (294, 180),  # D4
-            (262, 180),  # C4
-            (0,   50),
-            (220, 140),  # A3
-            (0,   40),
-            (185, 140),  # F#3
-            (0,   40),
-            (165, 600),  # E3 — deep long hold
-        ], volume=0.48)
+        # ── START — upbeat two-note power-up blip ──
+        _sounds["start"] = _chip_seq([
+            (440, 70),
+            (0,   15),
+            (660, 55),
+            (0,   15),
+            (880, 130),
+        ], volume=0.32, duty=0.5)
 
-        # Start game / begin quiz — upbeat two-note flourish
-        _sounds["start"] = _multi_tone([
-            (440, 90),
-            (660, 150),
-        ], volume=0.35)
+        # ── TICK — tiny typewriter click (very quiet high blip) ──
+        _sounds["tick"] = _square_wave(1400, 14, volume=0.05, duty=0.25)
 
-        # Story typewriter tick — very quiet, short click
-        _sounds["tick"] = _sine_wave(1200, 18, volume=0.06)
+        # ── UNLOCK — shimmering ascending arpeggio (level unlock jingle) ──
+        _sounds["unlock"] = _chip_seq([
+            (392, 60),   # G4
+            (523, 60),   # C5
+            (659, 60),   # E5
+            (784, 60),   # G5
+            (1047, 160), # C6
+        ], volume=0.32, duty=0.5)
 
-        # Level unlock — shimmering ascending arpeggio
-        _sounds["unlock"] = _multi_tone([
-            (392, 70),  # G4
-            (523, 70),  # C5
-            (659, 70),  # E5
-            (784, 140), # G5
-        ], volume=0.35)
-
-        # Back / navigate — soft low click
-        _sounds["back"] = _multi_tone([
-            (440, 60),
-            (330, 80),
-        ], volume=0.25)
+        # ── BACK — short two-note step-down ──
+        _sounds["back"] = _chip_seq([
+            (440, 50),
+            (330, 70),
+        ], volume=0.22, duty=0.25)
 
     except Exception as e:
         print(f"[Sound] Build error: {e}")
