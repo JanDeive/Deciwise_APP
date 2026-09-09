@@ -542,7 +542,7 @@ class CongratsPopup:
             WINDOW_W//2, cy + 19,
             text=f"[ LVL {lvl['id']} : {lvl['difficulty'].upper()} ]",
             font=_retro(10, "bold"),
-            fill="#000a00", tags="card_top")
+            fill="#000000", tags="card_top")
 
         # ── Arcade result label ────────────────────────────────────────────
         icon = "** PERFECT **" if pct == 1.0 else "* CLEARED *"
@@ -550,25 +550,25 @@ class CongratsPopup:
             WINDOW_W//2, cy + 68,
             text=icon,
             font=_retro(13, "bold"),
-            fill=C["gold"], tags="card_top")
+            fill="#ffcc00", tags="card_top")
 
         # ── Main message with pixel shadow ─────────────────────────────────
         msg = "PERFECT SCORE!" if pct == 1.0 else "LESSON PASSED!"
         self._cv.create_text(
             WINDOW_W//2 + 2, cy + 103,
             text=msg, font=_retro(16, "bold"),
-            fill="#003300", tags="card_top")
+            fill="#005500", tags="card_top")
         self._cv.create_text(
             WINDOW_W//2, cy + 101,
             text=msg, font=_retro(16, "bold"),
-            fill=C["accent"], tags="card_top")
+            fill="#00ff41", tags="card_top")
 
         # ── Level title ────────────────────────────────────────────────────
         self._cv.create_text(
             WINDOW_W//2, cy + 128,
             text=lvl["title"],
             font=_retro(9),
-            fill=C["grey"], tags="card_top")
+            fill="#aaffaa", tags="card_top")
 
         # ── Score ──────────────────────────────────────────────────────────
         self._cv.create_text(
@@ -583,17 +583,17 @@ class CongratsPopup:
             WINDOW_W//2, cy + 182,
             text=star_str,
             font=_retro(11, "bold"),
-            fill=C["gold"], tags="card_top")
+            fill="#ffcc00", tags="card_top")
 
         # ── Horizontal pixel divider ───────────────────────────────────────
         self._cv.create_rectangle(
             cx + 20, cy + 202, cx + cw - 20, cy + 204,
-            fill=C["accent2"], outline="", tags="card_top")        # ── Dismiss hint ───────────────────────────────────────────────────
+            fill="#00cc33", outline="", tags="card_top")        # ── Dismiss hint ───────────────────────────────────────────────────
         self._cv.create_text(
             WINDOW_W//2, cy + 258,
             text="[ PRESS ANYWHERE TO CONTINUE ]",
             font=_retro(8),
-            fill=C["grey"], tags="card_top")
+            fill="#aaffaa", tags="card_top")
 
     # ── Animation tick ────────────────────────────────────────────────────────
     def _tick(self):
