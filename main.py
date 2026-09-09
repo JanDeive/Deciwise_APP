@@ -62,28 +62,28 @@ QUIZ_MODES = [
     {
         "key":   "questions",
         "label": "Standard Quiz",
-        "icon":  "≡ƒô¥",
+        "icon":  "📝",
         "color": C["accent"],
         "desc":  "Multiple-choice questions on family planning",
     },
     {
         "key":   "myth_busting",
         "label": "Myth Busting",
-        "icon":  "[!]",
+        "icon":  "🔍",
         "color": "#ffaa00",
         "desc":  "Separate fact from fiction on common myths",
     },
     {
         "key":   "scenario",
         "label": "Scenario Challenge",
-        "icon":  "[>]",
+        "icon":  "🎭",
         "color": "#cc44ff",
         "desc":  "Real-life case situations — what would you do?",
     },
     {
         "key":   "couple_decisions",
         "label": "Couple Decision",
-        "icon":  "[2]",
+        "icon":  "💑",
         "color": "#c0392b",
         "desc":  "2 players decide together — see how choices combine!",
     },
@@ -99,22 +99,22 @@ XP_PERFECT   = 20   # bonus for 100% level
 MAX_LIVES = 3
 
 STORY_ICONS = {
-    "couple":       "≡ƒÆæ",
-    "health_center":"≡ƒÅÑ",
-    "seminar":      "≡ƒôï",
-    "classroom":    "≡ƒÅ½",
-    "midwife":      "≡ƒæ⌐ΓÇìΓÜò∩╕Å",
-    "counselor":    "≡ƒºæΓÇì≡ƒÆ╝",
+    "couple":       "💑",
+    "health_center":"🏥",
+    "seminar":      "📋",
+    "classroom":    "🏫",
+    "midwife":      "👩‍⚕️",
+    "counselor":    "🧑‍💼",
 }
 
 BADGES = {
-    "first_step":   {"icon": "≡ƒî▒", "name": "First Step",     "desc": "Complete Level 1"},
-    "beginner":     {"icon": "[B]",  "name": "Beginner",        "desc": "Complete Act I (Levels 1-2)"},
-    "intermediate": {"icon": "[I]",  "name": "Intermediate",    "desc": "Complete Act II (Levels 3-4)"},
-    "expert":       {"icon": "[X]",  "name": "Expert",          "desc": "Complete Act III (Levels 5-6)"},
-    "perfect_run":  {"icon": "[#]",  "name": "Perfect Run",     "desc": "Score 100% on any level"},
-    "speedster":    {"icon": "[!]",  "name": "Speedster",       "desc": "Answer 5 questions quickly"},
-    "deciwise":     {"icon": "[@]",  "name": "DeciWise Master", "desc": "Complete all 6 levels"},
+    "first_step":   {"icon": "🌱", "name": "First Step",     "desc": "Complete Level 1"},
+    "beginner":     {"icon": "📗", "name": "Beginner",        "desc": "Complete Act I (Levels 1-2)"},
+    "intermediate": {"icon": "📘", "name": "Intermediate",    "desc": "Complete Act II (Levels 3-4)"},
+    "expert":       {"icon": "📕", "name": "Expert",          "desc": "Complete Act III (Levels 5-6)"},
+    "perfect_run":  {"icon": "🏆", "name": "Perfect Run",     "desc": "Score 100% on any level"},
+    "speedster":    {"icon": "⚡", "name": "Speedster",       "desc": "Answer 5 questions quickly"},
+    "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all 6 levels"},
 }
 
 ACT_MAP = {1: ("Act I",   "Foundations",  "#52e088", [1, 2]),
@@ -1661,9 +1661,9 @@ class CoupleGameScreen(tk.Frame):
 
         body = tk.Frame(self, bg=C["bg"])
         body.pack(expand=True)
-        tk.Label(body, text="[~]",
-                 font=_retro(20,"bold"),
-                 bg=C["bg"]).pack(pady=(40, 10))
+        tk.Label(body, text="🔄",
+                 font=("Segoe UI Emoji", 52),
+                 bg="#1a2a1a").pack(pady=(40, 10))
         tk.Label(body, text=f"Hand the device to {p2}\nand ask them to answer.",
                  font=_retro(13),
                  bg=C["bg"], fg=C["grey"],
