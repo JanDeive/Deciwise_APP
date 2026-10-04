@@ -1063,9 +1063,7 @@ class StoryScreen(tk.Frame):
            fill=_darken(mode["color"], 0.45), outline="",
            stipple="gray50")
 
-        # Emoji icon — draw a slightly lighter bg patch first for visibility
-        cv.create_rectangle(14, h//2-22, 86, h//2+22,
-                             fill="#2a2a2a", outline="")
+        # Emoji icon
         cv.create_text(50, h//2, text=mode["icon"],
                         font=("Segoe UI Emoji", 28))
 
