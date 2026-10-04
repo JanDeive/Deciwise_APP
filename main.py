@@ -169,7 +169,9 @@ class ScrollFrame(tk.Frame):
         self._sb.pack(side="right", fill="y")
         self._cv.bind("<Configure>",
             lambda e: self._cv.itemconfig(self._win, width=e.width))
-        self._cv.bind_all("<MouseWheel>",
+        self._cv.bind("<MouseWheel>",
+            lambda e: self._cv.yview_scroll(int(-1*(e.delta/120)), "units"))
+        self.inner.bind("<MouseWheel>",
             lambda e: self._cv.yview_scroll(int(-1*(e.delta/120)), "units"))
     def top(self): self._cv.yview_moveto(0)
 
@@ -1309,10 +1311,10 @@ class QuizScreen(tk.Frame):
                                 fill=C["white"], font=fnt, width=w-56,
                                 anchor="center")
 
-            cv.bind("<Configure>", lambda e,c=cv,t=opt,l=_letter: draw(c,t,_col_base,l))
+            cv.bind("<Configure>", lambda e,c=cv,t=opt,l=_letter,b=_col_base: draw(c,t,b,l))
             cv.bind("<Button-1>",  lambda e,o=opt: self._pick(o))
             cv.bind("<Enter>",  lambda e,c=cv,t=opt,l=_letter: draw(c,t,C["accent3"],l))
-            cv.bind("<Leave>",  lambda e,c=cv,t=opt,l=_letter: draw(c,t,_col_base,l))
+            cv.bind("<Leave>",  lambda e,c=cv,t=opt,l=_letter,b=_col_base: draw(c,t,b,l))
             self._opts[opt] = (cv, draw)
 
         # Timer bar
