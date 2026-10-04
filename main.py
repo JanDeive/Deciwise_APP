@@ -30,31 +30,32 @@ PROGRESS_DB  = os.path.join(DATA_DIR, "progress.json")
 
 # ── Palette  (Retro CRT / Arcade theme) ──────────────────────────────────────
 C = {
-    "bg":        "#0a0a0f",   # near-black CRT background
-    "card":      "#0f1a0f",   # very dark green card
-    "card2":     "#0d1a2a",   # dark blue-tinted card variant
-    "accent":    "#00ff41",   # classic matrix/terminal green
-    "accent2":   "#00cc33",   # slightly dimmer green
-    "accent3":   "#003311",   # dark green highlight
-    "easy":      "#00ff41",   # neon green for easy
-    "medium":    "#ffaa00",   # amber for medium
-    "hard":      "#ff4444",   # neon red for hard
-    "expert":    "#cc44ff",   # neon purple for expert
-    "white":     "#e8ffe8",   # phosphor off-white text
-    "grey":      "#557755",   # dim green-grey
-    "correct":   "#00ff41",   # correct neon green
-    "wrong":     "#ff3333",   # wrong neon red
-    "gold":      "#ffcc00",   # arcade gold
-    "silver":    "#aaccaa",   # dim silver
-    "bronze":    "#cc6600",   # bronze amber
-    "locked":    "#1a2a1a",   # very dark locked
-    "dark":      "#0a0a0f",   # matches bg (button text bg)
-    "timer_ok":  "#00ff41",   # timer neon green
-    "timer_warn":"#ffaa00",   # timer amber
-    "timer_bad": "#ff3333",   # timer red
-    "xp":        "#00ccff",   # cyan XP
-    "lives":     "#ff3333",   # lives red
-    "banner":    "#001a00",   # very dark green banner/header
+    "bg":        "#080c08",   # deep CRT black-green
+    "card":      "#0d1f0d",   # dark card surface
+    "card2":     "#0a1520",   # blue-tinted card
+    "accent":    "#00ff41",   # matrix neon green
+    "accent2":   "#00cc33",   # mid green
+    "accent3":   "#004d18",   # dark green (borders/hover)
+    "easy":      "#00ff41",   # easy neon green
+    "medium":    "#ffaa00",   # amber
+    "hard":      "#ff4444",   # neon red
+    "expert":    "#cc44ff",   # neon purple
+    "white":     "#d4ffd4",   # phosphor green-white
+    "grey":      "#4a7a4a",   # muted green-grey
+    "correct":   "#00ff41",
+    "wrong":     "#ff3333",
+    "gold":      "#ffd700",   # bright gold
+    "silver":    "#b0d0b0",
+    "bronze":    "#cd7f32",
+    "locked":    "#141f14",   # near-black locked state
+    "dark":      "#080c08",
+    "timer_ok":  "#00ff41",
+    "timer_warn":"#ffaa00",
+    "timer_bad": "#ff4444",
+    "xp":        "#00e5ff",   # bright cyan
+    "lives":     "#ff4444",
+    "banner":    "#020f02",   # very dark banner
+    "glow":      "#003311",   # card glow/shadow tint
 }
 
 # Quiz modes — key matches the JSON field name
@@ -181,32 +182,42 @@ def Btn(parent, text, cmd, bg=None, fg=None, w=None, h=None,
     pad_bg = pad_bg or C["bg"]
     f      = tk.Frame(parent, bg=pad_bg)
     fnt    = _retro(fs, "bold")
-    bw     = w or (fnt.measure(text) + 60)
-    bh     = h or (fs * 2 + 20)
+    bw     = w or (fnt.measure(text) + 64)
+    bh     = h or (fs * 2 + 22)
 
     cv = tk.Canvas(f, width=bw, height=bh, bg=pad_bg, highlightthickness=0)
     cv.pack()
 
-    def draw(color=bg):
+    def draw(color=bg, glowing=False):
         cv.delete("all")
-        # Pixel drop-shadow (2 px offset, very dark)
-        shadow = _darken(color, 0.35)
-        cv.create_rectangle(4, 4, bw-1, bh-1, fill=shadow, outline="")
-        # Main button body — flat, square corners (retro pixel look)
+        # Outer glow ring (neon border)
+        glow_col = _lerp(color, "#ffffff", 0.18)
+        cv.create_rectangle(0, 0, bw-1, bh-1,
+                             outline=glow_col, fill="", width=1)
+        # Drop shadow
+        shadow = _darken(color, 0.30)
+        cv.create_rectangle(3, 3, bw-2, bh-2, fill=shadow, outline="")
+        # Main body
         cv.create_rectangle(1, 1, bw-4, bh-4, fill=color, outline="")
-        # Bright top-left edge (pixel highlight)
-        bright = _lerp(color, "#ffffff", 0.25)
-        cv.create_line(1, bh-4, 1, 1, fill=bright, width=1)
-        cv.create_line(1, 1, bw-4, 1, fill=bright, width=1)
-        # Label
-        cv.create_text(bw//2 - 1, bh//2 - 1,
+        # Top-left highlight edge
+        bright = _lerp(color, "#ffffff", 0.30)
+        cv.create_line(1, bh-4, 1, 1, fill=bright, width=2)
+        cv.create_line(1, 1, bw-4, 1, fill=bright, width=2)
+        # Bottom-right shadow edge
+        cv.create_line(bw-4, 1, bw-4, bh-4, fill=shadow, width=1)
+        cv.create_line(1, bh-4, bw-4, bh-4, fill=shadow, width=1)
+        # Label — with 1px shadow for depth
+        cv.create_text(bw//2 + 1, bh//2 + 1,
+                       text=text, fill=_darken(fg, 0.4) if fg != C["dark"] else "#000000",
+                       font=fnt)
+        cv.create_text(bw//2, bh//2,
                        text=text, fill=fg, font=fnt)
 
     draw()
-    cv.bind("<Enter>",    lambda e: draw(_lerp(bg, "#ffffff", 0.12)))
+    cv.bind("<Enter>",    lambda e: draw(_lerp(bg, "#ffffff", 0.14), True))
     cv.bind("<Leave>",    lambda e: draw(bg))
-    cv.bind("<Button-1>", lambda e: [draw(_darken(bg, 0.55)),
-                                      f.after(100, lambda: draw(bg)), cmd()])
+    cv.bind("<Button-1>", lambda e: [draw(_darken(bg, 0.50)),
+                                      f.after(90, lambda: draw(bg)), cmd()])
     f._cv   = cv
     f._draw = draw
     f._bg   = bg
@@ -294,19 +305,21 @@ class SplashScreen(tk.Frame):
         self._draw_header()
 
         body = tk.Frame(self, bg=C["bg"])
-        body.pack(fill="both", expand=True, padx=40)
+        body.pack(fill="both", expand=True, padx=36)
 
-        tk.Label(body, text="[ FAMILY PLANNING QUIZ SYSTEM ]",
-                 font=_retro(9), bg=C["bg"],
-                 fg=C["grey"]).pack(pady=(0,4))
+        tk.Label(body, text="─── FAMILY PLANNING QUIZ SYSTEM ───",
+                 font=_retro(8), bg=C["bg"],
+                 fg=C["grey"]).pack(pady=(4,2))
 
-        sep = tk.Canvas(body, width=260, height=3,
+        # Neon divider
+        sep = tk.Canvas(body, width=320, height=4,
                         bg=C["bg"], highlightthickness=0)
-        sep.pack(pady=(0,20))
-        sep.create_rectangle(0,0,260,3, fill=C["accent2"], outline="")
+        sep.pack(pady=(0,16))
+        sep.create_rectangle(0, 1, 320, 2, fill=C["accent3"], outline="")
+        sep.create_rectangle(20, 0, 300, 3, fill=C["accent2"], outline="")
 
         # Name entry
-        tk.Label(body, text="> ENTER PLAYER NAME:",
+        tk.Label(body, text="▶  ENTER PLAYER NAME",
                  font=_retro(10, "bold"),
                  bg=C["bg"], fg=C["accent"]).pack(anchor="w")
         self._name_var = tk.StringVar()
@@ -335,55 +348,66 @@ class SplashScreen(tk.Frame):
 
         # Nav row
         nav = tk.Frame(body, bg=C["bg"])
-        nav.pack()
-        Btn(nav, "LEADERBOARD",
+        nav.pack(pady=(0,8))
+        Btn(nav, "🏆  LEADERBOARD",
             lambda: self.app.show("leaderboard"),
-            bg=C["card2"], fg=C["accent"], w=160, fs=9,
-            pad_bg=C["bg"]).pack(side="left", padx=6)
-        Btn(nav, "BADGES",
+            bg=C["card2"], fg=C["xp"], w=166, fs=9,
+            pad_bg=C["bg"]).pack(side="left", padx=5)
+        Btn(nav, "🎖  BADGES",
             lambda: self.app.show("badges"),
-            bg=C["card2"], fg=C["accent"], w=160, fs=9,
-            pad_bg=C["bg"]).pack(side="left", padx=6)
+            bg=C["card2"], fg=C["gold"], w=166, fs=9,
+            pad_bg=C["bg"]).pack(side="left", padx=5)
 
-        tk.Label(self, text="v2.0  |  DeciWise  |  INSERT COIN",
+        tk.Label(self, text="v2.0  ·  DeciWise  ·  INSERT COIN ▶",
                  font=_retro(7), bg=C["bg"],
-                 fg=C["grey"]).pack(side="bottom", pady=8)
-        # Blink the version label
+                 fg=C["grey"]).pack(side="bottom", pady=6)
         self._blink_insert(self.winfo_children()[-1])
 
     def _draw_header(self):
         cv = self._cv
         cv.delete("all")
-        # Dark CRT background
+        # Background fill
         cv.create_rectangle(0, 0, WINDOW_W, 220, fill=C["bg"], outline="")
-        # Scanlines (horizontal dark stripes for CRT effect)
-        for y in range(0, 220, 4):
-            cv.create_line(0, y, WINDOW_W, y, fill="#001400", width=1)
-        # Pixel border frame
-        cv.create_rectangle(8, 8, WINDOW_W-8, 212,
-                             outline=C["accent"], width=2)
-        cv.create_rectangle(12, 12, WINDOW_W-12, 208,
+        # Scanlines
+        for y in range(0, 220, 3):
+            cv.create_line(0, y, WINDOW_W, y, fill="#030f03", width=1)
+        # Outer border — double neon line
+        cv.create_rectangle(6, 6, WINDOW_W-6, 214,
                              outline=C["accent3"], width=1)
-        # Corner pixels (chunky retro corners)
-        for cx2, cy2 in [(8,8),(WINDOW_W-18,8),(8,202),(WINDOW_W-18,202)]:
-            cv.create_rectangle(cx2, cy2, cx2+10, cy2+10,
+        cv.create_rectangle(4, 4, WINDOW_W-4, 216,
+                             outline=C["accent"], width=2)
+        # Chunky corner squares
+        corner = 12
+        for cx2, cy2 in [(4,4),(WINDOW_W-4-corner,4),
+                          (4,216-corner),(WINDOW_W-4-corner,216-corner)]:
+            cv.create_rectangle(cx2, cy2, cx2+corner, cy2+corner,
                                  fill=C["accent"], outline="")
-        # Title — retro pixel font style
+        # Neon glow under title (3-layer blur simulation)
+        for off, alpha in [(6,"#001a08"),(4,"#003311"),(2,"#005522")]:
+            cv.create_text(WINDOW_W//2, 78+off//2,
+                            text="DECIWISE",
+                            font=_retro(38, "bold"),
+                            fill=alpha)
+        # Title shadow + foreground
         cv.create_text(WINDOW_W//2 + 2, 77,
                         text="DECIWISE",
                         font=_retro(38, "bold"),
-                        fill=C["accent3"])   # shadow
+                        fill="#005522")
         cv.create_text(WINDOW_W//2, 75,
                         text="DECIWISE",
                         font=_retro(38, "bold"),
-                        fill=C["accent"])    # foreground
-        # Subtitle pixel line
-        cv.create_text(WINDOW_W//2, 118, text="* QUIZ EDITION *",
+                        fill=C["accent"])
+        # Horizontal neon divider under title
+        cv.create_line(40, 100, WINDOW_W-40, 100,
+                        fill=C["accent3"], width=1)
+        cv.create_line(60, 102, WINDOW_W-60, 102,
+                        fill=C["accent2"], width=1)
+        # Subtitle
+        cv.create_text(WINDOW_W//2, 120, text="★  QUIZ EDITION  ★",
                         font=_retro(12, "bold"), fill=C["medium"])
         # Tagline
-        cv.create_text(WINDOW_W//2, 148, text="LEARN  /  DECIDE  /  GROW",
+        cv.create_text(WINDOW_W//2, 148, text="LEARN  //  DECIDE  //  GROW",
                         font=_retro(9), fill=C["grey"])
-        # Start animation for the blinking cursor line
         self._after(cv)
 
     def _after(self, cv, on=True):
@@ -661,36 +685,42 @@ class LevelSelectScreen(tk.Frame):
         lvl_map   = {l["id"]: l for l in levels}
 
         # ── Top bar ──────────────────────────────────────────────────────
-        hdr = tk.Frame(self, bg=C["banner"], pady=10)
+        hdr = tk.Frame(self, bg=C["banner"], pady=0)
         hdr.pack(fill="x")
-        tk.Label(hdr, text=">> DeciWise",
-                 font=_retro(15, "bold"),
-                 bg=C["banner"], fg=C["accent"]).pack(side="left", padx=14)
-        # XP pill
-        xp_f = tk.Frame(hdr, bg=C["banner"])
-        xp_f.pack(side="right", padx=14)
-        tk.Label(xp_f, text=f"XP: {total_xp}",
-                 font=_retro(11, "bold"),
-                 bg=C["banner"], fg=C["xp"]).pack(side="left")
+        # Neon top edge
+        tk.Frame(hdr, bg=C["accent"], height=2).pack(fill="x")
+        inner_hdr = tk.Frame(hdr, bg=C["banner"], pady=8)
+        inner_hdr.pack(fill="x")
+        tk.Label(inner_hdr, text="  ▶ DeciWise",
+                 font=_retro(14, "bold"),
+                 bg=C["banner"], fg=C["accent"]).pack(side="left", padx=10)
         name = self.app.player_name or p.get("player_name","Player")
-        tk.Label(hdr, text=f">> {name}",
-                 font=_retro(10),
+        # Player + XP pill on right
+        right_f = tk.Frame(inner_hdr, bg=C["banner"])
+        right_f.pack(side="right", padx=10)
+        tk.Label(right_f, text=f"⚡ {total_xp} XP",
+                 font=_retro(10, "bold"),
+                 bg=C["banner"], fg=C["xp"]).pack(side="right", padx=(4,0))
+        tk.Label(right_f, text=f"👤 {name}",
+                 font=_retro(9),
                  bg=C["banner"], fg=C["grey"]).pack(side="right", padx=4)
+        # Neon bottom edge
+        tk.Frame(hdr, bg=C["accent3"], height=1).pack(fill="x")
 
         # ── Scrollable body ───────────────────────────────────────────────
         sf = ScrollFrame(self, bg=C["bg"])
         sf.pack(fill="both", expand=True)
         inner = sf.inner
 
-        tk.Label(inner, text="Your Learning Journey",
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(14,2))
+        tk.Label(inner, text="── YOUR LEARNING JOURNEY ──",
+                 font=_retro(11, "bold"),
+                 bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
                           for i in range(1,7))
-        tk.Label(inner, text=f"STARS: {total_stars}/18",
-                 font=_retro(10),
-                 bg=C["bg"], fg=C["gold"]).pack(pady=(0,12))
+        tk.Label(inner, text=f"⭐  {total_stars} / 18  stars collected",
+                 font=_retro(9),
+                 bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
 
         # ── Act sections ─────────────────────────────────────────────────
         for act_id, (act_label, act_title, act_color, lids) in ACT_MAP.items():
@@ -738,52 +768,60 @@ class LevelSelectScreen(tk.Frame):
         hs_total   = sd.get("total", 5)
         bg = C["card"] if is_open else C["locked"]
 
-        outer = tk.Frame(parent, bg=C["bg"], pady=4, padx=14)
+        outer = tk.Frame(parent, bg=C["bg"], pady=3, padx=12)
         outer.pack(fill="x")
 
-        card = tk.Frame(outer, bg=bg, padx=14, pady=10,
-                        highlightbackground=act_color if is_open else bg,
+        # Neon left-border strip
+        wrap = tk.Frame(outer, bg=act_color if is_open else C["locked"])
+        wrap.pack(fill="x")
+        strip = tk.Frame(wrap, bg=act_color if is_open else C["locked"], width=4)
+        strip.pack(side="left", fill="y")
+        card = tk.Frame(wrap, bg=bg, padx=12, pady=10,
+                        highlightbackground=_darken(act_color,0.5) if is_open else bg,
                         highlightthickness=1 if is_open else 0)
-        card.pack(fill="x")
+        card.pack(side="left", fill="x", expand=True)
 
         row1 = tk.Frame(card, bg=bg)
         row1.pack(fill="x")
 
-        # Level number circle
-        num_cv = tk.Canvas(row1, width=32, height=32,
+        # Level number pill badge
+        num_cv = tk.Canvas(row1, width=36, height=36,
                             bg=bg, highlightthickness=0)
-        num_cv.pack(side="left", padx=(0,8))
-        rr(num_cv, 1,1,31,31, r=16,
-           fill=act_color if is_open else C["locked"])
-        num_cv.create_text(16,16, text=str(lid),
-                            fill=C["dark"] if is_open else C["grey"],
+        num_cv.pack(side="left", padx=(0,10))
+        # Outer glow ring
+        if is_open:
+            num_cv.create_oval(1, 1, 35, 35, fill=_darken(act_color,0.4), outline="")
+        num_cv.create_oval(4, 4, 32, 32,
+                            fill=act_color if is_open else C["locked"], outline="")
+        num_cv.create_text(18, 18, text=str(lid),
+                            fill=C["bg"] if is_open else C["grey"],
                             font=_retro(11, "bold"))
 
         info = tk.Frame(row1, bg=bg)
         info.pack(side="left", fill="x", expand=True)
         tk.Label(info, text=lvl["title"],
-                 font=_retro(12, "bold"),
+                 font=_retro(11, "bold"),
                  bg=bg, fg=C["white"] if is_open else C["grey"]).pack(anchor="w")
-        tk.Label(info, text=f"{lvl['difficulty']}  |  5 Questions  |  ⏱ {TIMER[lvl['difficulty']]}s each",
-                 font=_retro(9),
+        tk.Label(info, text=f"{lvl['difficulty']}  ·  5 Qs  ·  ⏱{TIMER[lvl['difficulty']]}s",
+                 font=_retro(8),
                  bg=bg, fg=diff_color if is_open else C["locked"]).pack(anchor="w")
 
         if is_open:
             status = tk.Frame(row1, bg=bg)
             status.pack(side="right")
             if is_done:
-                tk.Label(status, text=f"⭐"*stars_n+"☆"*(3-stars_n),
-                         font=_retro(14), bg=bg, fg=C["gold"]).pack()
+                tk.Label(status, text="⭐"*stars_n+"☆"*(3-stars_n),
+                         font=_retro(13), bg=bg, fg=C["gold"]).pack()
                 tk.Label(status, text=f"{hs_score}/{hs_total}",
-                         font=_retro(9), bg=bg, fg=C["grey"]).pack()
+                         font=_retro(8), bg=bg, fg=C["grey"]).pack()
             else:
                 tk.Label(status, text="PLAY ▶",
-                         font=_retro(11, "bold"),
+                         font=_retro(10, "bold"),
                          bg=bg, fg=C["accent"],
                          cursor="hand2").pack()
         else:
             tk.Label(row1, text="🔒",
-                     font=_retro(16), bg=bg,
+                     font=_retro(14), bg=bg,
                      fg=C["grey"]).pack(side="right")
 
         if is_open:
@@ -1025,9 +1063,11 @@ class StoryScreen(tk.Frame):
            fill=_darken(mode["color"], 0.45), outline="",
            stipple="gray50")
 
-        # Icon (ASCII retro style)
+        # Emoji icon — draw a slightly lighter bg patch first for visibility
+        cv.create_rectangle(14, h//2-22, 86, h//2+22,
+                             fill="#1a1a1a", outline="")
         cv.create_text(50, h//2, text=mode["icon"],
-                        font=("Segoe UI Emoji", 30))
+                        font=("Segoe UI Emoji", 28))
 
         # Label
         cv.create_text(w//2 + 16, h//2 - 18,
@@ -1150,42 +1190,46 @@ class QuizScreen(tk.Frame):
         total = len(qs)
 
         # ── HUD bar ──────────────────────────────────────────────────────
-        hud = tk.Frame(self, bg=C["banner"], pady=8)
+        hud_wrap = tk.Frame(self, bg=C["banner"])
+        hud_wrap.pack(fill="x")
+        tk.Frame(hud_wrap, bg=C["accent"], height=2).pack(fill="x")
+        hud = tk.Frame(hud_wrap, bg=C["banner"], pady=7)
         hud.pack(fill="x")
+        tk.Frame(hud_wrap, bg=C["accent3"], height=1).pack(fill="x")
 
         # Lives
         lives_f = tk.Frame(hud, bg=C["banner"])
-        lives_f.pack(side="left", padx=10)
+        lives_f.pack(side="left", padx=8)
         for i in range(MAX_LIVES):
             tk.Label(lives_f,
                      text="❤" if i < app.lives else "🖤",
-                     font=("Segoe UI Emoji",14),
+                     font=("Segoe UI Emoji",13),
                      bg=C["banner"],
                      fg=C["lives"] if i < app.lives else C["locked"]).pack(side="left")
 
         # Mode badge + Question counter
         mode_badge = tk.Label(
             hud,
-            text=f"{mode['icon']} {mode['label']}  ·  Q {idx+1}/{total}",
+            text=f"Q {idx+1}/{total}",
             font=_retro(10, "bold"),
             bg=C["banner"], fg=mode["color"])
-        mode_badge.pack(side="left", padx=6)
+        mode_badge.pack(side="left", padx=4)
 
         # XP
-        tk.Label(hud, text=f"XP:{app.total_xp_session}",
-                 font=_retro(10, "bold"),
+        tk.Label(hud, text=f"⚡ {app.total_xp_session}",
+                 font=_retro(9, "bold"),
                  bg=C["banner"], fg=C["xp"]).pack(side="left", padx=4)
 
         # Timer
         self._timer_lbl = tk.Label(hud,
-                                    text=f"T:{self._t_left}s",
+                                    text=f"⏱ {self._t_left}s",
                                     font=_retro(12, "bold"),
                                     bg=C["banner"], fg=C["timer_ok"])
-        self._timer_lbl.pack(side="right", padx=6)
+        self._timer_lbl.pack(side="right", padx=8)
 
         # Pause
         pk = tk.Label(hud, text="⏸",
-                       font=_retro(14),
+                       font=_retro(12),
                        bg=C["banner"], fg=C["grey"],
                        cursor="hand2")
         pk.pack(side="right", padx=4)
@@ -1206,19 +1250,27 @@ class QuizScreen(tk.Frame):
         inn.configure(padx=16)
 
         diff_c = lvl["difficulty_color"]
-        tk.Label(inn, text=f"[ {lvl['difficulty']} ]",
-                 font=_retro(10, "bold"),
-                 bg=C["bg"], fg=diff_c, anchor="w").pack(fill="x", pady=(10,4))
+        # Difficulty pill
+        pill_row = tk.Frame(inn, bg=C["bg"])
+        pill_row.pack(fill="x", pady=(10,6))
+        pill = tk.Frame(pill_row, bg=diff_c, padx=8, pady=2)
+        pill.pack(side="left")
+        tk.Label(pill, text=f"  {lvl['difficulty'].upper()}  ",
+                 font=_retro(8, "bold"),
+                 bg=diff_c, fg=C["bg"]).pack()
 
-        # Question card
-        qc = tk.Frame(inn, bg=C["card"], padx=16, pady=14,
-                      highlightbackground=C["accent2"],
+        # Question card with neon left accent
+        qwrap = tk.Frame(inn, bg=diff_c)
+        qwrap.pack(fill="x")
+        tk.Frame(qwrap, bg=diff_c, width=3).pack(side="left", fill="y")
+        qc = tk.Frame(qwrap, bg=C["card"], padx=14, pady=12,
+                      highlightbackground=_darken(diff_c, 0.5),
                       highlightthickness=1)
-        qc.pack(fill="x")
+        qc.pack(side="left", fill="x", expand=True)
         tk.Label(qc, text=q["question"],
-                 font=_retro(12, "bold"),
+                 font=_retro(11, "bold"),
                  bg=C["card"], fg=C["white"],
-                 wraplength=360, justify="left").pack(anchor="w")
+                 wraplength=356, justify="left").pack(anchor="w")
 
         tk.Label(inn, text="", bg=C["bg"], height=1).pack()
 
@@ -1229,24 +1281,40 @@ class QuizScreen(tk.Frame):
         _r.shuffle(shuffled_options)
 
         self._opts = {}
-        for opt in shuffled_options:
-            bf = tk.Frame(inn, bg=C["bg"], pady=3)
+        _letters = ["A", "B", "C", "D"]
+        for _li, opt in enumerate(shuffled_options):
+            _letter = _letters[_li] if _li < len(_letters) else "?"
+            bf = tk.Frame(inn, bg=C["bg"], pady=2)
             bf.pack(fill="x")
-            cv = tk.Canvas(bf, height=50, bg=C["bg"], highlightthickness=0)
+            cv = tk.Canvas(bf, height=52, bg=C["bg"], highlightthickness=0)
             cv.pack(fill="x")
-            fnt = _retro(11)
+            fnt    = _retro(10)
+            fnt_lbl= _retro(11, "bold")
+            _col_base = C["card"]
 
-            def draw(cv=cv, text=opt, col=C["accent2"]):
+            def draw(cv=cv, text=opt, col=_col_base, letter=_letter):
                 cv.delete("all")
                 w = cv.winfo_width() or WINDOW_W-32
-                rr(cv,2,2,w-2,48,r=12, fill=col, outline="")
-                cv.create_text(w//2,25, text=text,
-                                fill=C["white"], font=fnt, width=w-24)
+                # Card body
+                cv.create_rectangle(2, 2, w-2, 50,
+                                     fill=col, outline="")
+                # Left neon accent strip (letter box)
+                acc = C["accent2"] if col == _col_base else _lerp(col, "#ffffff", 0.2)
+                cv.create_rectangle(2, 2, 36, 50, fill=acc, outline="")
+                # Letter label
+                cv.create_text(19, 26, text=letter,
+                                fill=C["bg"], font=fnt_lbl)
+                # Divider line
+                cv.create_line(36, 2, 36, 50, fill=_darken(acc, 0.5), width=1)
+                # Answer text
+                cv.create_text(w//2 + 18, 26, text=text,
+                                fill=C["white"], font=fnt, width=w-56,
+                                anchor="center")
 
-            cv.bind("<Configure>", lambda e,c=cv,t=opt: draw(c,t))
+            cv.bind("<Configure>", lambda e,c=cv,t=opt,l=_letter: draw(c,t,_col_base,l))
             cv.bind("<Button-1>",  lambda e,o=opt: self._pick(o))
-            cv.bind("<Enter>",  lambda e,c=cv,t=opt: draw(c,t,_darken(C["accent2"])))
-            cv.bind("<Leave>",  lambda e,c=cv,t=opt: draw(c,t,C["accent2"]))
+            cv.bind("<Enter>",  lambda e,c=cv,t=opt,l=_letter: draw(c,t,C["accent3"],l))
+            cv.bind("<Leave>",  lambda e,c=cv,t=opt,l=_letter: draw(c,t,_col_base,l))
             self._opts[opt] = (cv, draw)
 
         # Timer bar
@@ -1299,7 +1367,7 @@ class QuizScreen(tk.Frame):
         tc = (C["timer_ok"] if ratio > 0.5
               else C["timer_warn"] if ratio > 0.25
               else C["timer_bad"])
-        self._timer_lbl.configure(text=f"T:{self._t_left}s", fg=tc)
+        self._timer_lbl.configure(text=f"⏱ {self._t_left}s", fg=tc)
         # Timer bar
         try:
             bw = self._tbar_bg.winfo_width() or WINDOW_W-32
@@ -1410,11 +1478,13 @@ class QuizScreen(tk.Frame):
 
     def _show_answer_colors(self, chosen):
         correct = self._current_q["answer"]
-        for opt, (cv, draw_fn) in self._opts.items():
+        _letters = ["A", "B", "C", "D"]
+        for _li, (opt, (cv, draw_fn)) in enumerate(self._opts.items()):
+            letter = _letters[_li] if _li < len(_letters) else "?"
             if opt == correct:       col = C["correct"]
             elif opt == chosen:      col = C["wrong"]
             else:                    col = C["locked"]
-            draw_fn(cv, opt, col)
+            draw_fn(cv, opt, col, letter)
             cv.unbind("<Button-1>")
             cv.unbind("<Enter>")
             cv.unbind("<Leave>")
@@ -1446,42 +1516,48 @@ class GameOverScreen(tk.Frame):
         app = self.app
         lvl = app.current_level
 
+        # Neon top border
+        tk.Frame(self, bg=C["wrong"], height=3).pack(fill="x")
         tk.Label(self, text="💔", font=("Segoe UI Emoji",64),
-                 bg="#1a2a1a").pack(pady=(80,8))
-        tk.Label(self, text="Game Over",
-                 font=_retro(28, "bold"),
+                 bg="#1f0a0a").pack(pady=(60,6))
+        tk.Label(self, text="GAME  OVER",
+                 font=_retro(30, "bold"),
                  bg=C["bg"], fg=C["wrong"]).pack()
-        tk.Label(self, text=f"You ran out of lives on\nLevel {lvl['id']}: {lvl['title']}",
-                 font=_retro(12),
-                 bg=C["bg"], fg=C["grey"],
-                 justify="center").pack(pady=10)
+        # Neon divider
+        div = tk.Canvas(self, width=300, height=4, bg=C["bg"], highlightthickness=0)
+        div.pack(pady=6)
+        div.create_rectangle(0,1,300,2, fill=C["wrong"], outline="")
+        tk.Label(self, text=f"Level {lvl['id']}  ·  {lvl['title']}",
+                 font=_retro(11),
+                 bg=C["bg"], fg=C["grey"]).pack()
 
-        # Score so far
-        sc = tk.Frame(self, bg=C["card"], padx=24, pady=16,
-                      highlightbackground=C["wrong"], highlightthickness=1)
-        sc.pack(padx=40, pady=16)
+        # Score card
+        sc_wrap = tk.Frame(self, bg=C["wrong"], padx=2, pady=2)
+        sc_wrap.pack(padx=50, pady=14)
+        sc = tk.Frame(sc_wrap, bg=C["card"], padx=24, pady=14)
+        sc.pack()
         q = app.quiz_index
         tk.Label(sc, text=f"{app.quiz_score} / {q}",
-                 font=_retro(26, "bold"),
+                 font=_retro(30, "bold"),
                  bg=C["card"], fg=C["white"]).pack()
-        tk.Label(sc, text="Questions answered correctly",
-                 font=_retro(10),
+        tk.Label(sc, text="correct answers",
+                 font=_retro(9),
                  bg=C["card"], fg=C["grey"]).pack()
-        tk.Label(sc, text=f"⚡ {app.total_xp_session} XP earned this session",
-                 font=_retro(10, "bold"),
+        tk.Label(sc, text=f"⚡ {app.total_xp_session} XP",
+                 font=_retro(11, "bold"),
                  bg=C["card"], fg=C["xp"]).pack(pady=(6,0))
 
-        tk.Label(self, text="Don't give up — knowledge saves lives! 💪",
-                 font=_retro(10),
+        tk.Label(self, text="Don't give up — knowledge saves lives!",
+                 font=_retro(9),
                  bg=C["bg"], fg=C["grey"],
-                 wraplength=340).pack(pady=6)
+                 wraplength=340).pack(pady=4)
 
-        Btn(self, "🔁  Try Again", self._retry,
-            bg=C["accent2"], fg=C["white"], w=240, fs=13,
-            pad_bg=C["bg"]).pack(pady=(20,8))
-        Btn(self, "🏠  Level Select",
+        Btn(self, "🔁  TRY AGAIN", self._retry,
+            bg=C["wrong"], fg=C["white"], w=250, fs=13,
+            pad_bg=C["bg"]).pack(pady=(18,8))
+        Btn(self, "🏠  LEVEL SELECT",
             lambda: self.app.show("level_select"),
-            bg=C["card"], fg=C["white"], w=240, fs=12,
+            bg=C["card"], fg=C["white"], w=250, fs=11,
             pad_bg=C["bg"]).pack()
 
     def _retry(self):
@@ -2013,15 +2089,20 @@ class ResultScreen(tk.Frame):
         inn = sf.inner
         inn.configure(padx=20)
 
-        tk.Label(inn, text=r_icon, font=("Segoe UI Emoji",52),
-                 bg="#1a2a1a").pack(pady=(20,4))
-        tk.Label(inn, text=r_msg, font=_retro(22, "bold"),
-                 bg=C["bg"], fg=C["white"]).pack()
-        tk.Label(inn, text=r_sub, font=_retro(11),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(2,8))
-
+        # Result header card
+        result_color = C["correct"] if pct >= 0.6 else C["wrong"]
+        tk.Frame(inn, bg=result_color, height=3).pack(fill="x", pady=(0,0))
+        hdr_f = tk.Frame(inn, bg=_darken(result_color, 0.2), pady=16)
+        hdr_f.pack(fill="x")
+        tk.Label(hdr_f, text=r_icon, font=("Segoe UI Emoji",52),
+                 bg="#1a1a0a" if pct>=0.6 else "#1a0a0a").pack()
+        tk.Label(hdr_f, text=r_msg, font=_retro(20, "bold"),
+                 bg=_darken(result_color, 0.2), fg=C["white"]).pack(pady=(4,0))
+        tk.Label(hdr_f, text=r_sub, font=_retro(9),
+                 bg=_darken(result_color, 0.2), fg=C["white"]).pack()
+        tk.Frame(inn, bg=result_color, height=3).pack(fill="x", pady=(0,8))
         tk.Label(inn, text="⭐"*stars+"☆"*(3-stars),
-                 font=_retro(32), bg=C["bg"], fg=C["gold"]).pack()
+                 font=_retro(28), bg=C["bg"], fg=C["gold"]).pack(pady=4)
 
         # Score + XP row
         row = tk.Frame(inn, bg=C["bg"])
@@ -2152,7 +2233,7 @@ class LeaderboardScreen(tk.Frame):
         except Exception:
             lb = []
 
-        rank_icons = ["[1]","[2]","[3]"] + ["   "]*10
+        rank_icons = ["🥇","🥈","🥉"] + ["  "]*10
         medal_cols = [C["gold"], C["silver"], C["bronze"]]
 
         if not lb:
