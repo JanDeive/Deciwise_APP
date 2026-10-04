@@ -30,32 +30,32 @@ PROGRESS_DB  = os.path.join(DATA_DIR, "progress.json")
 
 # ── Palette  (Retro CRT / Arcade theme) ──────────────────────────────────────
 C = {
-    "bg":        "#080c08",   # deep CRT black-green
-    "card":      "#0d1f0d",   # dark card surface
-    "card2":     "#0a1520",   # blue-tinted card
-    "accent":    "#00ff41",   # matrix neon green
-    "accent2":   "#00cc33",   # mid green
-    "accent3":   "#004d18",   # dark green (borders/hover)
-    "easy":      "#00ff41",   # easy neon green
-    "medium":    "#ffaa00",   # amber
-    "hard":      "#ff4444",   # neon red
-    "expert":    "#cc44ff",   # neon purple
-    "white":     "#d4ffd4",   # phosphor green-white
-    "grey":      "#4a7a4a",   # muted green-grey
-    "correct":   "#00ff41",
-    "wrong":     "#ff3333",
+    "bg":        "#1a1f1a",   # soft dark green-grey (not pitch black)
+    "card":      "#242e24",   # medium dark card surface
+    "card2":     "#1e2a36",   # soft blue-tinted card
+    "accent":    "#39ff7a",   # softer neon green (easier on eyes)
+    "accent2":   "#2ecc55",   # mid green
+    "accent3":   "#1a4d2e",   # muted dark green border
+    "easy":      "#39ff7a",   # easy green
+    "medium":    "#ffbb33",   # warm amber
+    "hard":      "#ff6b6b",   # soft neon red
+    "expert":    "#d966ff",   # soft neon purple
+    "white":     "#e8f5e8",   # soft off-white (easy to read)
+    "grey":      "#7a9e7a",   # readable muted green
+    "correct":   "#39ff7a",
+    "wrong":     "#ff6b6b",
     "gold":      "#ffd700",   # bright gold
-    "silver":    "#b0d0b0",
-    "bronze":    "#cd7f32",
-    "locked":    "#141f14",   # near-black locked state
-    "dark":      "#080c08",
-    "timer_ok":  "#00ff41",
-    "timer_warn":"#ffaa00",
-    "timer_bad": "#ff4444",
-    "xp":        "#00e5ff",   # bright cyan
-    "lives":     "#ff4444",
-    "banner":    "#020f02",   # very dark banner
-    "glow":      "#003311",   # card glow/shadow tint
+    "silver":    "#b8ccb8",
+    "bronze":    "#cd8c3a",
+    "locked":    "#2a3a2a",   # soft locked state
+    "dark":      "#1a1f1a",
+    "timer_ok":  "#39ff7a",
+    "timer_warn":"#ffbb33",
+    "timer_bad": "#ff6b6b",
+    "xp":        "#33ddff",   # soft cyan
+    "lives":     "#ff6b6b",
+    "banner":    "#111811",   # dark but not void banner
+    "glow":      "#1a4d2e",   # card glow tint
 }
 
 # Quiz modes — key matches the JSON field name
@@ -370,7 +370,7 @@ class SplashScreen(tk.Frame):
         cv.create_rectangle(0, 0, WINDOW_W, 220, fill=C["bg"], outline="")
         # Scanlines
         for y in range(0, 220, 3):
-            cv.create_line(0, y, WINDOW_W, y, fill="#030f03", width=1)
+            cv.create_line(0, y, WINDOW_W, y, fill="#171d17", width=1)
         # Outer border — double neon line
         cv.create_rectangle(6, 6, WINDOW_W-6, 214,
                              outline=C["accent3"], width=1)
@@ -392,7 +392,7 @@ class SplashScreen(tk.Frame):
         cv.create_text(WINDOW_W//2 + 2, 77,
                         text="DECIWISE",
                         font=_retro(38, "bold"),
-                        fill="#005522")
+                        fill="#2e6640")
         cv.create_text(WINDOW_W//2, 75,
                         text="DECIWISE",
                         font=_retro(38, "bold"),
@@ -459,7 +459,7 @@ class CongratsPopup:
                "#cc44ff","#ffcc00","#ff6600","#00ff99",
                "#ff0099","#33ffcc","#ffff00","#ff44aa"]
     _FPS_MS = 28
-    _BG     = "#000a00"   # near-black CRT green tint
+    _BG     = "#141c14"   # near-black CRT green tint
 
     def __init__(self, parent, info):
         self._root    = parent.winfo_toplevel()
@@ -544,7 +544,7 @@ class CongratsPopup:
         # ── Card body — dark CRT background ───────────────────────────────
         self._cv.create_rectangle(
             cx, cy, cx + cw, cy + ch,
-            fill="#000d00", outline="", tags="card_top")
+            fill="#1e281e", outline="", tags="card_top")
 
         # ── Chunky pixel corners ───────────────────────────────────────────
         corner_size = 10
@@ -561,7 +561,7 @@ class CongratsPopup:
         # Scanlines over the header strip
         for y in range(cy, cy+38, 4):
             self._cv.create_line(cx, y, cx+cw, y,
-                                 fill="#002200", width=1, tags="card_top")
+                                 fill="#1a3a1a", width=1, tags="card_top")
         self._cv.create_text(
             WINDOW_W//2, cy + 19,
             text=f"[ LVL {lvl['id']} : {lvl['difficulty'].upper()} ]",
@@ -581,7 +581,7 @@ class CongratsPopup:
         self._cv.create_text(
             WINDOW_W//2 + 2, cy + 103,
             text=msg, font=_retro(16, "bold"),
-            fill="#005500", tags="card_top")
+            fill="#1a4a1a", tags="card_top")
         self._cv.create_text(
             WINDOW_W//2, cy + 101,
             text=msg, font=_retro(16, "bold"),
@@ -893,7 +893,7 @@ class StoryScreen(tk.Frame):
         inn.configure(padx=18)
 
         self._icon_lbl = tk.Label(inn, text="",
-                                   font=("Segoe UI Emoji",50), bg="#1a2a1a")
+                                   font=("Segoe UI Emoji",50), bg="#2a3a2a")
         self._icon_lbl.pack(pady=(16,4))
 
         self._hdr_lbl = tk.Label(inn, text="📖  Story",
@@ -1065,7 +1065,7 @@ class StoryScreen(tk.Frame):
 
         # Emoji icon — draw a slightly lighter bg patch first for visibility
         cv.create_rectangle(14, h//2-22, 86, h//2+22,
-                             fill="#1a1a1a", outline="")
+                             fill="#2a2a2a", outline="")
         cv.create_text(50, h//2, text=mode["icon"],
                         font=("Segoe UI Emoji", 28))
 
@@ -1519,7 +1519,7 @@ class GameOverScreen(tk.Frame):
         # Neon top border
         tk.Frame(self, bg=C["wrong"], height=3).pack(fill="x")
         tk.Label(self, text="💔", font=("Segoe UI Emoji",64),
-                 bg="#1f0a0a").pack(pady=(60,6))
+                 bg="#2e1a1a").pack(pady=(60,6))
         tk.Label(self, text="GAME  OVER",
                  font=_retro(30, "bold"),
                  bg=C["bg"], fg=C["wrong"]).pack()
@@ -1739,7 +1739,7 @@ class CoupleGameScreen(tk.Frame):
         body.pack(expand=True)
         tk.Label(body, text="🔄",
                  font=("Segoe UI Emoji", 52),
-                 bg="#1a2a1a").pack(pady=(40, 10))
+                 bg="#2a3a2a").pack(pady=(40, 10))
         tk.Label(body, text=f"Hand the device to {p2}\nand ask them to answer.",
                  font=_retro(13),
                  bg=C["bg"], fg=C["grey"],
@@ -1921,7 +1921,7 @@ class CoupleGameScreen(tk.Frame):
         r_icon = "🏆" if pct==1.0 else ("👏" if pct>=0.6 else "📚")
         tk.Label(inn, text=r_icon,
                  font=("Segoe UI Emoji",48),
-                 bg="#1a2a1a").pack(pady=(16, 4))
+                 bg="#2a3a2a").pack(pady=(16, 4))
         tk.Label(inn,
                  text=f"{score} / {total} Best Decisions",
                  font=_retro(20, "bold"),
