@@ -153,6 +153,55 @@ def rr(cv, x1,y1,x2,y2, r=16, **kw):
            x1,y2, x1,y2-r, x1,y1+r, x1,y1, x1+r,y1]
     return cv.create_polygon(pts, smooth=True, **kw)
 
+def _grad(cv, x1, y1, x2, y2, col_top, col_bot, steps=20, **kw):
+    """
+    Fill a rectangle with a vertical gradient by drawing `steps` thin slices.
+    Extra kwargs (e.g. tags=) are forwarded to each create_rectangle call.
+    """
+    h = y2 - y1
+    for i in range(steps):
+        t1 = i / steps
+        t2 = (i + 1) / steps
+        c  = _lerp(col_top, col_bot, (t1 + t2) / 2)
+        ry1 = y1 + int(h * t1)
+        ry2 = y1 + int(h * t2) + 1
+        cv.create_rectangle(x1, ry1, x2, ry2, fill=c, outline="", **kw)
+
+def _grad_rr(cv, x1, y1, x2, y2, col_top, col_bot, r=12, steps=24, **kw):
+    """
+    Gradient-filled rounded rectangle: draws a clipping poly mask then
+    sliced gradient strips. Two-pass: first fill with bottom color (for
+    corners), then draw gradient strips inside.
+    tags= kwarg is supported.
+    """
+    tags = kw.pop("tags", "")
+    # Base rounded rect (bottom color — fills corners)
+    rr(cv, x1, y1, x2, y2, r=r, fill=col_bot, outline="",
+       **({"tags": tags} if tags else {}))
+    # Gradient strips
+    h = y2 - y1
+    w = x2 - x1
+    for i in range(steps):
+        t   = i / steps
+        t2  = (i + 1) / steps
+        col = _lerp(col_top, col_bot, (t + t2) / 2)
+        sy1 = y1 + int(h * t)
+        sy2 = y1 + int(h * t2) + 1
+        # Clip horizontally to approximate the rounded corners
+        corner_clip = 0
+        mid_y = (sy1 + sy2) / 2
+        dist_top = mid_y - y1
+        dist_bot = y2 - mid_y
+        edge_dist = min(dist_top, dist_bot)
+        if edge_dist < r:
+            import math
+            corner_clip = int(r - math.sqrt(max(0, r*r - (r - edge_dist)**2)))
+        cv.create_rectangle(
+            x1 + corner_clip, sy1,
+            x2 - corner_clip, sy2,
+            fill=col, outline="",
+            **({"tags": tags} if tags else {}))
+
 # ── Scrollable frame ──────────────────────────────────────────────────────────
 class ScrollFrame(tk.Frame):
     def __init__(self, parent, bg=None, **kw):
@@ -199,16 +248,18 @@ def Btn(parent, text, cmd, bg=None, fg=None, w=None, h=None,
         # Drop shadow
         shadow = _darken(color, 0.30)
         cv.create_rectangle(3, 3, bw-2, bh-2, fill=shadow, outline="")
-        # Main body
-        cv.create_rectangle(1, 1, bw-4, bh-4, fill=color, outline="")
+        # Gradient body — light top, darker bottom
+        col_top = _lerp(color, "#ffffff", 0.22)
+        col_bot = _darken(color, 0.72)
+        _grad(cv, 1, 1, bw-4, bh-4, col_top, col_bot, steps=18)
         # Top-left highlight edge
-        bright = _lerp(color, "#ffffff", 0.30)
+        bright = _lerp(color, "#ffffff", 0.40)
         cv.create_line(1, bh-4, 1, 1, fill=bright, width=2)
         cv.create_line(1, 1, bw-4, 1, fill=bright, width=2)
         # Bottom-right shadow edge
         cv.create_line(bw-4, 1, bw-4, bh-4, fill=shadow, width=1)
         cv.create_line(1, bh-4, bw-4, bh-4, fill=shadow, width=1)
-        # Label — with 1px shadow for depth
+        # Label shadow + label
         cv.create_text(bw//2 + 1, bh//2 + 1,
                        text=text, fill=_darken(fg, 0.4) if fg != C["dark"] else "#000000",
                        font=fnt)
@@ -368,8 +419,10 @@ class SplashScreen(tk.Frame):
     def _draw_header(self):
         cv = self._cv
         cv.delete("all")
-        # Background fill
-        cv.create_rectangle(0, 0, WINDOW_W, 220, fill=C["bg"], outline="")
+        # Gradient background — dark top, slightly lighter bottom
+        _grad(cv, 0, 0, WINDOW_W, 220,
+              _lerp(C["bg"], "#000000", 0.3), _lerp(C["bg"], C["accent3"], 0.5),
+              steps=40)
         # Scanlines
         for y in range(0, 220, 3):
             cv.create_line(0, y, WINDOW_W, y, fill="#171d17", width=1)
@@ -543,10 +596,10 @@ class CongratsPopup:
                 cx - i, cy - i, cx + cw + i, cy + ch + i,
                 outline=dc, fill="", tags="card_top")
 
-        # ── Card body — dark CRT background ───────────────────────────────
-        self._cv.create_rectangle(
-            cx, cy, cx + cw, cy + ch,
-            fill="#1e281e", outline="", tags="card_top")
+        # ── Card body — gradient dark CRT background ──────────────────────
+        _grad_rr(self._cv, cx, cy, cx + cw, cy + ch,
+                 _lerp(C["bg"], "#2a3a2a", 0.8), C["bg"],
+                 r=8, steps=30, tags="card_top")
 
         # ── Chunky pixel corners ───────────────────────────────────────────
         corner_size = 10
@@ -556,10 +609,10 @@ class CongratsPopup:
                 ox, oy, ox+corner_size, oy+corner_size,
                 fill=dc, outline="", tags="card_top")
 
-        # ── Top header strip ───────────────────────────────────────────────
-        self._cv.create_rectangle(
-            cx, cy, cx+cw, cy+38,
-            fill=dc, outline="", tags="card_top")
+        # ── Top header strip — gradient ────────────────────────────────────
+        _grad(self._cv, cx, cy, cx+cw, cy+38,
+              _lerp(dc, "#ffffff", 0.25), _darken(dc, 0.7),
+              steps=20, tags="card_top")
         # Scanlines over the header strip
         for y in range(cy, cy+38, 4):
             self._cv.create_line(cx, y, cx+cw, y,
@@ -1057,13 +1110,10 @@ class StoryScreen(tk.Frame):
         h    = 110
         cv.delete("all")
 
-        # Card background
-        rr(cv, 2, 2, w-2, h-2, r=16, fill=mode["color"], outline="")
-
-        # Dark tint overlay for readability
-        rr(cv, 2, 2, w-2, h-2, r=16,
-           fill=_darken(mode["color"], 0.45), outline="",
-           stipple="gray50")
+        # Card background — gradient from mode color top to dark bottom
+        col_top = _lerp(mode["color"], "#ffffff", 0.15)
+        col_bot = _darken(mode["color"], 0.45)
+        _grad_rr(cv, 2, 2, w-2, h-2, col_top, col_bot, r=14, steps=22)
 
         # Emoji icon
         cv.create_text(50, h//2, text=mode["icon"],
@@ -1295,12 +1345,14 @@ class QuizScreen(tk.Frame):
             def draw(cv=cv, text=opt, col=_col_base, letter=_letter):
                 cv.delete("all")
                 w = cv.winfo_width() or WINDOW_W-32
-                # Card body
-                cv.create_rectangle(2, 2, w-2, 50,
-                                     fill=col, outline="")
-                # Left neon accent strip (letter box)
-                acc = C["accent2"] if col == _col_base else _lerp(col, "#ffffff", 0.2)
-                cv.create_rectangle(2, 2, 36, 50, fill=acc, outline="")
+                # Gradient card body
+                col_top = _lerp(col, "#ffffff", 0.18)
+                col_bot = _darken(col, 0.75)
+                _grad(cv, 2, 2, w-2, 50, col_top, col_bot, steps=16)
+                # Left neon accent strip (letter box) with gradient
+                acc     = C["accent2"] if col == _col_base else _lerp(col, "#ffffff", 0.3)
+                acc_bot = _darken(acc, 0.65)
+                _grad(cv, 2, 2, 36, 50, _lerp(acc,"#ffffff",0.15), acc_bot, steps=16)
                 # Letter label
                 cv.create_text(19, 26, text=letter,
                                 fill=C["bg"], font=fnt_lbl)
