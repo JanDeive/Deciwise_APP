@@ -62,32 +62,32 @@ C = {
 _DARK_PALETTE = {k: v for k, v in C.items()}   # snapshot of dark values
 
 _LIGHT_PALETTE = {
-    "bg":        "#f4faf4",   # soft white-green background
-    "card":      "#ffffff",   # white cards
-    "card2":     "#e8f0fb",   # soft blue card
-    "accent":    "#1a7a3a",   # deep forest green
-    "accent2":   "#27ae60",   # mid green
-    "accent3":   "#b3dfc4",   # pale green border
-    "easy":      "#1a7a3a",
-    "medium":    "#d48b00",   # dark amber
-    "hard":      "#c0392b",   # dark red
-    "expert":    "#7d3c98",   # dark purple
+    "bg":        "#dce8dc",   # soft grey-green background
+    "card":      "#c8d8c8",   # muted grey-green card
+    "card2":     "#c4d0de",   # soft grey-blue card
+    "accent":    "#1a6b35",   # deep forest green
+    "accent2":   "#2a9a50",   # mid green
+    "accent3":   "#8ab89a",   # muted green border
+    "easy":      "#1a6b35",
+    "medium":    "#b87700",   # muted amber
+    "hard":      "#a83228",   # muted red
+    "expert":    "#6a2e8a",   # muted purple
     "white":     "#1a2a1a",   # near-black text
-    "grey":      "#4a6a4a",   # muted dark green text
-    "correct":   "#1a7a3a",
-    "wrong":     "#c0392b",
-    "gold":      "#b8860b",   # dark gold
-    "silver":    "#607060",
-    "bronze":    "#8b4513",
-    "locked":    "#d5e8d5",   # light locked
-    "dark":      "#f4faf4",
-    "timer_ok":  "#1a7a3a",
-    "timer_warn":"#d48b00",
-    "timer_bad": "#c0392b",
-    "xp":        "#1565c0",   # dark blue XP
-    "lives":     "#c0392b",
-    "banner":    "#d0ecd8",   # light mint banner
-    "glow":      "#b3dfc4",
+    "grey":      "#3a5a3a",   # readable dark green text
+    "correct":   "#1a6b35",
+    "wrong":     "#a83228",
+    "gold":      "#8a6800",   # muted gold
+    "silver":    "#4a604a",
+    "bronze":    "#6a3810",
+    "locked":    "#b8ccb8",   # muted locked
+    "dark":      "#dce8dc",
+    "timer_ok":  "#1a6b35",
+    "timer_warn":"#b87700",
+    "timer_bad": "#a83228",
+    "xp":        "#1a4a8a",   # muted blue XP
+    "lives":     "#a83228",
+    "banner":    "#b8ccb8",   # grey-green banner
+    "glow":      "#8ab89a",
 }
 
 # ── Theme toggle ──────────────────────────────────────────────────────────────
