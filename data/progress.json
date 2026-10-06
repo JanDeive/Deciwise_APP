@@ -1,49 +1,11 @@
 {
+  "player_name": "PLAYER_1",
   "unlocked_levels": [
-    1,
-    2
-  ],
-  "completed_levels": [
     1
   ],
-  "high_scores": {
-    "1": {
-      "score": 5,
-      "total": 5,
-      "stars": 3
-    }
-  },
-  "total_xp": 330,
-  "badges": [
-    "first_step",
-    "perfect_run",
-    "speedster"
-  ],
-  "leaderboard": [
-    {
-      "name": "koya",
-      "level": 1,
-      "score": 5,
-      "total": 5,
-      "xp": 125,
-      "stars": 3
-    },
-    {
-      "name": "koya",
-      "level": 1,
-      "score": 5,
-      "total": 5,
-      "xp": 110,
-      "stars": 3
-    },
-    {
-      "name": "koya",
-      "level": 1,
-      "score": 5,
-      "total": 5,
-      "xp": 95,
-      "stars": 3
-    }
-  ],
-  "player_name": "koya"
+  "completed_levels": [],
+  "high_scores": {},
+  "total_xp": 0,
+  "badges": [],
+  "leaderboard": []
 }
