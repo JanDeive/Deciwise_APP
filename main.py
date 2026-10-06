@@ -58,6 +58,49 @@ C = {
     "glow":      "#1a4d2e",   # card glow tint
 }
 
+# ── Light mode palette ────────────────────────────────────────────────────────
+_DARK_PALETTE = {k: v for k, v in C.items()}   # snapshot of dark values
+
+_LIGHT_PALETTE = {
+    "bg":        "#f4faf4",   # soft white-green background
+    "card":      "#ffffff",   # white cards
+    "card2":     "#e8f0fb",   # soft blue card
+    "accent":    "#1a7a3a",   # deep forest green
+    "accent2":   "#27ae60",   # mid green
+    "accent3":   "#b3dfc4",   # pale green border
+    "easy":      "#1a7a3a",
+    "medium":    "#d48b00",   # dark amber
+    "hard":      "#c0392b",   # dark red
+    "expert":    "#7d3c98",   # dark purple
+    "white":     "#1a2a1a",   # near-black text
+    "grey":      "#4a6a4a",   # muted dark green text
+    "correct":   "#1a7a3a",
+    "wrong":     "#c0392b",
+    "gold":      "#b8860b",   # dark gold
+    "silver":    "#607060",
+    "bronze":    "#8b4513",
+    "locked":    "#d5e8d5",   # light locked
+    "dark":      "#f4faf4",
+    "timer_ok":  "#1a7a3a",
+    "timer_warn":"#d48b00",
+    "timer_bad": "#c0392b",
+    "xp":        "#1565c0",   # dark blue XP
+    "lives":     "#c0392b",
+    "banner":    "#d0ecd8",   # light mint banner
+    "glow":      "#b3dfc4",
+}
+
+# ── Theme toggle ──────────────────────────────────────────────────────────────
+_IS_LIGHT = False
+
+def _apply_theme(light: bool):
+    """Swap all C values in-place so every widget rebuild picks up new colors."""
+    global _IS_LIGHT
+    _IS_LIGHT = light
+    src = _LIGHT_PALETTE if light else _DARK_PALETTE
+    for k, v in src.items():
+        C[k] = v
+
 # Quiz modes — key matches the JSON field name
 QUIZ_MODES = [
     {
@@ -411,10 +454,34 @@ class SplashScreen(tk.Frame):
             bg=C["card2"], fg=C["gold"], w=166, fs=9,
             pad_bg=C["bg"]).pack(side="left", padx=5)
 
+        # Theme toggle button
+        theme_row = tk.Frame(body, bg=C["bg"])
+        theme_row.pack(pady=(4, 0))
+        self._theme_btn_frame = theme_row
+        self._build_theme_btn(theme_row)
+
         tk.Label(self, text="v2.0  ·  DeciWise  ·  INSERT COIN ▶",
                  font=_retro(7), bg=C["bg"],
                  fg=C["grey"]).pack(side="bottom", pady=6)
         self._blink_insert(self.winfo_children()[-1])
+
+    def _build_theme_btn(self, parent):
+        """Draw the light/dark toggle switch canvas."""
+        for w in parent.winfo_children():
+            w.destroy()
+        is_light = _IS_LIGHT
+        sw_bg  = C["card2"]
+        label  = "☀  LIGHT MODE" if not is_light else "🌙  DARK MODE"
+        lbl_fg = C["medium"] if not is_light else C["xp"]
+        Btn(parent, label, self._toggle_theme,
+            bg=sw_bg, fg=lbl_fg, w=340, fs=10,
+            pad_bg=C["bg"]).pack()
+
+    def _toggle_theme(self):
+        SFX.play("click")
+        _apply_theme(not _IS_LIGHT)
+        # Rebuild splash from scratch with new colors
+        self.app.show("splash")
 
     def _draw_header(self):
         cv = self._cv
@@ -995,7 +1062,7 @@ class StoryScreen(tk.Frame):
         inn.configure(padx=18)
 
         self._icon_lbl = tk.Label(inn, text="",
-                                   font=("Segoe UI Emoji",50), bg="#2a3a2a")
+                                   font=("Segoe UI Emoji",50), bg=C["bg"])
         self._icon_lbl.pack(pady=(16,4))
 
         self._hdr_lbl = tk.Label(inn, text="📖  Story",
@@ -1632,7 +1699,7 @@ class GameOverScreen(tk.Frame):
         # Neon top border
         tk.Frame(self, bg=C["wrong"], height=3).pack(fill="x")
         tk.Label(self, text="💔", font=("Segoe UI Emoji",64),
-                 bg="#2e1a1a").pack(pady=(60,6))
+                 bg=C["bg"]).pack(pady=(60,6))
         tk.Label(self, text="GAME  OVER",
                  font=_retro(30, "bold"),
                  bg=C["bg"], fg=C["wrong"]).pack()
@@ -1852,7 +1919,7 @@ class CoupleGameScreen(tk.Frame):
         body.pack(expand=True)
         tk.Label(body, text="🔄",
                  font=("Segoe UI Emoji", 52),
-                 bg="#2a3a2a").pack(pady=(40, 10))
+                 bg=C["bg"]).pack(pady=(40, 10))
         tk.Label(body, text=f"Hand the device to {p2}\nand ask them to answer.",
                  font=_retro(13),
                  bg=C["bg"], fg=C["grey"],
@@ -2034,7 +2101,7 @@ class CoupleGameScreen(tk.Frame):
         r_icon = "🏆" if pct==1.0 else ("👏" if pct>=0.6 else "📚")
         tk.Label(inn, text=r_icon,
                  font=("Segoe UI Emoji",48),
-                 bg="#2a3a2a").pack(pady=(16, 4))
+                 bg=C["bg"]).pack(pady=(16, 4))
         tk.Label(inn,
                  text=f"{score} / {total} Best Decisions",
                  font=_retro(20, "bold"),
@@ -2208,7 +2275,7 @@ class ResultScreen(tk.Frame):
         hdr_f = tk.Frame(inn, bg=_darken(result_color, 0.2), pady=16)
         hdr_f.pack(fill="x")
         tk.Label(hdr_f, text=r_icon, font=("Segoe UI Emoji",52),
-                 bg="#1a1a0a" if pct>=0.6 else "#1a0a0a").pack()
+                 bg=C["bg"]).pack()
         tk.Label(hdr_f, text=r_msg, font=_retro(20, "bold"),
                  bg=_darken(result_color, 0.2), fg=C["white"]).pack(pady=(4,0))
         tk.Label(hdr_f, text=r_sub, font=_retro(9),
