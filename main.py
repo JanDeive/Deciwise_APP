@@ -438,20 +438,29 @@ class SplashScreen(tk.Frame):
             cv.create_rectangle(cx2, cy2, cx2+corner, cy2+corner,
                                  fill=C["accent"], outline="")
         # Neon glow under title (3-layer blur simulation)
-        for off, alpha in [(6,"#001a08"),(4,"#003311"),(2,"#005522")]:
+        # Neon glow layers under title (bloom effect)
+        for off, alpha in [(8,"#0d1f0d"),(6,"#1a3a22"),(4,"#204d2e"),(2,"#2e6640")]:
             cv.create_text(WINDOW_W//2, 78+off//2,
                             text="DECIWISE",
                             font=_retro(38, "bold"),
                             fill=alpha)
-        # Title shadow + foreground
-        cv.create_text(WINDOW_W//2 + 2, 77,
-                        text="DECIWISE",
-                        font=_retro(38, "bold"),
-                        fill="#2e6640")
+        # 3D extrusion — stacked offset layers (bottom-right shadow)
+        for step in range(5, 0, -1):
+            shade = _lerp("#000000", _darken(C["accent"], 0.5), step / 5)
+            cv.create_text(WINDOW_W//2 + step, 75 + step,
+                            text="DECIWISE",
+                            font=_retro(38, "bold"),
+                            fill=shade)
+        # Main face
         cv.create_text(WINDOW_W//2, 75,
                         text="DECIWISE",
                         font=_retro(38, "bold"),
                         fill=C["accent"])
+        # Top-left specular highlight (bright edge)
+        cv.create_text(WINDOW_W//2 - 1, 74,
+                        text="DECIWISE",
+                        font=_retro(38, "bold"),
+                        fill=_lerp(C["accent"], "#ffffff", 0.35))
         # Horizontal neon divider under title
         cv.create_line(40, 100, WINDOW_W-40, 100,
                         fill=C["accent3"], width=1)
@@ -590,11 +599,20 @@ class CongratsPopup:
         cx = (WINDOW_W - cw) // 2
         cy = (WINDOW_H - ch) // 2
 
-        # ── Outer neon glow border (layered outlines) ──────────────────────
+        # ── Outer neon glow border with 3D bevel ──────────────────────────
         for i in range(4):
             self._cv.create_rectangle(
                 cx - i, cy - i, cx + cw + i, cy + ch + i,
                 outline=dc, fill="", tags="card_top")
+        # 3D bevel — bright top-left, dark bottom-right
+        self._cv.create_line(cx-4, cy-4, cx+cw+4, cy-4,
+                             fill=_lerp(dc,"#ffffff",0.5), width=2, tags="card_top")
+        self._cv.create_line(cx-4, cy-4, cx-4, cy+ch+4,
+                             fill=_lerp(dc,"#ffffff",0.35), width=2, tags="card_top")
+        self._cv.create_line(cx+cw+4, cy-4, cx+cw+4, cy+ch+4,
+                             fill=_darken(dc, 0.4), width=2, tags="card_top")
+        self._cv.create_line(cx-4, cy+ch+4, cx+cw+4, cy+ch+4,
+                             fill=_darken(dc, 0.4), width=2, tags="card_top")
 
         # ── Card body — gradient dark CRT background ──────────────────────
         _grad_rr(self._cv, cx, cy, cx + cw, cy + ch,
@@ -609,10 +627,22 @@ class CongratsPopup:
                 ox, oy, ox+corner_size, oy+corner_size,
                 fill=dc, outline="", tags="card_top")
 
-        # ── Top header strip — gradient ────────────────────────────────────
+        # ── Top header strip — gradient with 3D bevel ─────────────────────
         _grad(self._cv, cx, cy, cx+cw, cy+38,
               _lerp(dc, "#ffffff", 0.25), _darken(dc, 0.7),
               steps=20, tags="card_top")
+        # Top highlight edge (bevel)
+        self._cv.create_line(cx, cy, cx+cw, cy,
+                             fill=_lerp(dc, "#ffffff", 0.6),
+                             width=2, tags="card_top")
+        # Left highlight edge (bevel)
+        self._cv.create_line(cx, cy, cx, cy+38,
+                             fill=_lerp(dc, "#ffffff", 0.4),
+                             width=1, tags="card_top")
+        # Bottom shadow edge (bevel)
+        self._cv.create_line(cx, cy+37, cx+cw, cy+37,
+                             fill=_darken(dc, 0.4),
+                             width=2, tags="card_top")
         # Scanlines over the header strip
         for y in range(cy, cy+38, 4):
             self._cv.create_line(cx, y, cx+cw, y,
@@ -839,16 +869,33 @@ class LevelSelectScreen(tk.Frame):
         row1 = tk.Frame(card, bg=bg)
         row1.pack(fill="x")
 
-        # Level number pill badge
-        num_cv = tk.Canvas(row1, width=36, height=36,
+        # Level number pill badge — 3D extruded look
+        num_cv = tk.Canvas(row1, width=40, height=40,
                             bg=bg, highlightthickness=0)
         num_cv.pack(side="left", padx=(0,10))
-        # Outer glow ring
         if is_open:
-            num_cv.create_oval(1, 1, 35, 35, fill=_darken(act_color,0.4), outline="")
-        num_cv.create_oval(4, 4, 32, 32,
-                            fill=act_color if is_open else C["locked"], outline="")
-        num_cv.create_text(18, 18, text=str(lid),
+            ac = act_color
+            # Bottom-right drop shadow (depth layer)
+            num_cv.create_oval(5, 5, 37, 37,
+                               fill=_darken(ac, 0.25), outline="")
+            # Mid layer (side face of extrusion)
+            num_cv.create_oval(3, 3, 35, 35,
+                               fill=_darken(ac, 0.45), outline="")
+            # Main face gradient (top-left bright, bottom-right dark)
+            num_cv.create_oval(1, 1, 33, 33,
+                               fill=ac, outline="")
+            # Specular highlight (top-left inner gleam)
+            num_cv.create_oval(4, 4, 18, 16,
+                               fill=_lerp(ac, "#ffffff", 0.45), outline="")
+            # Inner subtle ring
+            num_cv.create_oval(2, 2, 32, 32,
+                               outline=_lerp(ac, "#ffffff", 0.25), fill="", width=1)
+        else:
+            num_cv.create_oval(3, 3, 37, 37,
+                               fill=_darken(C["locked"], 0.6), outline="")
+            num_cv.create_oval(1, 1, 35, 35,
+                               fill=C["locked"], outline="")
+        num_cv.create_text(17, 17, text=str(lid),
                             fill=C["bg"] if is_open else C["grey"],
                             font=_retro(11, "bold"))
 
@@ -1349,10 +1396,24 @@ class QuizScreen(tk.Frame):
                 col_top = _lerp(col, "#ffffff", 0.18)
                 col_bot = _darken(col, 0.75)
                 _grad(cv, 2, 2, w-2, 50, col_top, col_bot, steps=16)
-                # Left neon accent strip (letter box) with gradient
+                # Left neon accent strip (letter box) — 3D extruded
                 acc     = C["accent2"] if col == _col_base else _lerp(col, "#ffffff", 0.3)
-                acc_bot = _darken(acc, 0.65)
-                _grad(cv, 2, 2, 36, 50, _lerp(acc,"#ffffff",0.15), acc_bot, steps=16)
+                acc_bot = _darken(acc, 0.55)
+                # Right-side extrusion shadow (depth)
+                cv.create_rectangle(36, 4, 40, 50,
+                                     fill=_darken(acc, 0.35), outline="")
+                # Bottom extrusion shadow
+                cv.create_rectangle(2, 48, 40, 52,
+                                     fill=_darken(acc, 0.35), outline="")
+                # Main face gradient
+                _grad(cv, 2, 2, 36, 50,
+                      _lerp(acc, "#ffffff", 0.30), acc_bot, steps=16)
+                # Top highlight line
+                cv.create_line(3, 3, 35, 3,
+                                fill=_lerp(acc, "#ffffff", 0.55), width=1)
+                # Left highlight line
+                cv.create_line(3, 3, 3, 49,
+                                fill=_lerp(acc, "#ffffff", 0.35), width=1)
                 # Letter label
                 cv.create_text(19, 26, text=letter,
                                 fill=C["bg"], font=fnt_lbl)
