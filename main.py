@@ -101,40 +101,12 @@ def _apply_theme(light: bool):
     for k, v in src.items():
         C[k] = v
 
-# Quiz modes — key matches the JSON field name
-QUIZ_MODES = [
-    {
-        "key":   "questions",
-        "label": "Standard Quiz",
-        "icon":  "📝",
-        "color": C["accent"],
-        "desc":  "Multiple-choice questions on family planning",
-    },
-    {
-        "key":   "myth_busting",
-        "label": "Myth Busting",
-        "icon":  "🔍",
-        "color": "#ffaa00",
-        "desc":  "Separate fact from fiction on common myths",
-    },
-    {
-        "key":   "scenario",
-        "label": "Scenario Challenge",
-        "icon":  "🎭",
-        "color": "#cc44ff",
-        "desc":  "Real-life case situations — what would you do?",
-    },
-    {
-        "key":   "couple_decisions",
-        "label": "Couple Decision",
-        "icon":  "💑",
-        "color": "#c0392b",
-        "desc":  "2 players decide together — see how choices combine!",
-    },
-]
+# Quiz mode is always standard questions
+QUIZ_MODE_KEY = "questions"
 
 # Timer seconds per difficulty
-TIMER = {"Easy": 30, "Medium": 22, "Hard": 16}
+TIMER = {"Easy": 30, "Medium": 22, "Hard": 16,
+         "Beginner": 30, "Intermediate": 22, "Difficult": 16}
 XP_CORRECT   = 10
 XP_BONUS_FAST = 5   # answered in first half of timer
 XP_PERFECT   = 20   # bonus for 100% level
@@ -162,11 +134,8 @@ BADGES = {
     "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all chapters"},
 }
 
-ACT_MAP = {1: ("Chapter 1", "Condom Quiz — Beginner",     "#52e088", [1]),
-           2: ("Chapter 1", "Condom Quiz — Intermediate",  "#f39c12", [2]),
-           3: ("Chapter 1", "Condom Quiz — Difficult",     "#e74c3c", [3]),
-           4: ("Chapter 2", "Coming Soon",                 "#3498db", [4]),
-           5: ("Chapter 3", "Coming Soon",                 "#9b59b6", [5])}
+ACT_MAP = {1: ("Chapter 1", "Condom Quiz",  "#2ecc71", [1]),
+           2: ("Chapter 2", "Coming Soon",  "#3498db", [2])}
 
 # ── JSON helpers ──────────────────────────────────────────────────────────────
 def load_json(path):
@@ -343,16 +312,16 @@ class App(tk.Tk):
         self.geometry(f"{WINDOW_W}x{WINDOW_H}+{x}+{y}")
 
         # ── Shared quiz state ──────────────────────────────────────────────
-        self.player_name    = ""
-        self.current_level  = None
-        self.quiz_mode      = QUIZ_MODES[0]
-        self.quiz_index     = 0
-        self.quiz_score     = 0
-        self.quiz_answers   = []
-        self.lives          = MAX_LIVES
+        self.player_name      = ""
+        self.current_level    = None
+        self.chosen_difficulty= "Beginner"   # set by difficulty picker in StoryScreen
+        self.quiz_index       = 0
+        self.quiz_score       = 0
+        self.quiz_answers     = []
+        self.lives            = MAX_LIVES
         self.total_xp_session = 0
-        self.fast_answers   = 0
-        self.congrats_level = None   # set to level dict when player just passed
+        self.fast_answers     = 0
+        self.congrats_level   = None   # set to level dict when player just passed
 
         self._frame = None
         self.show("splash")
@@ -370,22 +339,18 @@ class App(tk.Tk):
             "gameover":     GameOverScreen,
             "leaderboard":  LeaderboardScreen,
             "badges":       BadgesScreen,
-            "couple_game":  CoupleGameScreen,
         }
         self._frame = screens[name](self, self, **kw)
         self._frame.pack(fill="both", expand=True)
 
     def start_level(self):
-        """Reset per-level quiz state and go to quiz or couple game."""
+        """Reset per-level quiz state and go to quiz."""
         self.quiz_index   = 0
         self.quiz_score   = 0
         self.quiz_answers = []
         self.lives        = MAX_LIVES
         self.fast_answers = 0
-        if self.quiz_mode["key"] == "couple_decisions":
-            self.show("couple_game")
-        else:
-            self.show("quiz")
+        self.show("quiz")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Splash / Name Entry
@@ -872,8 +837,8 @@ class LevelSelectScreen(tk.Frame):
                  bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1,6))
-        tk.Label(inner, text=f"⭐  {total_stars} / 15  stars collected",
+                          for i in range(1,3))
+        tk.Label(inner, text=f"⭐  {total_stars} / 6  stars collected",
                  font=_retro(9),
                  bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
 
@@ -974,7 +939,7 @@ class LevelSelectScreen(tk.Frame):
         tk.Label(info, text=lvl["title"],
                  font=_retro(11, "bold"),
                  bg=bg, fg=C["white"] if is_open else C["grey"]).pack(anchor="w")
-        tk.Label(info, text=f"{lvl['difficulty']}  ·  5 Qs  ·  ⏱{TIMER[lvl['difficulty']]}s",
+        tk.Label(info, text=f"{lvl['difficulty']}  ·  10 Qs  ·  Pick difficulty",
                  font=_retro(8),
                  bg=bg, fg=diff_color if is_open else C["locked"]).pack(anchor="w")
 
@@ -1026,8 +991,8 @@ class StoryScreen(tk.Frame):
         lvl = self.app.current_level
         self._lvl       = lvl
         self._icon_char = STORY_ICONS.get(lvl.get("story_image",""), "📖")
-        diff_c          = lvl["difficulty_color"]
-        timer_s         = TIMER[lvl["difficulty"]]
+        diff_c  = lvl["difficulty_color"]
+        timer_s = "30 / 22 / 16"   # depends on chosen difficulty
 
         # Banner
         self._banner = tk.Frame(self, bg=C["bg"], pady=10)
@@ -1082,59 +1047,51 @@ class StoryScreen(tk.Frame):
                              wraplength=368, justify="left", anchor="nw")
         self._st.pack(anchor="w")
 
-        # Info strip
-        qn = len(lvl["questions"])
+        # Info strip (shown after story reveals)
         self._info = tk.Label(inn,
-                               text=f"❓ {qn} Questions  |  ⏱ {timer_s}s each  |  ❤ {MAX_LIVES} lives",
+                               text=f"❓ 10 Questions  |  ❤ {MAX_LIVES} lives",
                                font=_retro(10),
                                bg=C["bg"], fg=C["bg"])
         self._info.pack(pady=(12,4))
 
         # XP info
-        xp_est = qn * XP_CORRECT
+        xp_est = 10 * XP_CORRECT
         self._xp_lbl = tk.Label(inn,
-                                  text=f"⚡ Earn up to {xp_est + XP_PERFECT} XP on this level",
+                                  text=f"⚡ Earn up to {xp_est + XP_PERFECT} XP",
                                   font=_retro(9),
                                   bg=C["bg"], fg=C["bg"])
-        self._xp_lbl.pack(pady=(0,4))
+        self._xp_lbl.pack(pady=(0,8))
 
-        # ── Swipeable quiz mode selector ──────────────────────────────────
-        self._mode_idx = 0
-        self._swipe_hint = tk.Label(
-            inn, text="◀  swipe or tap to change quiz type  ▶",
-            font=_retro(9),
-            bg=C["bg"], fg=C["bg"])   # invisible until revealed
-        self._swipe_hint.pack(pady=(0,4))
+        # ── Difficulty picker (revealed after story) ──────────────────────
+        self._diff_frame = tk.Frame(inn, bg=C["bg"])
+        self._diff_frame.pack(pady=(0,6))
 
-        self._mode_cv = tk.Canvas(
-            inn, width=WINDOW_W-36, height=110,
-            bg=C["bg"], highlightthickness=0)
-        self._mode_cv.pack(pady=(0,6))
+        diff_label = tk.Label(self._diff_frame,
+                              text="── CHOOSE DIFFICULTY ──",
+                              font=_retro(10, "bold"),
+                              bg=C["bg"], fg=C["bg"])
+        diff_label.pack(pady=(0,8))
+        self._diff_label = diff_label
 
-        # Dot indicators
-        self._dot_frame = tk.Frame(inn, bg=C["bg"])
-        self._dot_frame.pack(pady=(0,10))
-        self._dots = []
-        for i in range(len(QUIZ_MODES)):
-            d = tk.Canvas(self._dot_frame, width=10, height=10,
-                           bg=C["bg"], highlightthickness=0)
-            d.pack(side="left", padx=3)
-            d.create_oval(1,1,9,9,
-                           fill=C["accent"] if i==0 else C["locked"],
-                           outline="", tags="dot")
-            self._dots.append(d)
+        diff_btns = tk.Frame(self._diff_frame, bg=C["bg"])
+        diff_btns.pack()
 
-        # Swipe detection on mode card
-        self._drag_start = None
-        self._mode_cv.bind("<ButtonPress-1>",   self._drag_begin)
-        self._mode_cv.bind("<ButtonRelease-1>", self._drag_end)
+        DIFFS = [
+            ("Beginner",     C["easy"],   "30s each"),
+            ("Intermediate", C["medium"], "22s each"),
+            ("Difficult",    C["hard"],   "16s each"),
+        ]
+        for dname, dcol, dtimer in DIFFS:
+            Btn(diff_btns, dname,
+                lambda d=dname: self._pick_difficulty(d),
+                bg=dcol, fg=C["bg"], w=120, fs=10,
+                pad_bg=C["bg"]).pack(side="left", padx=4)
 
-        self._begin_f = Btn(inn, "  BEGIN QUIZ  ▶  ", self._start,
-                            bg=C["accent"], fg=C["dark"], w=250, fs=13,
-                            pad_bg=C["bg"])
-        self._back_f  = Btn(inn, "← Back", self._back,
-                            bg=C["card2"], fg=C["white"], w=120, fs=11,
-                            pad_bg=C["bg"])
+        # Back button (always visible)
+        self._back_f = Btn(inn, "← Back", self._back,
+                           bg=C["card2"], fg=C["white"], w=120, fs=11,
+                           pad_bg=C["bg"])
+        self._back_f.pack(pady=(8, 24))
         tk.Label(inn, text="", bg=C["bg"], height=2).pack()
 
         self._aids.append(self.after(100, self._anim_banner))
@@ -1193,111 +1150,18 @@ class StoryScreen(tk.Frame):
         t = min(step/n, 1.0)
         self._info.configure(fg=_lerp(C["bg"], C["grey"], t))
         self._xp_lbl.configure(fg=_lerp(C["bg"], C["xp"], t))
-        self._swipe_hint.configure(fg=_lerp(C["bg"], C["grey"], t))
-
-        # Draw the mode card on first step
-        if step == 0:
-            self._draw_mode_card()
-            self._begin_f.pack(pady=(0,10))
-            self._back_f.pack(pady=(0,24))
-
-        # Fade button colours from bg → final colour
-        for btn_f, bc, tc in [(self._begin_f, C["accent"], C["dark"]),
-                               (self._back_f,  C["card2"],  C["white"])]:
-            col  = _lerp(C["bg"], bc, t)
-            tcol = _lerp(C["bg"], tc, t)
-            btn_f._cv.delete("all")
-            rr(btn_f._cv, 2, 2, btn_f._bw-2, btn_f._bh-2, r=14,
-               fill=col, outline="")
-            btn_f._cv.create_text(btn_f._bw//2, btn_f._bh//2,
-                                   text=btn_f._text,
-                                   fill=tcol, font=btn_f._fnt)
+        self._diff_label.configure(
+            fg=_lerp(C["bg"], C["accent"], t),
+            bg=_lerp(C["bg"], C["bg"], t))
         if step < n:
             self._aids.append(self.after(32, lambda: self._reveal(step+1)))
-        else:
-            self._begin_f._draw()
-            self._back_f._draw()
 
-    # ── Mode card drawing ─────────────────────────────────────────────────────
-    def _draw_mode_card(self):
-        """Render the currently selected quiz mode as a card on the canvas."""
-        cv   = self._mode_cv
-        mode = QUIZ_MODES[self._mode_idx]
-        w    = cv.winfo_width() or WINDOW_W - 36
-        h    = 110
-        cv.delete("all")
-
-        # Card background — gradient from mode color top to dark bottom
-        col_top = _lerp(mode["color"], "#ffffff", 0.15)
-        col_bot = _darken(mode["color"], 0.45)
-        _grad_rr(cv, 2, 2, w-2, h-2, col_top, col_bot, r=14, steps=22)
-
-        # Emoji icon
-        cv.create_text(50, h//2, text=mode["icon"],
-                        font=("Segoe UI Emoji", 28))
-
-        # Label
-        cv.create_text(w//2 + 16, h//2 - 18,
-                        text=mode["label"],
-                        font=_retro(14, "bold"),
-                        fill="#ffffff", anchor="center")
-
-        # Description
-        cv.create_text(w//2 + 16, h//2 + 10,
-                        text=mode["desc"],
-                        font=_retro(9),
-                        fill="#dddddd", anchor="center",
-                        width=w - 110)
-
-        # Left / right arrows (if more modes available)
-        if self._mode_idx > 0:
-            cv.create_text(14, h//2, text="◀",
-                            font=_retro(14, "bold"),
-                            fill="#ffffff")
-        if self._mode_idx < len(QUIZ_MODES) - 1:
-            cv.create_text(w - 14, h//2, text="▶",
-                            font=_retro(14, "bold"),
-                            fill="#ffffff")
-
-        # Update dot indicators
-        for i, d in enumerate(self._dots):
-            d.itemconfig("dot",
-                          fill=mode["color"] if i == self._mode_idx
-                          else C["locked"])
-
-        # Update BEGIN button colour to match mode
-        self._begin_f._bg = mode["color"]
-        self._begin_f._draw()
-
-        # Update app quiz mode
-        self.app.quiz_mode = mode
-
-    # ── Swipe / tap handling ──────────────────────────────────────────────────
-    def _drag_begin(self, event):
-        self._drag_start = event.x
-
-    def _drag_end(self, event):
-        if self._drag_start is None:
-            return
-        dx = event.x - self._drag_start
-        self._drag_start = None
-
-        if abs(dx) < 8:
-            # Treated as a tap — cycle forward
-            self._set_mode((self._mode_idx + 1) % len(QUIZ_MODES))
-        elif dx < -30:
-            # Swipe left → next mode
-            if self._mode_idx < len(QUIZ_MODES) - 1:
-                self._set_mode(self._mode_idx + 1)
-        elif dx > 30:
-            # Swipe right → previous mode
-            if self._mode_idx > 0:
-                self._set_mode(self._mode_idx - 1)
-
-    def _set_mode(self, idx):
-        self._mode_idx = idx
-        SFX.play("click")
-        self._draw_mode_card()
+    def _pick_difficulty(self, difficulty):
+        """Called when user picks a difficulty — store it and start quiz."""
+        [self.after_cancel(a) for a in self._aids]
+        SFX.play("start")
+        self.app.chosen_difficulty = difficulty
+        self.app.start_level()
 
     def _skip(self):
         [self.after_cancel(a) for a in self._aids]
@@ -1312,18 +1176,11 @@ class StoryScreen(tk.Frame):
         self._st.configure(text=lvl["story"])
         self._info.configure(fg=C["grey"])
         self._xp_lbl.configure(fg=C["xp"])
-        self._swipe_hint.configure(fg=C["grey"])
-        self._draw_mode_card()
-        if not self._begin_f.winfo_ismapped(): self._begin_f.pack(pady=(0,10))
-        if not self._back_f.winfo_ismapped():  self._back_f.pack(pady=(0,24))
-        self._begin_f._draw()
+        self._diff_label.configure(fg=C["accent"])
+        if not self._back_f.winfo_ismapped():
+            self._back_f.pack(pady=(8, 24))
         self._back_f._draw()
         self._done = True
-
-    def _start(self):
-        [self.after_cancel(a) for a in self._aids]
-        SFX.play("start")
-        self.app.start_level()
 
     def _back(self):
         [self.after_cancel(a) for a in self._aids]
@@ -1339,7 +1196,8 @@ class QuizScreen(tk.Frame):
         self.app     = app
         self._locked = False
         self._paused = False
-        self._t_left = TIMER[app.current_level["difficulty"]]
+        self._t_left = TIMER.get(app.chosen_difficulty,
+                                  TIMER[app.current_level["difficulty"]])
         self._t_total= self._t_left
         self._t_aid  = None
         self._q_start= time.time()
@@ -1351,8 +1209,8 @@ class QuizScreen(tk.Frame):
         app   = self.app
         lvl   = app.current_level
         idx   = app.quiz_index
-        mode  = app.quiz_mode          # ← selected mode from StoryScreen
-        qs    = lvl.get(mode["key"], lvl["questions"])   # fall back to standard
+        diff  = app.chosen_difficulty.lower()   # "beginner"/"intermediate"/"difficult"
+        qs    = lvl.get(diff, lvl.get("questions", []))
         q     = qs[idx]
         total = len(qs)
 
@@ -1374,12 +1232,12 @@ class QuizScreen(tk.Frame):
                      bg=C["banner"],
                      fg=C["lives"] if i < app.lives else C["locked"]).pack(side="left")
 
-        # Mode badge + Question counter
+        # Question counter
         mode_badge = tk.Label(
             hud,
             text=f"Q {idx+1}/{total}",
             font=_retro(10, "bold"),
-            bg=C["banner"], fg=mode["color"])
+            bg=C["banner"], fg=C["accent"])
         mode_badge.pack(side="left", padx=4)
 
         # XP
@@ -1676,7 +1534,9 @@ class QuizScreen(tk.Frame):
         if self._t_aid: self.after_cancel(self._t_aid)
         SFX.play("click")
         self.app.quiz_index += 1
-        if self.app.quiz_index >= len(self.app.current_level["questions"]):
+        diff = self.app.chosen_difficulty.lower()
+        total = len(self.app.current_level.get(diff, self.app.current_level.get("questions", [])))
+        if self.app.quiz_index >= total:
             self.app.show("result")
         else:
             self.app.show("quiz")
@@ -1748,421 +1608,6 @@ class GameOverScreen(tk.Frame):
         self.app.total_xp_session = 0
         self.app.show("story")
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SCREEN — Couple Decision Game
-# ══════════════════════════════════════════════════════════════════════════════
-class CoupleGameScreen(tk.Frame):
-    """
-    2-player mode. Flow per scenario:
-      1. Show scenario text to both players
-      2. Player 1 picks Yes/No (Player 2 looks away)
-      3. Player 2 picks Yes/No (Player 1 looks away)
-      4. Reveal combined outcome + consequence text + XP
-      5. Next scenario or final summary
-    """
-    # Sub-states within one scenario
-    _ST_SCENARIO  = "scenario"   # reading the scenario
-    _ST_P1_PICK   = "p1_pick"    # P1 choosing
-    _ST_P2_PICK   = "p2_pick"    # P2 choosing
-    _ST_REVEAL    = "reveal"     # showing outcome
-
-    def __init__(self, parent, app):
-        super().__init__(parent, bg=C["bg"])
-        self.app        = app
-        self._state     = self._ST_SCENARIO
-        self._p1_choice = None
-        self._p2_choice = None
-        self._total_xp  = 0
-        self._results   = []   # list of {scenario, p1, p2, outcome_key, outcome}
-        self._build()
-
-    # ── Helpers ──────────────────────────────────────────────────────────────
-    @property
-    def _decisions(self):
-        return self.app.current_level.get("couple_decisions", [])
-
-    @property
-    def _current(self):
-        return self._decisions[self.app.quiz_index]
-
-    def _hdr(self, parent, text, sub=""):
-        """Render the top banner."""
-        h = tk.Frame(parent, bg=C["banner"], pady=10)
-        h.pack(fill="x")
-        tk.Label(h, text=text, font=_retro(14, "bold"),
-                 bg=C["banner"], fg="#c0392b").pack()
-        if sub:
-            tk.Label(h, text=sub, font=_retro(10),
-                     bg=C["banner"], fg=C["grey"]).pack()
-        return h
-
-    def _progress_bar(self, parent):
-        idx   = self.app.quiz_index
-        total = len(self._decisions)
-        pb_bg = tk.Frame(parent, bg=C["locked"], height=5)
-        pb_bg.pack(fill="x")
-        tk.Frame(pb_bg, bg="#c0392b", height=5,
-                 width=int(WINDOW_W * (idx + 1) / total)).place(x=0, y=0)
-
-    # ══ STATE: scenario ══════════════════════════════════════════════════════
-    def _build(self):
-        self._clear()
-        dec   = self._current
-        idx   = self.app.quiz_index
-        total = len(self._decisions)
-
-        self._hdr(self, f"💑 Couple Decision  {idx+1}/{total}",
-                  sub=f"Level {self.app.current_level['id']}  ·  {self.app.current_level['difficulty']}")
-        self._progress_bar(self)
-
-        sf  = ScrollFrame(self, bg=C["bg"])
-        sf.pack(fill="both", expand=True)
-        inn = sf.inner
-        inn.configure(padx=18)
-
-        # XP earned so far
-        tk.Label(inn, text=f"⚡ {self._total_xp} XP earned this round",
-                 font=_retro(10, "bold"),
-                 bg=C["bg"], fg=C["xp"]).pack(pady=(12, 4))
-
-        # Scenario card
-        sc = tk.Frame(inn, bg=C["card"], padx=16, pady=14,
-                      highlightbackground="#c0392b", highlightthickness=2)
-        sc.pack(fill="x")
-        tk.Label(sc, text="📋  Situation",
-                 font=_retro(11, "bold"),
-                 bg=C["card"], fg="#c0392b",
-                 anchor="w").pack(fill="x", pady=(0, 6))
-        tk.Label(sc, text=dec["scenario"],
-                 font=_retro(11),
-                 bg=C["card"], fg=C["white"],
-                 wraplength=364, justify="left").pack(anchor="w")
-
-        # Question
-        tk.Label(inn, text=dec["question"],
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["white"],
-                 wraplength=380, justify="center").pack(pady=(16, 4))
-
-        # Player labels
-        row = tk.Frame(inn, bg=C["bg"])
-        row.pack(pady=(4, 16))
-        for lbl, color in [(dec["player1_label"], "#3498db"),
-                            (dec["player2_label"], "#e67e22")]:
-            tk.Label(row, text=f"👤 {lbl}",
-                     font=_retro(10, "bold"),
-                     bg=C["bg"], fg=color).pack(side="left", padx=20)
-
-        # Begin button
-        Btn(inn, "▶  Start — Player 1 Goes First",
-            self._go_p1_pick,
-            bg="#c0392b", fg=C["white"], w=300, fs=12,
-            pad_bg=C["bg"]).pack(pady=(0, 10))
-
-        Btn(inn, "← Back to Level Select",
-            lambda: self.app.show("level_select"),
-            bg=C["card2"], fg=C["white"], w=200, fs=10,
-            pad_bg=C["bg"]).pack(pady=(0, 24))
-
-    # ══ STATE: p1 pick ════════════════════════════════════════════════════════
-    def _go_p1_pick(self):
-        self._clear()
-        dec = self._current
-        p1  = dec["player1_label"]
-        p2  = dec["player2_label"]
-
-        self._hdr(self, f"👤 {p1}'s Turn",
-                  sub=f"{p2} — please look away! 👀")
-
-        sf  = ScrollFrame(self, bg=C["bg"])
-        sf.pack(fill="both", expand=True)
-        inn = sf.inner
-        inn.configure(padx=20)
-
-        # Reminder of scenario (brief)
-        tk.Label(inn, text=dec["question"],
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["white"],
-                 wraplength=370, justify="center").pack(pady=(20, 24))
-
-        # Choice buttons
-        for choice in dec["choices"]:
-            color = "#27ae60" if choice == "Yes" else "#c0392b"
-            Btn(inn, f"  {choice}  ",
-                lambda c=choice: self._p1_chose(c),
-                bg=color, fg=C["white"], w=200, fs=16,
-                pad_bg=C["bg"]).pack(pady=8)
-
-        tk.Label(inn, text=f"Your answer is private — {p2} cannot see it yet.",
-                 font=_retro(9),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(16, 0))
-
-    def _p1_chose(self, choice):
-        self._p1_choice = choice
-        SFX.play("click")
-        self._go_handoff()
-
-    # ══ STATE: handoff screen ═════════════════════════════════════════════════
-    def _go_handoff(self):
-        self._clear()
-        dec = self._current
-        p2  = dec["player2_label"]
-
-        hdr = tk.Frame(self, bg=C["banner"], pady=30)
-        hdr.pack(fill="x")
-        tk.Label(hdr, text="✅  Choice Locked In!",
-                 font=_retro(16, "bold"),
-                 bg=C["banner"], fg="#27ae60").pack()
-        tk.Label(hdr, text=f"Now pass the device to  {p2}",
-                 font=_retro(12),
-                 bg=C["banner"], fg=C["white"]).pack(pady=(6, 0))
-
-        body = tk.Frame(self, bg=C["bg"])
-        body.pack(expand=True)
-        tk.Label(body, text="🔄",
-                 font=("Segoe UI Emoji", 52),
-                 bg=C["bg"]).pack(pady=(40, 10))
-        tk.Label(body, text=f"Hand the device to {p2}\nand ask them to answer.",
-                 font=_retro(13),
-                 bg=C["bg"], fg=C["grey"],
-                 justify="center").pack()
-
-        Btn(body, f"▶  {p2} Is Ready",
-            self._go_p2_pick,
-            bg="#e67e22", fg=C["white"], w=240, fs=13,
-            pad_bg=C["bg"]).pack(pady=(30, 0))
-
-    # ══ STATE: p2 pick ════════════════════════════════════════════════════════
-    def _go_p2_pick(self):
-        self._clear()
-        dec = self._current
-        p2  = dec["player2_label"]
-        p1  = dec["player1_label"]
-
-        self._hdr(self, f"👤 {p2}'s Turn",
-                  sub=f"{p1} — please look away! 👀")
-
-        sf  = ScrollFrame(self, bg=C["bg"])
-        sf.pack(fill="both", expand=True)
-        inn = sf.inner
-        inn.configure(padx=20)
-
-        tk.Label(inn, text=dec["question"],
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["white"],
-                 wraplength=370, justify="center").pack(pady=(20, 24))
-
-        for choice in dec["choices"]:
-            color = "#27ae60" if choice == "Yes" else "#c0392b"
-            Btn(inn, f"  {choice}  ",
-                lambda c=choice: self._p2_chose(c),
-                bg=color, fg=C["white"], w=200, fs=16,
-                pad_bg=C["bg"]).pack(pady=8)
-
-        tk.Label(inn, text=f"Your answer is private — {p1} cannot see it yet.",
-                 font=_retro(9),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(16, 0))
-
-    def _p2_chose(self, choice):
-        self._p2_choice = choice
-        SFX.play("click")
-        self._go_reveal()
-
-    # ══ STATE: reveal ═════════════════════════════════════════════════════════
-    def _go_reveal(self):
-        self._clear()
-        dec        = self._current
-        key        = f"{self._p1_choice}-{self._p2_choice}"
-        outcome    = dec["outcomes"][key]
-        xp         = outcome.get("xp", 0)
-        positive   = outcome.get("positive", False)
-        self._total_xp += xp
-        self.app.quiz_score += (1 if positive else 0)
-
-        self._results.append({
-            "scenario": dec["scenario"][:60] + "…",
-            "p1": dec["player1_label"],
-            "p2": dec["player2_label"],
-            "p1_choice": self._p1_choice,
-            "p2_choice": self._p2_choice,
-            "outcome_key": key,
-            "outcome": outcome,
-        })
-
-        if positive:
-            SFX.play("correct")
-        else:
-            SFX.play("wrong")
-
-        border_c = C["correct"] if positive else C["wrong"]
-        icon     = "✅" if positive else "❌"
-
-        self._hdr(self, "🎯  Outcome Revealed!")
-        self._progress_bar(self)
-
-        sf  = ScrollFrame(self, bg=C["bg"])
-        sf.pack(fill="both", expand=True)
-        inn = sf.inner
-        inn.configure(padx=18)
-
-        # Choices display
-        cr = tk.Frame(inn, bg=C["bg"])
-        cr.pack(pady=(14, 6))
-        for lbl, choice, color in [
-            (dec["player1_label"], self._p1_choice, "#3498db"),
-            (dec["player2_label"], self._p2_choice, "#e67e22")
-        ]:
-            cv_color = "#27ae60" if choice == "Yes" else "#c0392b"
-            tk.Label(cr,
-                     text=f"{lbl}: {choice}",
-                     font=_retro(12, "bold"),
-                     bg=C["bg"], fg=cv_color).pack(side="left", padx=16)
-
-        # Outcome card
-        oc = tk.Frame(inn, bg=C["card"], padx=16, pady=14,
-                      highlightbackground=border_c, highlightthickness=2)
-        oc.pack(fill="x", pady=6)
-        tk.Label(oc, text=f"{icon}  {outcome['title']}",
-                 font=_retro(14, "bold"),
-                 bg=C["card"],
-                 fg=C["correct"] if positive else C["wrong"]).pack(anchor="w")
-        tk.Label(oc, text=outcome["text"],
-                 font=_retro(11),
-                 bg=C["card"], fg=C["white"],
-                 wraplength=364, justify="left").pack(anchor="w", pady=(8, 0))
-
-        # XP flash
-        xp_c = C["xp"] if xp > 0 else C["grey"]
-        tk.Label(inn, text=f"⚡ +{xp} XP  (Total: {self._total_xp} XP)",
-                 font=_retro(11, "bold"),
-                 bg=C["bg"], fg=xp_c).pack(pady=(10, 4))
-
-        # Best outcome hint if not positive
-        if not positive:
-            best = dec["outcomes"].get("Yes-Yes", {})
-            if best:
-                hf = tk.Frame(inn, bg=C["card2"], padx=14, pady=10,
-                              highlightbackground=C["accent2"],
-                              highlightthickness=1)
-                hf.pack(fill="x", pady=4)
-                tk.Label(hf, text="💡 Best Outcome (Yes + Yes):",
-                         font=_retro(10, "bold"),
-                         bg=C["card2"], fg=C["accent"]).pack(anchor="w")
-                tk.Label(hf, text=best.get("text","")[:180]+"…",
-                         font=_retro(9),
-                         bg=C["card2"], fg=C["grey"],
-                         wraplength=358, justify="left").pack(anchor="w")
-
-        # Next or finish
-        idx   = self.app.quiz_index
-        total = len(self._decisions)
-        lbl   = "NEXT SCENARIO  ➜" if idx + 1 < total else "SEE SUMMARY  ✔"
-        Btn(inn, lbl, self._next,
-            bg=C["accent"], fg=C["dark"], w=260, fs=13,
-            pad_bg=C["bg"]).pack(pady=(14, 24))
-
-    # ══ Navigation ════════════════════════════════════════════════════════════
-    def _next(self):
-        self._p1_choice = None
-        self._p2_choice = None
-        self.app.quiz_index += 1
-        total = len(self._decisions)
-        if self.app.quiz_index >= total:
-            self._go_summary()
-        else:
-            self._build()
-
-    def _go_summary(self):
-        self._clear()
-        total    = len(self._decisions)
-        score    = self.app.quiz_score
-        pct      = score / total
-        self.app.total_xp_session = self._total_xp
-
-        # Determine win/fail
-        if pct >= 0.6:
-            SFX.play("win" if pct < 1.0 else "win_perfect")
-            self.app.congrats_level = {
-                "lvl":   self.app.current_level,
-                "score": score, "total": total,
-                "stars": 3 if pct==1.0 else (2 if pct>=0.8 else 1),
-                "pct":   pct
-            }
-        else:
-            SFX.play("fail")
-            self.app.congrats_level = None
-
-        self._hdr(self, "💑  Couple Decision Summary")
-
-        sf  = ScrollFrame(self, bg=C["bg"])
-        sf.pack(fill="both", expand=True)
-        inn = sf.inner
-        inn.configure(padx=18)
-
-        # Score header
-        r_icon = "🏆" if pct==1.0 else ("👏" if pct>=0.6 else "📚")
-        tk.Label(inn, text=r_icon,
-                 font=("Segoe UI Emoji",48),
-                 bg=C["bg"]).pack(pady=(16, 4))
-        tk.Label(inn,
-                 text=f"{score} / {total} Best Decisions",
-                 font=_retro(20, "bold"),
-                 bg=C["bg"], fg=C["white"]).pack()
-        tk.Label(inn, text=f"⚡ {self._total_xp} XP earned",
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["xp"]).pack(pady=(4, 12))
-
-        # Per-scenario recap
-        tk.Label(inn, text="Decision Recap",
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["accent"],
-                 anchor="w").pack(fill="x", pady=(0, 6))
-
-        for i, r in enumerate(self._results):
-            pos  = r["outcome"].get("positive", False)
-            bc   = C["correct"] if pos else C["wrong"]
-            icon = "✅" if pos else "❌"
-            row  = tk.Frame(inn, bg=C["card"], padx=12, pady=8,
-                            highlightbackground=bc, highlightthickness=1)
-            row.pack(fill="x", pady=3)
-            tk.Label(row,
-                     text=f"{icon}  Scenario {i+1}: {r['outcome']['title']}",
-                     font=_retro(10, "bold"),
-                     bg=C["card"], fg=bc,
-                     wraplength=366).pack(anchor="w")
-            tk.Label(row,
-                     text=f"{r['p1']}: {r['p1_choice']}   {r['p2']}: {r['p2_choice']}   ⚡+{r['outcome'].get('xp',0)}",
-                     font=_retro(9),
-                     bg=C["card"], fg=C["grey"]).pack(anchor="w")
-
-        tk.Label(inn, text="", bg=C["bg"]).pack()
-
-        Btn(inn, "🔁  Play Again",
-            self._retry,
-            bg=C["accent2"], fg=C["white"], w=250, fs=12,
-            pad_bg=C["bg"]).pack(pady=(4, 6))
-        Btn(inn, "🏠  Level Select",
-            lambda: self.app.show("level_select"),
-            bg=C["card"], fg=C["white"], w=250, fs=12,
-            pad_bg=C["bg"]).pack(pady=(0, 24))
-
-    def _retry(self):
-        SFX.play("start")
-        self.app.quiz_index   = 0
-        self.app.quiz_score   = 0
-        self._total_xp        = 0
-        self._results         = []
-        self._p1_choice       = None
-        self._p2_choice       = None
-        self._build()
-
-    def _clear(self):
-        for w in self.winfo_children():
-            w.destroy()
-
-
-# ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Result
 # ══════════════════════════════════════════════════════════════════════════════
 class ResultScreen(tk.Frame):
@@ -2186,7 +1631,8 @@ class ResultScreen(tk.Frame):
         app   = self.app
         lvl   = app.current_level
         lid   = lvl["id"]
-        total = len(lvl["questions"])
+        diff  = app.chosen_difficulty.lower()
+        total = len(lvl.get(diff, lvl.get("questions", [1])))
         score = app.quiz_score
         pct   = score / total
         stars = 3 if pct==1.0 else (2 if pct>=0.6 else 1)
@@ -2218,10 +1664,10 @@ class ResultScreen(tk.Frame):
         new_b = []
         checks = [
             ("first_step",   lid == 1),
-            ("beginner",     all(x in completed for x in [1, 2, 3])),
-            ("intermediate", all(x in completed for x in [1, 2, 3, 4])),
-            ("expert",       all(x in completed for x in [5])),
-            ("deciwise",     all(x in completed for x in range(1, 6))),
+            ("beginner",     1 in completed),
+            ("intermediate", all(x in completed for x in [1, 2])),
+            ("expert",       all(x in completed for x in [1, 2])),
+            ("deciwise",     all(x in completed for x in range(1, 3))),
             ("perfect_run",  pct == 1.0),
             ("speedster",    app.fast_answers >= 5),
         ]
@@ -2257,7 +1703,8 @@ class ResultScreen(tk.Frame):
     def _build(self):
         app     = self.app
         lvl     = app.current_level
-        total   = len(lvl["questions"])
+        diff    = app.chosen_difficulty.lower()
+        total   = len(lvl.get(diff, lvl.get("questions", [1])))
         score   = app.quiz_score
         pct     = score / total
         stars   = self._stars

@@ -2,17 +2,17 @@
   "levels": [
     {
       "id": 1,
-      "title": "Chapter 1 — Beginner",
+      "title": "Chapter 1: Condom Quiz",
       "difficulty": "Easy",
       "difficulty_color": "#2ecc71",
-      "story": "Welcome to Chapter 1: The Condom Quiz!\n\nBefore the story begins, let's test what you already know about condoms at the Beginner level.\n\n(Video story coming soon...)\n\nAnswer the 10 questions below to complete the Beginner tier.",
-      "story_image": "couple",
-      "questions": [
+      "story": "Welcome to Chapter 1!\n\nIn this chapter you will learn all about condoms — what they are, how to use them correctly, and why they matter for your health.\n\n(Video story coming soon...)\n\nAfter reading, choose your difficulty level and start the quiz!",
+      "story_image": "condom",
+      "beginner": [
         {
           "question": "What is a condom?",
           "options": ["Medicine", "Protective barrier", "Vitamin", "Bandage"],
           "answer": "Protective barrier",
-          "explanation": "A condom is a protective barrier used during sex to prevent pregnancy and reduce the risk of sexually transmitted infections (STIs)."
+          "explanation": "A condom is a protective barrier used during sex to prevent pregnancy and reduce the risk of STIs."
         },
         {
           "question": "What are the two main types of condoms?",
@@ -24,25 +24,25 @@
           "question": "What can condoms help prevent?",
           "options": ["Fever", "Pregnancy and STIs", "Cough", "Headache"],
           "answer": "Pregnancy and STIs",
-          "explanation": "Condoms are the only contraceptive method that helps prevent both unwanted pregnancy and sexually transmitted infections (STIs) at the same time."
+          "explanation": "Condoms help prevent both unwanted pregnancy and sexually transmitted infections (STIs) at the same time."
         },
         {
-          "question": "What does STI mean?",
+          "question": "What does STI stand for?",
           "options": ["Sexually Transmitted Infection", "Safe Treatment Information", "Sexual Testing Instruction", "Standard Treatment Index"],
           "answer": "Sexually Transmitted Infection",
-          "explanation": "STI stands for Sexually Transmitted Infection — infections passed from one person to another through sexual contact, such as HIV, chlamydia, and gonorrhea."
+          "explanation": "STI stands for Sexually Transmitted Infection — infections passed through sexual contact, such as HIV, chlamydia, and gonorrhea."
         },
         {
           "question": "Where is an external condom worn?",
           "options": ["Hand", "Foot", "Penis", "Arm"],
           "answer": "Penis",
-          "explanation": "An external condom (also called a male condom) is worn over the erect penis before sexual activity."
+          "explanation": "An external condom is worn over the erect penis before sexual activity."
         },
         {
           "question": "Where is an internal condom placed?",
           "options": ["Inside the vagina", "Inside the mouth", "On the hand", "On the arm"],
           "answer": "Inside the vagina",
-          "explanation": "An internal condom (also called a female condom) is inserted inside the vagina (or anus) before sex to prevent pregnancy and STIs."
+          "explanation": "An internal condom is inserted inside the vagina (or anus) before sex to prevent pregnancy and STIs."
         },
         {
           "question": "Can a condom be reused?",
@@ -54,617 +54,189 @@
           "question": "What should you check before using a condom?",
           "options": ["Color", "Expiration date", "Smell", "Brand popularity"],
           "answer": "Expiration date",
-          "explanation": "Always check the expiration date before using a condom. An expired condom is more likely to break or fail, reducing protection."
+          "explanation": "Always check the expiration date. An expired condom is more likely to break or fail."
         },
         {
           "question": "Do condoms reduce the risk of STIs?",
           "options": ["Yes", "No", "Never", "Only sometimes when damaged"],
           "answer": "Yes",
-          "explanation": "Yes. When used correctly and consistently, condoms significantly reduce the risk of transmitting or contracting STIs including HIV."
+          "explanation": "When used correctly and consistently, condoms significantly reduce the risk of transmitting or contracting STIs including HIV."
         },
         {
-          "question": "Where should used condoms go?",
+          "question": "Where should used condoms be disposed of?",
           "options": ["Toilet", "River", "Trash bin", "Sink"],
           "answer": "Trash bin",
-          "explanation": "Used condoms should be wrapped and disposed of in a trash bin. Never flush them down the toilet as they can clog pipes and harm the environment."
+          "explanation": "Wrap used condoms in tissue and dispose of them in a trash bin. Never flush them as they can clog pipes and harm the environment."
         }
       ],
-      "myth_busting": [
-        {
-          "question": "MYTH or FACT: Condoms are 100% effective at preventing pregnancy.",
-          "options": ["MYTH — Condoms are 97-98% effective with perfect use", "FACT — Condoms never fail if used correctly", "MYTH — Condoms only work 50% of the time", "FACT — Condoms are the most effective method available"],
-          "answer": "MYTH — Condoms are 97-98% effective with perfect use",
-          "explanation": "With perfect use, external condoms are 97-98% effective. With typical use, effectiveness drops to about 85-87%. No method is 100% effective."
-        },
-        {
-          "question": "MYTH or FACT: You cannot get an STI if you use a condom.",
-          "options": ["MYTH — Condoms reduce but do not eliminate all STI risks", "FACT — Condoms block all STIs completely", "MYTH — STIs can only be spread without any protection", "FACT — Condoms are useless against STIs"],
-          "answer": "MYTH — Condoms reduce but do not eliminate all STI risks",
-          "explanation": "Condoms greatly reduce STI risk but do not eliminate it entirely. Some STIs like herpes or HPV can be transmitted through skin-to-skin contact in areas not covered by the condom."
-        },
-        {
-          "question": "MYTH or FACT: Wearing two condoms at once provides double protection.",
-          "options": ["MYTH — Wearing two condoms increases friction and the risk of tearing", "FACT — Two condoms always equal double protection", "MYTH — Double condom use is recommended by health experts", "FACT — More condoms always means more safety"],
-          "answer": "MYTH — Wearing two condoms increases friction and the risk of tearing",
-          "explanation": "This is a dangerous myth. Wearing two condoms (double-bagging) creates friction between them which can cause both to tear. One correctly used condom is far safer."
-        },
-        {
-          "question": "MYTH or FACT: Condoms are only for unmarried people.",
-          "options": ["MYTH — Anyone who is sexually active can and should use condoms", "FACT — Married couples should not use condoms", "MYTH — Condoms are only for teenagers", "FACT — Condoms are not needed in committed relationships"],
-          "answer": "MYTH — Anyone who is sexually active can and should use condoms",
-          "explanation": "This is a myth. Condoms are for everyone regardless of marital status. They protect against both unintended pregnancy and STIs for all sexually active individuals."
-        },
-        {
-          "question": "MYTH or FACT: You can tell if someone has an STI just by looking at them.",
-          "options": ["MYTH — Many STIs have no visible symptoms", "FACT — STIs always cause visible signs", "MYTH — Only people who look sick can transmit STIs", "FACT — Healthy-looking people cannot have STIs"],
-          "answer": "MYTH — Many STIs have no visible symptoms",
-          "explanation": "Many STIs like HIV, chlamydia, and gonorrhea can be present with no visible symptoms. Regular testing and consistent condom use are the only reliable protections."
-        }
-      ],
-      "scenario": [
-        {
-          "question": "Your friend says they will not use a condom because they trust their partner. What is the best advice?",
-          "options": ["Agree — trust is enough", "Suggest using a condom since trust does not prevent STIs or pregnancy", "Tell them to use two condoms instead", "Say nothing — it is their choice"],
-          "answer": "Suggest using a condom since trust does not prevent STIs or pregnancy",
-          "explanation": "Trusting a partner is important, but trust alone does not prevent STIs or pregnancy. Many people are unaware they carry an STI. Condoms remain the safest option."
-        },
-        {
-          "question": "You notice the condom packaging is torn before use. What should you do?",
-          "options": ["Use it anyway — it looks fine", "Discard it and use a new, intact condom", "Tape the packaging and use it", "Use it carefully to avoid tearing further"],
-          "answer": "Discard it and use a new, intact condom",
-          "explanation": "A torn package may have exposed the condom to air, heat, or bacteria, compromising its integrity. Always use a condom from an undamaged, sealed package."
-        },
-        {
-          "question": "Someone asks where to get condoms. What is the best suggestion?",
-          "options": ["From rumors online", "From a health center, pharmacy, or community clinic", "From friends only", "Only from hospitals"],
-          "answer": "From a health center, pharmacy, or community clinic",
-          "explanation": "Condoms are available for free or low cost at health centers, pharmacies, and community clinics. These are reliable sources that ensure the condoms are properly stored and within date."
-        },
-        {
-          "question": "A condom breaks during sex. What is the correct immediate response?",
-          "options": ["Ignore it", "Seek medical advice promptly — consider emergency contraception and STI testing", "Use another condom immediately without addressing it", "Wait and see if anything happens"],
-          "answer": "Seek medical advice promptly — consider emergency contraception and STI testing",
-          "explanation": "If a condom breaks, seek medical advice as soon as possible. Emergency contraception is most effective within 72 hours. STI testing should also be considered."
-        },
-        {
-          "question": "Your partner says they prefer sex without a condom. You want to use one. What should you do?",
-          "options": ["Give in to keep the peace", "Explain your reasons calmly and stand firm on using protection", "Agree but feel bad about it", "End the relationship immediately"],
-          "answer": "Explain your reasons calmly and stand firm on using protection",
-          "explanation": "Your sexual health is important. It is okay to stand firm on using protection. A respectful partner will understand. Setting boundaries is a sign of healthy communication."
-        }
-      ],
-      "couple_decisions": [
-        {
-          "scenario": "Alex and Sam are about to have sex for the first time. Alex has a condom but Sam says they do not need it because they trust each other. Alex is unsure what to do.",
-          "question": "Should Alex insist on using the condom?",
-          "player1_label": "Alex",
-          "player2_label": "Sam",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Protected Together", "text": "Both Alex and Sam agree to use the condom. They have a safer experience knowing they are both protected from unwanted pregnancy and STIs. Mutual agreement on protection is the healthiest choice.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "Standing Firm", "text": "Alex wants to use a condom but Sam refuses. Alex stands firm — this is the right decision. Protection is not about distrust; it is about safety. A respectful partner will understand.", "xp": 10, "positive": true},
-            "No-Yes": {"title": "One Step Forward", "text": "Sam is willing to use a condom but Alex declines. Sam's instinct is right — they should both advocate for protection. Without a condom, both are at risk.", "xp": 5, "positive": false},
-            "No-No": {"title": "Unprotected Risk", "text": "Neither Alex nor Sam uses a condom. They are now at risk of both unintended pregnancy and STIs. Trust does not replace protection — both partners need to take responsibility.", "xp": 0, "positive": false}
-          }
-        },
-        {
-          "scenario": "Jordan finds an old condom in their wallet. It has been there for over a year and the packaging looks a bit worn. Their partner says it should be fine to use.",
-          "question": "Should they check the expiration date and packaging before using it?",
-          "player1_label": "Jordan",
-          "player2_label": "Partner",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Smart Check", "text": "Both agree to check the condom first. They find it is expired and the packaging is damaged — they discard it and get a fresh one. Checking before use is always the right call.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "One Cautious Partner", "text": "Jordan wants to check but their partner says it is fine. Jordan insists — and discovers it is expired. Good catch! Never skip checking a condom before use.", "xp": 10, "positive": true},
-            "No-Yes": {"title": "Partner Saves the Day", "text": "Jordan is willing to skip the check but their partner insists on checking. The condom turns out to be expired. Always listen when your partner raises safety concerns.", "xp": 5, "positive": false},
-            "No-No": {"title": "Risky Oversight", "text": "Neither checks the condom. They use an expired, possibly damaged condom that is far more likely to break. Always check the date and packaging before use.", "xp": 0, "positive": false}
-          }
-        },
-        {
-          "scenario": "Riley and Casey are discussing contraception. Riley suggests using a condom. Casey says they have heard that two condoms are better than one for extra protection.",
-          "question": "Should they use just one condom as recommended?",
-          "player1_label": "Riley",
-          "player2_label": "Casey",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Correctly Protected", "text": "Both Riley and Casey agree to use one condom correctly. One properly used condom provides optimal protection. Double-bagging actually increases the risk of tearing.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "Right Instinct", "text": "Riley wants to use one condom correctly but Casey wants two. Riley is right — one condom used properly is safer. Using two causes friction and increases tear risk.", "xp": 8, "positive": false},
-            "No-Yes": {"title": "Good Information Shared", "text": "Riley suggests two condoms but Casey corrects them — one is better. Casey has the right information. Sharing accurate knowledge protects both partners.", "xp": 8, "positive": false},
-            "No-No": {"title": "Double Danger", "text": "Both Riley and Casey decide to use two condoms thinking it is safer. This is actually more dangerous — the friction between the two condoms makes them more likely to tear.", "xp": 0, "positive": false}
-          }
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "title": "Chapter 1 — Intermediate",
-      "difficulty": "Medium",
-      "difficulty_color": "#f39c12",
-      "story": "Welcome back! Now try the Intermediate level of Chapter 1: The Condom Quiz.\n\n(Video story coming soon...)\n\nAnswer the 10 questions below to complete the Intermediate tier.",
-      "story_image": "health_center",
-      "questions": [
+      "intermediate": [
         {
           "question": "When should an external condom be put on?",
           "options": ["After sex", "Before sexual contact", "After ejaculation", "The next day"],
           "answer": "Before sexual contact",
-          "explanation": "An external condom should be put on before any sexual contact, not just before ejaculation. Pre-ejaculatory fluid can also transmit STIs and cause pregnancy."
+          "explanation": "A condom should be put on before any sexual contact. Pre-ejaculatory fluid can also transmit STIs and cause pregnancy."
         },
         {
           "question": "How should a condom package be opened?",
           "options": ["With scissors", "With teeth", "Carefully by hand", "With a knife"],
           "answer": "Carefully by hand",
-          "explanation": "Always open a condom package carefully by hand using the tear notch. Using scissors, teeth, or knives can accidentally puncture or tear the condom."
+          "explanation": "Always open a condom package carefully by hand using the tear notch. Scissors, teeth, or knives can puncture the condom."
         },
         {
           "question": "What should you do with an expired condom?",
           "options": ["Use it anyway", "Wash it", "Throw it away", "Repair it"],
           "answer": "Throw it away",
-          "explanation": "Expired condoms degrade over time — the latex weakens and the lubricant breaks down. An expired condom is more likely to break and should always be discarded."
+          "explanation": "Expired condoms degrade over time — the latex weakens and the lubricant breaks down, making it more likely to break."
         },
         {
           "question": "Why should you pinch the condom tip before rolling it on?",
           "options": ["To remove trapped air and leave space", "To make it colorful", "To make it reusable", "To make it bigger"],
           "answer": "To remove trapped air and leave space",
-          "explanation": "Pinching the tip removes air and leaves a small reservoir at the end to collect semen. Air trapped in the tip can cause the condom to break during sex."
+          "explanation": "Pinching the tip removes air and leaves a small reservoir at the end to collect semen. Trapped air can cause the condom to break."
         },
         {
           "question": "Which lubricant is safe to use with latex condoms?",
           "options": ["Cooking oil", "Baby oil", "Water-based lubricant", "Petroleum jelly"],
           "answer": "Water-based lubricant",
-          "explanation": "Only water-based lubricants are safe with latex condoms. Oil-based lubricants (cooking oil, baby oil, petroleum jelly) degrade latex and cause condoms to break."
+          "explanation": "Only water-based lubricants are safe with latex condoms. Oil-based lubricants degrade latex and cause condoms to break."
         },
         {
           "question": "Can you wear two external condoms at once for extra protection?",
           "options": ["Yes, always", "No", "Yes, for extra protection", "Only at night"],
           "answer": "No",
-          "explanation": "Wearing two condoms at once (double-bagging) is not safer — it creates friction that can cause both condoms to tear. One correctly used condom is the safest option."
+          "explanation": "Wearing two condoms creates friction that can cause both to tear. One correctly used condom is the safest option."
         },
         {
           "question": "What should you do with a used condom after sex?",
           "options": ["Reuse it", "Flush it down the toilet", "Throw it in the trash", "Wash it"],
           "answer": "Throw it in the trash",
-          "explanation": "Wrap the used condom in tissue and dispose of it in the trash. Never flush condoms — they can block pipes and damage the environment."
+          "explanation": "Wrap the used condom in tissue and dispose of it in the trash. Never flush condoms."
         },
         {
           "question": "How many times can one condom be used?",
           "options": ["Once", "Twice", "Three times", "Many times"],
           "answer": "Once",
-          "explanation": "Each condom is designed for single use only. Reusing a condom weakens the material, increasing the risk of breakage, pregnancy, and STI transmission."
+          "explanation": "Each condom is designed for single use only. Reusing a condom weakens the material and increases breakage risk."
         },
         {
           "question": "What does consent mean in the context of sexual activity?",
           "options": ["Pressure", "Agreement given freely", "Force", "Obedience"],
           "answer": "Agreement given freely",
-          "explanation": "Consent means a clear, enthusiastic, and freely given agreement to engage in sexual activity. It must be ongoing and can be withdrawn at any time."
+          "explanation": "Consent means a clear, enthusiastic, and freely given agreement to engage in sexual activity. It can be withdrawn at any time."
         },
         {
           "question": "Who is the most reliable source for reproductive health questions?",
           "options": ["Rumors", "Anonymous online comments", "Qualified health professionals", "Unverified social media posts"],
           "answer": "Qualified health professionals",
-          "explanation": "Qualified health professionals — doctors, nurses, and counselors — provide accurate, evidence-based information. Always verify health information with a trusted medical source."
+          "explanation": "Qualified health professionals provide accurate, evidence-based information. Always verify health information with a trusted medical source."
         }
       ],
-      "myth_busting": [
-        {
-          "question": "MYTH or FACT: Oil-based lubricants are safe to use with latex condoms.",
-          "options": ["MYTH — Oil-based products weaken latex and cause condoms to break", "FACT — Any lubricant works with latex condoms", "MYTH — Only petroleum jelly damages condoms", "FACT — Oil makes condoms more effective"],
-          "answer": "MYTH — Oil-based products weaken latex and cause condoms to break",
-          "explanation": "This is a dangerous myth. Oil-based products (cooking oil, baby oil, lotion, petroleum jelly) degrade latex within minutes. Only water-based or silicone-based lubricants are safe with latex condoms."
-        },
-        {
-          "question": "MYTH or FACT: Condoms should be stored in a wallet for easy access.",
-          "options": ["MYTH — Heat and friction in wallets damage condom integrity", "FACT — Wallets are the ideal storage for condoms", "MYTH — Only old condoms are damaged by wallets", "FACT — Condoms in wallets last longer due to compression"],
-          "answer": "MYTH — Heat and friction in wallets damage condom integrity",
-          "explanation": "Storing condoms in wallets exposes them to heat, pressure, and friction which degrade the latex and weaken the material. Store condoms in a cool, dry place away from direct sunlight."
-        },
-        {
-          "question": "MYTH or FACT: If a condom feels tight, it is safe to use a larger size.",
-          "options": ["FACT — Condoms come in different sizes and the right fit is important", "MYTH — All condoms are the same size", "FACT — Tighter condoms always provide better protection", "MYTH — Size does not affect condom performance"],
-          "answer": "FACT — Condoms come in different sizes and the right fit is important",
-          "explanation": "This is true. Condoms that are too tight are more likely to break, while condoms that are too loose may slip off. Using the correct size improves both comfort and effectiveness."
-        },
-        {
-          "question": "MYTH or FACT: You do not need to use a condom if your partner is on the pill.",
-          "options": ["MYTH — The pill prevents pregnancy but does not protect against STIs", "FACT — The pill makes condoms unnecessary", "MYTH — Only condoms prevent STIs at all", "FACT — Combining methods increases risk"],
-          "answer": "MYTH — The pill prevents pregnancy but does not protect against STIs",
-          "explanation": "The contraceptive pill is highly effective at preventing pregnancy but offers no protection against STIs. Condoms remain essential for STI prevention regardless of other contraceptive methods."
-        },
-        {
-          "question": "MYTH or FACT: Consent can be given once and does not need to be renewed.",
-          "options": ["MYTH — Consent must be given for each sexual encounter and can be withdrawn", "FACT — One agreement covers all future encounters", "MYTH — Consent only matters the first time", "FACT — Past consent means future consent"],
-          "answer": "MYTH — Consent must be given for each sexual encounter and can be withdrawn",
-          "explanation": "Consent is not a one-time agreement. It must be freely given for each encounter and can be withdrawn at any point. Past consent does not imply future consent."
-        }
-      ],
-      "scenario": [
-        {
-          "question": "You open a condom and notice it feels dry and brittle. What should you do?",
-          "options": ["Use it — it is probably fine", "Discard it and use a new condom", "Add extra lubrication and use it", "Soak it in water first"],
-          "answer": "Discard it and use a new condom",
-          "explanation": "A dry, brittle condom has degraded latex and is likely to break during use. Discard it immediately and use a condom from a new, properly sealed package."
-        },
-        {
-          "question": "Your partner says they are on the pill so you do not need a condom. What is the best response?",
-          "options": ["Agree — the pill is enough", "Explain that the pill does not protect against STIs and suggest using a condom too", "Trust them and skip the condom", "Only use a condom sometimes"],
-          "answer": "Explain that the pill does not protect against STIs and suggest using a condom too",
-          "explanation": "The pill prevents pregnancy but provides zero STI protection. Using both the pill and a condom (dual protection) provides the best coverage for both pregnancy and STI prevention."
-        },
-        {
-          "question": "A health worker recommends you get an STI test. You feel embarrassed. What is the best mindset?",
-          "options": ["Refuse — only unhealthy people need STI tests", "Accept — STI testing is a normal part of sexual health care", "Ignore the recommendation", "Only test if you have symptoms"],
-          "answer": "Accept — STI testing is a normal part of sexual health care",
-          "explanation": "Regular STI testing is a responsible health practice, not a sign of shameful behavior. Many STIs have no symptoms, so testing is the only way to know your status."
-        },
-        {
-          "question": "You are about to use a condom but realize you do not have water-based lubricant — only hand lotion is available. What should you do?",
-          "options": ["Use the hand lotion", "Use the condom without extra lubricant", "Do not use the condom if no lubricant is available", "Find a water-based lubricant before proceeding"],
-          "answer": "Use the condom without extra lubricant",
-          "explanation": "Most condoms come pre-lubricated. Using oil or lotion-based products will degrade the latex. It is safer to use the pre-lubricated condom without adding extra lubricant than to use an oil-based product."
-        },
-        {
-          "question": "Your partner wants to stop using a condom mid-way through sex. What should you do?",
-          "options": ["Agree to make them happy", "Firmly decline and explain that protection must continue", "Agree just this once", "Ignore your concerns"],
-          "answer": "Firmly decline and explain that protection must continue",
-          "explanation": "Sexual health decisions apply throughout the entire encounter. You have the right to maintain protection at all times. Removing a condom without agreement (known as stealthing) is a violation of consent."
-        }
-      ],
-      "couple_decisions": [
-        {
-          "scenario": "Morgan and Taylor are buying condoms for the first time. Taylor wants to grab the cheapest pack without checking sizes or expiry dates. Morgan thinks they should check properly.",
-          "question": "Should they check the size options and expiry dates before buying?",
-          "player1_label": "Morgan",
-          "player2_label": "Taylor",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Informed Purchase", "text": "Both Morgan and Taylor agree to check sizes and expiry dates. They choose a properly sized, in-date condom. Good fit and freshness significantly improve condom effectiveness.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "One Partner Diligent", "text": "Morgan checks carefully but Taylor rushes. Morgan spots an expired pack — a good catch. Both partners should be involved in safe choices.", "xp": 8, "positive": false},
-            "No-Yes": {"title": "Taylor Steps Up", "text": "Taylor insists on checking even though Morgan wants to hurry. Taylor finds a better-fit option. Checking before buying is always worth the extra minute.", "xp": 8, "positive": false},
-            "No-No": {"title": "Rushed and Risky", "text": "Neither checks. They end up with an ill-fitting condom close to its expiry date. Both issues increase failure risk. Always take a moment to check before buying.", "xp": 0, "positive": false}
-          }
-        },
-        {
-          "scenario": "Drew and Avery have been together for 6 months. Avery says they no longer need to use condoms since they trust each other. Drew is unsure.",
-          "question": "Should they continue using condoms or get tested together first before changing their approach?",
-          "player1_label": "Drew",
-          "player2_label": "Avery",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Responsible Transition", "text": "Both Drew and Avery agree to get tested together before making any changes. This is the healthiest approach — knowing each other's STI status before dropping condom use is responsible and caring.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "Drew Stands Firm", "text": "Drew wants to test first but Avery refuses. Drew is right to be cautious. Without testing, you cannot know either partner's STI status regardless of trust.", "xp": 8, "positive": false},
-            "No-Yes": {"title": "Avery Reconsiders", "text": "Avery initially wants to drop condoms but Drew suggests testing first. Good thinking from Drew. Getting tested together is a sign of mutual respect and care.", "xp": 8, "positive": false},
-            "No-No": {"title": "Trust Without Testing", "text": "Both agree to stop using condoms without testing. This is risky — either partner may have an undetected STI. Trust is important but testing is the responsible step before changing protection methods.", "xp": 0, "positive": false}
-          }
-        },
-        {
-          "scenario": "Jamie needs to get condoms but feels embarrassed about buying them at the pharmacy. Their partner suggests asking a friend to buy them instead or going to a health clinic.",
-          "question": "Should Jamie go to the health clinic where condoms may be available for free and without embarrassment?",
-          "player1_label": "Jamie",
-          "player2_label": "Partner",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Accessible Protection", "text": "Both Jamie and their partner agree to visit the health clinic. They get free condoms from a health worker who also answers their questions. Health clinics are safe, judgment-free spaces for reproductive health.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "Jamie Takes the Step", "text": "Jamie visits the clinic despite their partner's reluctance. They return with free condoms and better information. Taking initiative for your health is always the right move.", "xp": 10, "positive": true},
-            "No-Yes": {"title": "Partner Encourages", "text": "The partner wants to go but Jamie is too embarrassed. The partner visits alone. It would have been more effective if Jamie came too — health knowledge is for both partners.", "xp": 5, "positive": false},
-            "No-No": {"title": "Avoiding Protection", "text": "Neither visits the clinic. They end up without condoms and at risk. Embarrassment should never come before health. Health clinics are there to help without judgment.", "xp": 0, "positive": false}
-          }
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "title": "Chapter 1 — Difficult",
-      "difficulty": "Hard",
-      "difficulty_color": "#e74c3c",
-      "story": "Ready for the challenge? This is the Difficult level of Chapter 1: The Condom Quiz.\n\n(Video story coming soon...)\n\nAnswer the 10 questions below to complete the Difficult tier.",
-      "story_image": "seminar",
-      "questions": [
+      "difficult": [
         {
           "question": "What should you do if a condom breaks during sex?",
           "options": ["Ignore it", "Seek prompt medical advice", "Reuse a new condom immediately", "Wait for symptoms"],
           "answer": "Seek prompt medical advice",
-          "explanation": "If a condom breaks, seek medical advice promptly. Emergency contraception is most effective within 72 hours. HIV PEP (post-exposure prophylaxis) must start within 72 hours if HIV exposure is a concern."
+          "explanation": "If a condom breaks, seek medical advice promptly. Emergency contraception is most effective within 72 hours. HIV PEP must start within 72 hours if HIV exposure is a concern."
         },
         {
           "question": "What should you do if a condom slips off during sex?",
           "options": ["Ignore it", "Continue without any protection", "Address the situation and seek health advice promptly", "Wash and reuse it"],
           "answer": "Address the situation and seek health advice promptly",
-          "explanation": "A slipped condom is a contraceptive failure. Stop, address the situation, and seek health advice — including emergency contraception and STI testing if appropriate."
+          "explanation": "A slipped condom is a contraceptive failure. Stop, address the situation, and seek health advice including emergency contraception and STI testing if appropriate."
         },
         {
           "question": "Are condoms 100% effective at preventing pregnancy and STIs?",
           "options": ["Yes", "No", "Always, if used correctly", "Only for teenagers"],
           "answer": "No",
-          "explanation": "No contraceptive method is 100% effective. With perfect use, condoms are 97-98% effective at preventing pregnancy. Human error (incorrect use, inconsistent use) reduces effectiveness further."
+          "explanation": "No contraceptive method is 100% effective. With perfect use, condoms are 97-98% effective at preventing pregnancy."
         },
         {
           "question": "Does trusting a partner completely eliminate the risk of STIs?",
           "options": ["Yes", "No", "Always", "Only for adults"],
           "answer": "No",
-          "explanation": "Trust does not eliminate STI risk. Many people are unaware they carry an STI because many infections are asymptomatic. Regular testing and consistent condom use remain essential."
+          "explanation": "Trust does not eliminate STI risk. Many people are unaware they carry an STI because many infections are asymptomatic."
         },
         {
           "question": "Where should teenagers go for reliable information about sexual health?",
           "options": ["Rumors from peers", "Random social media posts", "Qualified health professionals", "Gossip"],
           "answer": "Qualified health professionals",
-          "explanation": "Qualified health professionals — doctors, nurses, school health counselors — provide accurate, age-appropriate, and evidence-based sexual health information."
+          "explanation": "Qualified health professionals provide accurate, age-appropriate, and evidence-based sexual health information."
         },
         {
-          "question": "Within how many hours must HIV PEP (Post-Exposure Prophylaxis) be started after possible HIV exposure?",
+          "question": "Within how many hours must HIV PEP be started after possible HIV exposure?",
           "options": ["Within 24 weeks", "Within 72 hours", "After one month", "After one year"],
           "answer": "Within 72 hours",
-          "explanation": "HIV PEP must be started as soon as possible after potential HIV exposure and no later than 72 hours (3 days). It must then be taken daily for 28 days to be effective."
+          "explanation": "HIV PEP must be started as soon as possible and no later than 72 hours after potential exposure. It must then be taken daily for 28 days."
         },
         {
           "question": "What can oil-based products do to latex condoms?",
           "options": ["Strengthen them", "Change their color", "Weaken and break them down", "Make them reusable"],
           "answer": "Weaken and break them down",
-          "explanation": "Oil-based products (petroleum jelly, cooking oil, lotion) degrade latex within minutes, dramatically increasing the risk of the condom breaking during use."
+          "explanation": "Oil-based products degrade latex within minutes, dramatically increasing the risk of the condom breaking during use."
         },
         {
           "question": "What should you do if you are pressured into sex without a condom?",
           "options": ["Agree immediately to avoid conflict", "Ignore your feelings", "Set boundaries clearly and say no if you wish", "Follow what your partner wants"],
           "answer": "Set boundaries clearly and say no if you wish",
-          "explanation": "You always have the right to say no or to insist on protection. Sexual coercion — pressuring someone into sex or into unprotected sex — is a form of abuse. Your boundaries must be respected."
+          "explanation": "You always have the right to say no or to insist on protection. Sexual coercion is a form of abuse and your boundaries must be respected."
         },
         {
           "question": "Why might someone choose to combine condoms with another contraceptive method?",
           "options": ["To provide additional pregnancy protection beyond what a condom alone offers", "To cure existing STIs", "To reuse condoms safely", "To guarantee absolutely zero risk"],
           "answer": "To provide additional pregnancy protection beyond what a condom alone offers",
-          "explanation": "Using condoms alongside another contraceptive method (like the pill or IUD) provides dual protection — the second method adds a safety net if the condom fails, significantly reducing pregnancy risk."
+          "explanation": "Using condoms with another method provides dual protection — the second method acts as a safety net if the condom fails."
         },
         {
           "question": "Can a person have an STI without showing any symptoms?",
           "options": ["No — all STIs cause visible symptoms", "Yes — many STIs are asymptomatic", "Never", "Only in children"],
           "answer": "Yes — many STIs are asymptomatic",
-          "explanation": "Many STIs including HIV, chlamydia, gonorrhea, and herpes can be present for months or years without any visible symptoms. This is why regular testing is essential for sexually active individuals."
+          "explanation": "Many STIs including HIV, chlamydia, and gonorrhea can be present for months or years without any visible symptoms. Regular testing is essential."
         }
       ],
-      "myth_busting": [
+      "questions": [
         {
-          "question": "MYTH or FACT: PEP (Post-Exposure Prophylaxis) is a cure for HIV.",
-          "options": ["MYTH — PEP prevents HIV infection if started within 72 hours but is not a cure", "FACT — PEP cures HIV if taken quickly", "MYTH — PEP works weeks after exposure", "FACT — PEP is available for all STIs"],
-          "answer": "MYTH — PEP prevents HIV infection if started within 72 hours but is not a cure",
-          "explanation": "PEP is not a cure. It is emergency medication that can prevent HIV from establishing infection if started within 72 hours of exposure and taken daily for 28 days. There is currently no cure for HIV."
-        },
-        {
-          "question": "MYTH or FACT: You can only get an STI through penetrative sex.",
-          "options": ["MYTH — STIs can be transmitted through oral sex, skin contact, and blood", "FACT — Only penetrative sex spreads STIs", "MYTH — STIs spread only through bodily fluids", "FACT — Kissing is the main route of STI transmission"],
-          "answer": "MYTH — STIs can be transmitted through oral sex, skin contact, and blood",
-          "explanation": "This is a myth. STIs can be transmitted through oral sex, anal sex, skin-to-skin contact (herpes, HPV), sharing needles, and blood transfusions. Penetrative sex is not the only route."
-        },
-        {
-          "question": "MYTH or FACT: Someone who tests negative for HIV cannot have other STIs.",
-          "options": ["MYTH — HIV testing only tests for HIV, not other STIs", "FACT — A negative HIV test means you are STI-free", "MYTH — All STI tests check for everything at once", "FACT — HIV negative means all STIs are negative"],
-          "answer": "MYTH — HIV testing only tests for HIV, not other STIs",
-          "explanation": "An HIV test only checks for HIV. Separate tests are needed for chlamydia, gonorrhea, syphilis, herpes, HPV, and other STIs. Always ask for a comprehensive STI screen."
-        },
-        {
-          "question": "MYTH or FACT: Using a condom correctly every time is too difficult to maintain long-term.",
-          "options": ["MYTH — With practice, correct condom use becomes routine and automatic", "FACT — Consistent correct use is unrealistic for most people", "MYTH — Only health workers can use condoms correctly", "FACT — Most people use condoms incorrectly"],
-          "answer": "MYTH — With practice, correct condom use becomes routine and automatic",
-          "explanation": "With education and practice, using a condom correctly becomes second nature. Consistent correct use is absolutely achievable and is the most effective way to prevent both pregnancy and STIs."
-        },
-        {
-          "question": "MYTH or FACT: Emergency contraception (morning-after pill) is the same as an abortion.",
-          "options": ["MYTH — Emergency contraception prevents fertilization or implantation, it does not end a pregnancy", "FACT — Emergency contraception is a form of abortion", "MYTH — Emergency contraception has no medical basis", "FACT — Emergency contraception only works after pregnancy starts"],
-          "answer": "MYTH — Emergency contraception prevents fertilization or implantation, it does not end a pregnancy",
-          "explanation": "Emergency contraception works by delaying or preventing ovulation, or preventing fertilization. It does not terminate an established pregnancy. It is a contraceptive, not an abortifacient."
-        }
-      ],
-      "scenario": [
-        {
-          "question": "You had unprotected sex 48 hours ago. A friend tells you about PEP. What should you do?",
-          "options": ["Wait — it has been too long", "Visit a health facility immediately since PEP is still within the 72-hour window", "Take any available antibiotics instead", "Ignore it and hope for the best"],
-          "answer": "Visit a health facility immediately since PEP is still within the 72-hour window",
-          "explanation": "48 hours is still within the 72-hour PEP window. Go to a health facility immediately. Every hour counts — the sooner PEP is started, the more effective it is at preventing HIV infection."
-        },
-        {
-          "question": "A friend tells you they were coerced into unprotected sex. What is the most important first step?",
-          "options": ["Tell them to forget about it", "Encourage them to seek medical care, STI testing, and counseling immediately", "Tell them it was their fault", "Advise them to wait and see"],
-          "answer": "Encourage them to seek medical care, STI testing, and counseling immediately",
-          "explanation": "Sexual coercion is a serious matter. The priority is your friend's safety and health — medical care (including emergency contraception and PEP if needed), STI testing, and psychological support are all essential."
-        },
-        {
-          "question": "You are sexually active and have never been tested for STIs. You have no symptoms. Should you get tested?",
-          "options": ["No — if you feel fine, you are fine", "Yes — regular STI testing is recommended for all sexually active people", "Only if your partner asks you to", "Only if you have multiple partners"],
-          "answer": "Yes — regular STI testing is recommended for all sexually active people",
-          "explanation": "Many STIs have no symptoms. Regular testing is a key part of sexual health care for all sexually active individuals, regardless of symptoms, relationship status, or number of partners."
-        },
-        {
-          "question": "Your partner refuses to get tested for STIs before you stop using condoms. What should you do?",
-          "options": ["Agree to stop using condoms anyway", "Continue using condoms until both partners are tested", "End the relationship immediately", "Assume they are negative and proceed"],
-          "answer": "Continue using condoms until both partners are tested",
-          "explanation": "Testing together before changing protection methods is the responsible choice. Until both partners know their STI status, continuing to use condoms is the safest option."
-        },
-        {
-          "question": "A school health teacher says combining the pill with condoms is unnecessary. Is this correct?",
-          "options": ["Yes — one method is always enough", "No — dual protection reduces both pregnancy and STI risk more effectively", "Yes — condoms alone are sufficient", "No — but only older adults need dual protection"],
-          "answer": "No — dual protection reduces both pregnancy and STI risk more effectively",
-          "explanation": "Using both the pill and a condom provides dual protection: the pill provides highly effective pregnancy prevention as a backup if the condom fails, while the condom prevents STIs. This combination is recommended for sexually active people who want maximum protection."
-        }
-      ],
-      "couple_decisions": [
-        {
-          "scenario": "Sam and Alex had sex and the condom broke. Sam is aware that HIV PEP exists. Alex is reluctant to go to the clinic saying it was probably fine. Time is critical — they are now 30 hours past the incident.",
-          "question": "Should Sam and Alex go to the health clinic immediately to discuss PEP?",
-          "player1_label": "Sam",
-          "player2_label": "Alex",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Time-Sensitive Action", "text": "Both Sam and Alex agree to go to the clinic immediately. They are within the 72-hour window for PEP. The health worker assesses their risk and provides appropriate care. Acting fast is the most important thing after a condom failure.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "Sam Acts Alone", "text": "Sam goes to the clinic but Alex stays home. Sam is assessed and given PEP. Alex should have come too — both partners need to be checked after a condom failure event.", "xp": 8, "positive": false},
-            "No-Yes": {"title": "Alex Changes Their Mind", "text": "Alex initially refuses but Sam convinces them to go. They make it in time for PEP. Sam's insistence may have prevented an HIV infection — speaking up when it matters is vital.", "xp": 10, "positive": true},
-            "No-No": {"title": "Window Closing", "text": "Neither goes to the clinic. The 72-hour PEP window is closing. This is a critical health risk. When a condom breaks, seeking medical advice immediately is always the right choice.", "xp": 0, "positive": false}
-          }
-        },
-        {
-          "scenario": "Riley and Casey have been together for a year. They have never been tested for STIs. Casey says testing is only for people with many partners. Riley thinks they should both get tested as part of responsible health care.",
-          "question": "Should Riley and Casey get STI tests together?",
-          "player1_label": "Riley",
-          "player2_label": "Casey",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Mutual Health Responsibility", "text": "Both Riley and Casey agree to get tested. The health worker confirms that testing is for everyone who is sexually active, regardless of partner count. They both test negative and feel reassured. Regular testing is part of responsible sexual health.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "One Partner Proactive", "text": "Riley gets tested but Casey refuses. Riley tests negative which is reassuring, but without Casey testing, they cannot be fully certain. Both partners need to participate for complete peace of mind.", "xp": 8, "positive": false},
-            "No-Yes": {"title": "Casey Steps Up", "text": "Casey agrees to test but Riley is reluctant. Casey goes ahead. When Riley sees the result, they agree to test too. One partner's proactivity can inspire the other.", "xp": 8, "positive": false},
-            "No-No": {"title": "Unchecked Risk", "text": "Neither Riley nor Casey gets tested. Without knowing their STI status, either partner could unknowingly have and transmit an infection. Regular testing is not about distrust — it is about responsibility.", "xp": 0, "positive": false}
-          }
-        },
-        {
-          "scenario": "Jordan and their partner have been using only condoms. Jordan wants to add the pill for extra pregnancy protection. Their partner says condoms are enough and adding the pill is unnecessary.",
-          "question": "Should Jordan and their partner discuss dual protection with a health professional?",
-          "player1_label": "Jordan",
-          "player2_label": "Partner",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Informed Dual Protection", "text": "Both Jordan and their partner agree to consult a health professional. The professional explains how dual protection (pill + condom) provides excellent pregnancy prevention while the condom still covers STI risk. They make an informed joint decision.", "xp": 15, "positive": true},
-            "Yes-No": {"title": "Jordan Seeks Guidance", "text": "Jordan consults the health professional alone. They learn about dual protection and share the information with their partner. Knowledge shared between partners leads to better health decisions.", "xp": 8, "positive": false},
-            "No-Yes": {"title": "Partner Open to Learning", "text": "Jordan's partner wants to consult but Jordan is unsure. They end up going anyway — and both learn that dual protection is safe and recommended. Being open to learning improves health outcomes.", "xp": 8, "positive": false},
-            "No-No": {"title": "Missed Opportunity", "text": "Neither consults a health professional. They continue with condoms only, unaware that adding another method could significantly reduce their pregnancy risk. Professional advice is always valuable.", "xp": 0, "positive": false}
-          }
+          "question": "What is a condom?",
+          "options": ["Medicine", "Protective barrier", "Vitamin", "Bandage"],
+          "answer": "Protective barrier",
+          "explanation": "A condom is a protective barrier used during sex to prevent pregnancy and reduce the risk of STIs."
         }
       ]
     },
     {
-      "id": 4,
-      "title": "Chapter 2 — Coming Soon",
-      "difficulty": "Medium",
-      "difficulty_color": "#f39c12",
-      "story": "Chapter 2 is coming soon! The video story is still being prepared.\n\nCheck back later for the next chapter of the DeciWise quiz journey.\n\nThank you for your patience!",
+      "id": 2,
+      "title": "Chapter 2: Coming Soon",
+      "difficulty": "Easy",
+      "difficulty_color": "#3498db",
+      "story": "Chapter 2 is coming soon!\n\nThe video story and questions are still being prepared.\n\nCheck back later for the next chapter of the DeciWise quiz journey.",
       "story_image": "classroom",
+      "beginner": [
+        {
+          "question": "Chapter 2 is coming soon. Which answer is correct?",
+          "options": ["A", "B — This one", "C", "D"],
+          "answer": "B — This one",
+          "explanation": "Chapter 2 content is being prepared. Check back soon!"
+        },
+        {"question": "Placeholder 2", "options": ["A", "B", "C — This one", "D"], "answer": "C — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 3", "options": ["A — This one", "B", "C", "D"], "answer": "A — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 4", "options": ["A", "B", "C", "D — This one"], "answer": "D — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 5", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+      ],
+      "intermediate": [
+        {"question": "Placeholder 1", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 2", "options": ["A", "B", "C — This one", "D"], "answer": "C — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 3", "options": ["A — This one", "B", "C", "D"], "answer": "A — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 4", "options": ["A", "B", "C", "D — This one"], "answer": "D — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 5", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+      ],
+      "difficult": [
+        {"question": "Placeholder 1", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 2", "options": ["A", "B", "C — This one", "D"], "answer": "C — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 3", "options": ["A — This one", "B", "C", "D"], "answer": "A — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 4", "options": ["A", "B", "C", "D — This one"], "answer": "D — This one", "explanation": "Coming soon."},
+        {"question": "Placeholder 5", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+      ],
       "questions": [
-        {
-          "question": "Placeholder — Chapter 2 is coming soon. Which answer is correct?",
-          "options": ["A", "B — This one", "C", "D"],
-          "answer": "B — This one",
-          "explanation": "Chapter 2 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 2",
-          "options": ["A", "B", "C — This one", "D"],
-          "answer": "C — This one",
-          "explanation": "Chapter 2 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 3",
-          "options": ["A — This one", "B", "C", "D"],
-          "answer": "A — This one",
-          "explanation": "Chapter 2 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 4",
-          "options": ["A", "B", "C", "D — This one"],
-          "answer": "D — This one",
-          "explanation": "Chapter 2 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 5",
-          "options": ["A", "B — This one", "C", "D"],
-          "answer": "B — This one",
-          "explanation": "Chapter 2 content is being prepared. Check back soon!"
-        }
-      ],
-      "myth_busting": [
-        {
-          "question": "Placeholder myth question",
-          "options": ["MYTH — Placeholder", "FACT — Placeholder", "MYTH — Option C", "FACT — Option D"],
-          "answer": "MYTH — Placeholder",
-          "explanation": "Chapter 2 content is being prepared."
-        }
-      ],
-      "scenario": [
-        {
-          "question": "Placeholder scenario question",
-          "options": ["Option A", "Option B", "Option C — Correct", "Option D"],
-          "answer": "Option C — Correct",
-          "explanation": "Chapter 2 content is being prepared."
-        }
-      ],
-      "couple_decisions": [
-        {
-          "scenario": "Chapter 2 couple decision placeholder scenario.",
-          "question": "Should they make the right choice?",
-          "player1_label": "Player 1",
-          "player2_label": "Player 2",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared. Check back soon!", "xp": 10, "positive": true},
-            "Yes-No": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared.", "xp": 5, "positive": false},
-            "No-Yes": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared.", "xp": 5, "positive": false},
-            "No-No": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared.", "xp": 0, "positive": false}
-          }
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Chapter 3 — Coming Soon",
-      "difficulty": "Hard",
-      "difficulty_color": "#9b59b6",
-      "story": "Chapter 3 is coming soon! The video story is still being prepared.\n\nCheck back later for more content.\n\nThank you for your patience!",
-      "story_image": "counselor",
-      "questions": [
-        {
-          "question": "Placeholder — Chapter 3 is coming soon. Which answer is correct?",
-          "options": ["A", "B — This one", "C", "D"],
-          "answer": "B — This one",
-          "explanation": "Chapter 3 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 2",
-          "options": ["A", "B", "C — This one", "D"],
-          "answer": "C — This one",
-          "explanation": "Chapter 3 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 3",
-          "options": ["A — This one", "B", "C", "D"],
-          "answer": "A — This one",
-          "explanation": "Chapter 3 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 4",
-          "options": ["A", "B", "C", "D — This one"],
-          "answer": "D — This one",
-          "explanation": "Chapter 3 content is being prepared. Check back soon!"
-        },
-        {
-          "question": "Placeholder question 5",
-          "options": ["A", "B — This one", "C", "D"],
-          "answer": "B — This one",
-          "explanation": "Chapter 3 content is being prepared. Check back soon!"
-        }
-      ],
-      "myth_busting": [
-        {
-          "question": "Placeholder myth question",
-          "options": ["MYTH — Placeholder", "FACT — Placeholder", "MYTH — Option C", "FACT — Option D"],
-          "answer": "MYTH — Placeholder",
-          "explanation": "Chapter 3 content is being prepared."
-        }
-      ],
-      "scenario": [
-        {
-          "question": "Placeholder scenario question",
-          "options": ["Option A", "Option B", "Option C — Correct", "Option D"],
-          "answer": "Option C — Correct",
-          "explanation": "Chapter 3 content is being prepared."
-        }
-      ],
-      "couple_decisions": [
-        {
-          "scenario": "Chapter 3 couple decision placeholder scenario.",
-          "question": "Should they make the right choice?",
-          "player1_label": "Player 1",
-          "player2_label": "Player 2",
-          "choices": ["Yes", "No"],
-          "outcomes": {
-            "Yes-Yes": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared. Check back soon!", "xp": 10, "positive": true},
-            "Yes-No": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared.", "xp": 5, "positive": false},
-            "No-Yes": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared.", "xp": 5, "positive": false},
-            "No-No": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared.", "xp": 0, "positive": false}
-          }
-        }
+        {"question": "Placeholder", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
       ]
     }
   ]
