@@ -149,21 +149,24 @@ STORY_ICONS = {
     "classroom":    "🏫",
     "midwife":      "👩‍⚕️",
     "counselor":    "🧑‍💼",
+    "condom":       "🛡️",
 }
 
 BADGES = {
-    "first_step":   {"icon": "🌱", "name": "First Step",     "desc": "Complete Level 1"},
-    "beginner":     {"icon": "📗", "name": "Beginner",        "desc": "Complete Act I (Levels 1-2)"},
-    "intermediate": {"icon": "📘", "name": "Intermediate",    "desc": "Complete Act II (Levels 3-4)"},
-    "expert":       {"icon": "📕", "name": "Expert",          "desc": "Complete Act III (Levels 5-6)"},
+    "first_step":   {"icon": "🌱", "name": "First Step",     "desc": "Complete Chapter 1 Beginner"},
+    "beginner":     {"icon": "📗", "name": "Beginner",        "desc": "Complete Chapter 1 (all 3 tiers)"},
+    "intermediate": {"icon": "📘", "name": "Intermediate",    "desc": "Complete Chapters 1–2"},
+    "expert":       {"icon": "📕", "name": "Expert",          "desc": "Complete Chapter 3"},
     "perfect_run":  {"icon": "🏆", "name": "Perfect Run",     "desc": "Score 100% on any level"},
     "speedster":    {"icon": "⚡", "name": "Speedster",       "desc": "Answer 5 questions quickly"},
-    "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all 6 levels"},
+    "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all chapters"},
 }
 
-ACT_MAP = {1: ("Act I",   "Foundations",  "#52e088", [1, 2]),
-           2: ("Act II",  "Intermediate", "#f39c12", [3, 4]),
-           3: ("Act III", "Expert",       "#e74c3c", [5, 6])}
+ACT_MAP = {1: ("Chapter 1", "Condom Quiz — Beginner",     "#52e088", [1]),
+           2: ("Chapter 1", "Condom Quiz — Intermediate",  "#f39c12", [2]),
+           3: ("Chapter 1", "Condom Quiz — Difficult",     "#e74c3c", [3]),
+           4: ("Chapter 2", "Coming Soon",                 "#3498db", [4]),
+           5: ("Chapter 3", "Coming Soon",                 "#9b59b6", [5])}
 
 # ── JSON helpers ──────────────────────────────────────────────────────────────
 def load_json(path):
@@ -869,8 +872,8 @@ class LevelSelectScreen(tk.Frame):
                  bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1,7))
-        tk.Label(inner, text=f"⭐  {total_stars} / 18  stars collected",
+                          for i in range(1,6))
+        tk.Label(inner, text=f"⭐  {total_stars} / 15  stars collected",
                  font=_retro(9),
                  bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
 
@@ -1009,7 +1012,7 @@ class LevelSelectScreen(tk.Frame):
 # ══════════════════════════════════════════════════════════════════════════════
 class StoryScreen(tk.Frame):
     _TW_DELAY   = 20
-    _BOUNCE     = [18,30,44,54,48,52,50,50]
+    _BOUNCE     = [22,36,52,66,60,64,62,62]
     _FADE_STEPS = 14
 
     def __init__(self, parent, app):
@@ -1062,7 +1065,7 @@ class StoryScreen(tk.Frame):
         inn.configure(padx=18)
 
         self._icon_lbl = tk.Label(inn, text="",
-                                   font=("Segoe UI Emoji",50), bg=C["bg"])
+                                   font=("Segoe UI Emoji",62), bg=C["bg"])
         self._icon_lbl.pack(pady=(16,4))
 
         self._hdr_lbl = tk.Label(inn, text="📖  Story",
@@ -1304,7 +1307,7 @@ class StoryScreen(tk.Frame):
         self._t1.configure(bg=C["banner"], fg=C["white"])
         self._t2.configure(bg=C["banner"], fg=lvl["difficulty_color"])
         self._icon_lbl.configure(text=self._icon_char,
-                                  font=("Segoe UI Emoji",50))
+                                  font=("Segoe UI Emoji",62))
         self._hdr_lbl.configure(fg=C["accent"])
         self._st.configure(text=lvl["story"])
         self._info.configure(fg=C["grey"])
@@ -2215,10 +2218,10 @@ class ResultScreen(tk.Frame):
         new_b = []
         checks = [
             ("first_step",   lid == 1),
-            ("beginner",     all(x in completed for x in [1,2])),
-            ("intermediate", all(x in completed for x in [3,4])),
-            ("expert",       all(x in completed for x in [5,6])),
-            ("deciwise",     all(x in completed for x in range(1,7))),
+            ("beginner",     all(x in completed for x in [1, 2, 3])),
+            ("intermediate", all(x in completed for x in [1, 2, 3, 4])),
+            ("expert",       all(x in completed for x in [5])),
+            ("deciwise",     all(x in completed for x in range(1, 6))),
             ("perfect_run",  pct == 1.0),
             ("speedster",    app.fast_answers >= 5),
         ]

@@ -2,625 +2,668 @@
   "levels": [
     {
       "id": 1,
-      "title": "The Young Couple",
+      "title": "Chapter 1 — Beginner",
       "difficulty": "Easy",
       "difficulty_color": "#2ecc71",
-      "story": "Maria and Jose just got married. They are a happy young couple excited about their future together. Before starting a family, they visit a health center to learn the basics of family planning. The friendly nurse smiles and says: 'Knowledge is the first step to a healthy family. Let's see what you already know!'",
+      "story": "Welcome to Chapter 1: The Condom Quiz!\n\nBefore the story begins, let's test what you already know about condoms at the Beginner level.\n\n(Video story coming soon...)\n\nAnswer the 10 questions below to complete the Beginner tier.",
       "story_image": "couple",
       "questions": [
         {
-          "question": "What does 'family planning' mean?",
-          "options": ["Planning a family vacation","Deciding when and how many children to have","Planning family finances only","Arranging family events"],
-          "answer": "Deciding when and how many children to have",
-          "explanation": "Family planning means making informed choices about if, when, and how many children to have, using contraception and other methods."
+          "question": "What is a condom?",
+          "options": ["Medicine", "Protective barrier", "Vitamin", "Bandage"],
+          "answer": "Protective barrier",
+          "explanation": "A condom is a protective barrier used during sex to prevent pregnancy and reduce the risk of sexually transmitted infections (STIs)."
         },
         {
-          "question": "Which of the following is a natural method of family planning?",
-          "options": ["Birth control pills","Condoms","Calendar/Rhythm method","Intrauterine Device (IUD)"],
-          "answer": "Calendar/Rhythm method",
-          "explanation": "The calendar or rhythm method is a natural family planning method where couples track the menstrual cycle to avoid pregnancy during fertile days."
+          "question": "What are the two main types of condoms?",
+          "options": ["Big and small", "Hard and soft", "External and internal", "Daily and monthly"],
+          "answer": "External and internal",
+          "explanation": "There are two main types: external condoms (worn on the penis) and internal condoms (inserted into the vagina or anus)."
         },
         {
-          "question": "What is the primary purpose of contraception?",
-          "options": ["To cure sexually transmitted infections","To prevent unwanted pregnancy","To increase fertility","To regulate hormones only"],
-          "answer": "To prevent unwanted pregnancy",
-          "explanation": "Contraception is used to prevent unintended pregnancy, giving couples control over when they start or grow their family."
+          "question": "What can condoms help prevent?",
+          "options": ["Fever", "Pregnancy and STIs", "Cough", "Headache"],
+          "answer": "Pregnancy and STIs",
+          "explanation": "Condoms are the only contraceptive method that helps prevent both unwanted pregnancy and sexually transmitted infections (STIs) at the same time."
         },
         {
-          "question": "Who should be involved in family planning decisions?",
-          "options": ["Only the woman","Only the man","Both partners together","Only the doctor"],
-          "answer": "Both partners together",
-          "explanation": "Family planning is a shared responsibility. Both partners should communicate and decide together for the best outcomes."
+          "question": "What does STI mean?",
+          "options": ["Sexually Transmitted Infection", "Safe Treatment Information", "Sexual Testing Instruction", "Standard Treatment Index"],
+          "answer": "Sexually Transmitted Infection",
+          "explanation": "STI stands for Sexually Transmitted Infection — infections passed from one person to another through sexual contact, such as HIV, chlamydia, and gonorrhea."
         },
         {
-          "question": "At what age is a woman generally considered to have the highest fertility?",
-          "options": ["Teens (13-19)","Early to mid-20s","Late 30s","Early 40s"],
-          "answer": "Early to mid-20s",
-          "explanation": "A woman's fertility is generally highest in her early to mid-20s and gradually declines with age, especially after 35."
+          "question": "Where is an external condom worn?",
+          "options": ["Hand", "Foot", "Penis", "Arm"],
+          "answer": "Penis",
+          "explanation": "An external condom (also called a male condom) is worn over the erect penis before sexual activity."
+        },
+        {
+          "question": "Where is an internal condom placed?",
+          "options": ["Inside the vagina", "Inside the mouth", "On the hand", "On the arm"],
+          "answer": "Inside the vagina",
+          "explanation": "An internal condom (also called a female condom) is inserted inside the vagina (or anus) before sex to prevent pregnancy and STIs."
+        },
+        {
+          "question": "Can a condom be reused?",
+          "options": ["Yes, always", "Yes, if washed", "No", "Yes, if undamaged"],
+          "answer": "No",
+          "explanation": "Condoms are single-use only. Reusing a condom greatly increases the risk of breakage, pregnancy, and STI transmission."
+        },
+        {
+          "question": "What should you check before using a condom?",
+          "options": ["Color", "Expiration date", "Smell", "Brand popularity"],
+          "answer": "Expiration date",
+          "explanation": "Always check the expiration date before using a condom. An expired condom is more likely to break or fail, reducing protection."
+        },
+        {
+          "question": "Do condoms reduce the risk of STIs?",
+          "options": ["Yes", "No", "Never", "Only sometimes when damaged"],
+          "answer": "Yes",
+          "explanation": "Yes. When used correctly and consistently, condoms significantly reduce the risk of transmitting or contracting STIs including HIV."
+        },
+        {
+          "question": "Where should used condoms go?",
+          "options": ["Toilet", "River", "Trash bin", "Sink"],
+          "answer": "Trash bin",
+          "explanation": "Used condoms should be wrapped and disposed of in a trash bin. Never flush them down the toilet as they can clog pipes and harm the environment."
         }
       ],
       "myth_busting": [
         {
-          "question": "MYTH or FACT: Using contraception means you do not want children at all.",
-          "options": ["MYTH — Contraception is about timing, not rejecting children","FACT — People who use contraception never want kids","MYTH — Only unmarried people use contraception","FACT — Contraception permanently ends fertility"],
-          "answer": "MYTH — Contraception is about timing, not rejecting children",
-          "explanation": "This is a myth. Contraception simply helps couples decide WHEN to have children, not whether to have them at all. Many people use contraception to space births responsibly."
+          "question": "MYTH or FACT: Condoms are 100% effective at preventing pregnancy.",
+          "options": ["MYTH — Condoms are 97-98% effective with perfect use", "FACT — Condoms never fail if used correctly", "MYTH — Condoms only work 50% of the time", "FACT — Condoms are the most effective method available"],
+          "answer": "MYTH — Condoms are 97-98% effective with perfect use",
+          "explanation": "With perfect use, external condoms are 97-98% effective. With typical use, effectiveness drops to about 85-87%. No method is 100% effective."
         },
         {
-          "question": "MYTH or FACT: The pill causes permanent infertility.",
-          "options": ["MYTH — Fertility usually returns within 1-3 months of stopping","FACT — The pill permanently damages the reproductive system","MYTH — The pill works for 5 years after stopping","FACT — Fertility never returns after long-term pill use"],
-          "answer": "MYTH — Fertility usually returns within 1-3 months of stopping",
-          "explanation": "This is a myth. For most women, fertility returns within 1 to 3 months after stopping the pill. The pill does not cause permanent infertility."
+          "question": "MYTH or FACT: You cannot get an STI if you use a condom.",
+          "options": ["MYTH — Condoms reduce but do not eliminate all STI risks", "FACT — Condoms block all STIs completely", "MYTH — STIs can only be spread without any protection", "FACT — Condoms are useless against STIs"],
+          "answer": "MYTH — Condoms reduce but do not eliminate all STI risks",
+          "explanation": "Condoms greatly reduce STI risk but do not eliminate it entirely. Some STIs like herpes or HPV can be transmitted through skin-to-skin contact in areas not covered by the condom."
         },
         {
-          "question": "MYTH or FACT: Family planning is only a woman's responsibility.",
-          "options": ["MYTH — Family planning is a shared responsibility for both partners","FACT — Only women need to worry about family planning","MYTH — Men have no role in contraception","FACT — Family planning laws require only women to act"],
-          "answer": "MYTH — Family planning is a shared responsibility for both partners",
-          "explanation": "This is a myth. Family planning is the shared responsibility of both partners. Men can use condoms, vasectomy, or support their partner's chosen method."
+          "question": "MYTH or FACT: Wearing two condoms at once provides double protection.",
+          "options": ["MYTH — Wearing two condoms increases friction and the risk of tearing", "FACT — Two condoms always equal double protection", "MYTH — Double condom use is recommended by health experts", "FACT — More condoms always means more safety"],
+          "answer": "MYTH — Wearing two condoms increases friction and the risk of tearing",
+          "explanation": "This is a dangerous myth. Wearing two condoms (double-bagging) creates friction between them which can cause both to tear. One correctly used condom is far safer."
         },
         {
-          "question": "MYTH or FACT: You cannot get pregnant the first time you have sex.",
-          "options": ["MYTH — Pregnancy is possible any time ovulation occurs","FACT — First-time sex never results in pregnancy","MYTH — The body needs time before becoming fertile","FACT — Pregnancy requires multiple encounters"],
-          "answer": "MYTH — Pregnancy is possible any time ovulation occurs",
-          "explanation": "This is a dangerous myth. Pregnancy is absolutely possible the first time. If ovulation has occurred, conception can happen regardless of prior sexual experience."
+          "question": "MYTH or FACT: Condoms are only for unmarried people.",
+          "options": ["MYTH — Anyone who is sexually active can and should use condoms", "FACT — Married couples should not use condoms", "MYTH — Condoms are only for teenagers", "FACT — Condoms are not needed in committed relationships"],
+          "answer": "MYTH — Anyone who is sexually active can and should use condoms",
+          "explanation": "This is a myth. Condoms are for everyone regardless of marital status. They protect against both unintended pregnancy and STIs for all sexually active individuals."
         },
         {
-          "question": "MYTH or FACT: Natural family planning methods like the rhythm method are 100% effective.",
-          "options": ["MYTH — Natural methods are only 76-88% effective with typical use","FACT — The rhythm method never fails if followed correctly","MYTH — Natural methods are more effective than condoms","FACT — No method of family planning ever fails"],
-          "answer": "MYTH — Natural methods are only 76-88% effective with typical use",
-          "explanation": "This is a myth. Natural methods like the rhythm method have typical-use failure rates of 12-24%. They require consistent and careful tracking to be effective."
+          "question": "MYTH or FACT: You can tell if someone has an STI just by looking at them.",
+          "options": ["MYTH — Many STIs have no visible symptoms", "FACT — STIs always cause visible signs", "MYTH — Only people who look sick can transmit STIs", "FACT — Healthy-looking people cannot have STIs"],
+          "answer": "MYTH — Many STIs have no visible symptoms",
+          "explanation": "Many STIs like HIV, chlamydia, and gonorrhea can be present with no visible symptoms. Regular testing and consistent condom use are the only reliable protections."
         }
       ],
       "scenario": [
         {
-          "question": "Maria tells her friend: 'Jose and I are newlyweds and want to wait 2 years before having children.' Her friend suggests just using withdrawal. What should Maria do?",
-          "options": ["Accept the advice — withdrawal is fully reliable","Consult a health worker for a more reliable contraceptive method","Use nothing since they are married","Try the rhythm method alone"],
-          "answer": "Consult a health worker for a more reliable contraceptive method",
-          "explanation": "Withdrawal (pull-out) has a typical-use failure rate of about 22%. Maria and Jose should visit a health center to choose a reliable method that fits their needs and lifestyle."
+          "question": "Your friend says they will not use a condom because they trust their partner. What is the best advice?",
+          "options": ["Agree — trust is enough", "Suggest using a condom since trust does not prevent STIs or pregnancy", "Tell them to use two condoms instead", "Say nothing — it is their choice"],
+          "answer": "Suggest using a condom since trust does not prevent STIs or pregnancy",
+          "explanation": "Trusting a partner is important, but trust alone does not prevent STIs or pregnancy. Many people are unaware they carry an STI. Condoms remain the safest option."
         },
         {
-          "question": "A couple decides to use the calendar method but the woman has irregular cycles. What is the most important next step?",
-          "options": ["Continue using only the calendar method","Use a backup method or switch to a more reliable option","Ignore cycle irregularity — it does not matter","Stop using any method since cycles are irregular"],
-          "answer": "Use a backup method or switch to a more reliable option",
-          "explanation": "The calendar method depends on regular cycles to predict fertile days. Irregular cycles make this method very unreliable. A backup method or alternative should be used."
+          "question": "You notice the condom packaging is torn before use. What should you do?",
+          "options": ["Use it anyway — it looks fine", "Discard it and use a new, intact condom", "Tape the packaging and use it", "Use it carefully to avoid tearing further"],
+          "answer": "Discard it and use a new, intact condom",
+          "explanation": "A torn package may have exposed the condom to air, heat, or bacteria, compromising its integrity. Always use a condom from an undamaged, sealed package."
         },
         {
-          "question": "Jose says he does not want to be involved in family planning decisions. What is the best way for Maria to handle this?",
-          "options": ["Accept his refusal and decide alone","Discuss the importance of shared responsibility and seek couples counseling if needed","Stop using any contraception","Ask only her parents for advice"],
-          "answer": "Discuss the importance of shared responsibility and seek couples counseling if needed",
-          "explanation": "Family planning works best as a team decision. Maria should talk to Jose about shared responsibility. A health counselor or community health worker can help facilitate the conversation."
+          "question": "Someone asks where to get condoms. What is the best suggestion?",
+          "options": ["From rumors online", "From a health center, pharmacy, or community clinic", "From friends only", "Only from hospitals"],
+          "answer": "From a health center, pharmacy, or community clinic",
+          "explanation": "Condoms are available for free or low cost at health centers, pharmacies, and community clinics. These are reliable sources that ensure the condoms are properly stored and within date."
         },
         {
-          "question": "A 22-year-old woman wants to start family planning but is nervous about side effects of hormonal methods. What is the best first step?",
-          "options": ["Avoid all contraception until she feels ready","Visit a health professional to discuss all options and their side effect profiles","Use only herbal remedies","Ask friends for advice only"],
-          "answer": "Visit a health professional to discuss all options and their side effect profiles",
-          "explanation": "A licensed health professional can explain all available methods, both hormonal and non-hormonal, and help the woman choose one that matches her health profile and comfort level."
+          "question": "A condom breaks during sex. What is the correct immediate response?",
+          "options": ["Ignore it", "Seek medical advice promptly — consider emergency contraception and STI testing", "Use another condom immediately without addressing it", "Wait and see if anything happens"],
+          "answer": "Seek medical advice promptly — consider emergency contraception and STI testing",
+          "explanation": "If a condom breaks, seek medical advice as soon as possible. Emergency contraception is most effective within 72 hours. STI testing should also be considered."
         },
         {
-          "question": "A newly married couple believes they should have children immediately because 'that is what marriage is for.' Their health worker disagrees. Why might the health worker recommend waiting?",
-          "options": ["The health worker is overstepping boundaries","Couples should wait to allow physical, emotional, and financial readiness","Early pregnancy is medically encouraged for all couples","Waiting is only recommended for older couples"],
-          "answer": "Couples should wait to allow physical, emotional, and financial readiness",
-          "explanation": "Health workers often recommend allowing time after marriage to establish stability. Physical, emotional, and financial readiness contribute to better outcomes for both parents and child."
+          "question": "Your partner says they prefer sex without a condom. You want to use one. What should you do?",
+          "options": ["Give in to keep the peace", "Explain your reasons calmly and stand firm on using protection", "Agree but feel bad about it", "End the relationship immediately"],
+          "answer": "Explain your reasons calmly and stand firm on using protection",
+          "explanation": "Your sexual health is important. It is okay to stand firm on using protection. A respectful partner will understand. Setting boundaries is a sign of healthy communication."
+        }
+      ],
+      "couple_decisions": [
+        {
+          "scenario": "Alex and Sam are about to have sex for the first time. Alex has a condom but Sam says they do not need it because they trust each other. Alex is unsure what to do.",
+          "question": "Should Alex insist on using the condom?",
+          "player1_label": "Alex",
+          "player2_label": "Sam",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Protected Together", "text": "Both Alex and Sam agree to use the condom. They have a safer experience knowing they are both protected from unwanted pregnancy and STIs. Mutual agreement on protection is the healthiest choice.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "Standing Firm", "text": "Alex wants to use a condom but Sam refuses. Alex stands firm — this is the right decision. Protection is not about distrust; it is about safety. A respectful partner will understand.", "xp": 10, "positive": true},
+            "No-Yes": {"title": "One Step Forward", "text": "Sam is willing to use a condom but Alex declines. Sam's instinct is right — they should both advocate for protection. Without a condom, both are at risk.", "xp": 5, "positive": false},
+            "No-No": {"title": "Unprotected Risk", "text": "Neither Alex nor Sam uses a condom. They are now at risk of both unintended pregnancy and STIs. Trust does not replace protection — both partners need to take responsibility.", "xp": 0, "positive": false}
+          }
+        },
+        {
+          "scenario": "Jordan finds an old condom in their wallet. It has been there for over a year and the packaging looks a bit worn. Their partner says it should be fine to use.",
+          "question": "Should they check the expiration date and packaging before using it?",
+          "player1_label": "Jordan",
+          "player2_label": "Partner",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Smart Check", "text": "Both agree to check the condom first. They find it is expired and the packaging is damaged — they discard it and get a fresh one. Checking before use is always the right call.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "One Cautious Partner", "text": "Jordan wants to check but their partner says it is fine. Jordan insists — and discovers it is expired. Good catch! Never skip checking a condom before use.", "xp": 10, "positive": true},
+            "No-Yes": {"title": "Partner Saves the Day", "text": "Jordan is willing to skip the check but their partner insists on checking. The condom turns out to be expired. Always listen when your partner raises safety concerns.", "xp": 5, "positive": false},
+            "No-No": {"title": "Risky Oversight", "text": "Neither checks the condom. They use an expired, possibly damaged condom that is far more likely to break. Always check the date and packaging before use.", "xp": 0, "positive": false}
+          }
+        },
+        {
+          "scenario": "Riley and Casey are discussing contraception. Riley suggests using a condom. Casey says they have heard that two condoms are better than one for extra protection.",
+          "question": "Should they use just one condom as recommended?",
+          "player1_label": "Riley",
+          "player2_label": "Casey",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Correctly Protected", "text": "Both Riley and Casey agree to use one condom correctly. One properly used condom provides optimal protection. Double-bagging actually increases the risk of tearing.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "Right Instinct", "text": "Riley wants to use one condom correctly but Casey wants two. Riley is right — one condom used properly is safer. Using two causes friction and increases tear risk.", "xp": 8, "positive": false},
+            "No-Yes": {"title": "Good Information Shared", "text": "Riley suggests two condoms but Casey corrects them — one is better. Casey has the right information. Sharing accurate knowledge protects both partners.", "xp": 8, "positive": false},
+            "No-No": {"title": "Double Danger", "text": "Both Riley and Casey decide to use two condoms thinking it is safer. This is actually more dangerous — the friction between the two condoms makes them more likely to tear.", "xp": 0, "positive": false}
+          }
         }
       ]
     },
     {
       "id": 2,
-      "title": "The Health Center Visit",
-      "difficulty": "Easy",
-      "difficulty_color": "#2ecc71",
-      "story": "Ana is a 24-year-old mother of one child. She returns to the health center for her postnatal check-up. The midwife explains that proper spacing between pregnancies is very important for both mother and baby. Ana listens carefully, eager to learn more so she can make the best choices for her growing family.",
+      "title": "Chapter 1 — Intermediate",
+      "difficulty": "Medium",
+      "difficulty_color": "#f39c12",
+      "story": "Welcome back! Now try the Intermediate level of Chapter 1: The Condom Quiz.\n\n(Video story coming soon...)\n\nAnswer the 10 questions below to complete the Intermediate tier.",
       "story_image": "health_center",
       "questions": [
         {
-          "question": "What is the recommended minimum birth spacing between pregnancies?",
-          "options": ["6 months","12 months","At least 2 years","5 years"],
-          "answer": "At least 2 years",
-          "explanation": "The World Health Organization recommends waiting at least 2 years (24 months) after a live birth before the next pregnancy to reduce health risks."
+          "question": "When should an external condom be put on?",
+          "options": ["After sex", "Before sexual contact", "After ejaculation", "The next day"],
+          "answer": "Before sexual contact",
+          "explanation": "An external condom should be put on before any sexual contact, not just before ejaculation. Pre-ejaculatory fluid can also transmit STIs and cause pregnancy."
         },
         {
-          "question": "Which of these is a barrier method of contraception?",
-          "options": ["Birth control pill","Condom","Hormonal injection","IUD"],
-          "answer": "Condom",
-          "explanation": "A condom is a barrier method — it physically prevents sperm from reaching the egg. It also helps protect against STIs."
+          "question": "How should a condom package be opened?",
+          "options": ["With scissors", "With teeth", "Carefully by hand", "With a knife"],
+          "answer": "Carefully by hand",
+          "explanation": "Always open a condom package carefully by hand using the tear notch. Using scissors, teeth, or knives can accidentally puncture or tear the condom."
         },
         {
-          "question": "Breastfeeding can act as a natural contraceptive method. What is this called?",
-          "options": ["Natural Cycle Method","Lactational Amenorrhea Method (LAM)","Rhythm Method","Billings Method"],
-          "answer": "Lactational Amenorrhea Method (LAM)",
-          "explanation": "LAM relies on exclusive breastfeeding to suppress ovulation. It is effective only if the baby is under 6 months, the mother is exclusively breastfeeding, and menstruation has not returned."
+          "question": "What should you do with an expired condom?",
+          "options": ["Use it anyway", "Wash it", "Throw it away", "Repair it"],
+          "answer": "Throw it away",
+          "explanation": "Expired condoms degrade over time — the latex weakens and the lubricant breaks down. An expired condom is more likely to break and should always be discarded."
         },
         {
-          "question": "Which vitamin is most important for women planning to get pregnant?",
-          "options": ["Vitamin C","Vitamin D","Folic Acid (Vitamin B9)","Vitamin K"],
-          "answer": "Folic Acid (Vitamin B9)",
-          "explanation": "Folic acid helps prevent neural tube defects in the baby. Women planning pregnancy are advised to take 400mcg daily before conception and during early pregnancy."
+          "question": "Why should you pinch the condom tip before rolling it on?",
+          "options": ["To remove trapped air and leave space", "To make it colorful", "To make it reusable", "To make it bigger"],
+          "answer": "To remove trapped air and leave space",
+          "explanation": "Pinching the tip removes air and leaves a small reservoir at the end to collect semen. Air trapped in the tip can cause the condom to break during sex."
         },
         {
-          "question": "What does prenatal care mean?",
-          "options": ["Care given after delivery","Care given to newborns","Medical care during pregnancy","Care given to elderly parents"],
-          "answer": "Medical care during pregnancy",
-          "explanation": "Prenatal care is the healthcare a woman receives during pregnancy to monitor her health and the development of the baby."
+          "question": "Which lubricant is safe to use with latex condoms?",
+          "options": ["Cooking oil", "Baby oil", "Water-based lubricant", "Petroleum jelly"],
+          "answer": "Water-based lubricant",
+          "explanation": "Only water-based lubricants are safe with latex condoms. Oil-based lubricants (cooking oil, baby oil, petroleum jelly) degrade latex and cause condoms to break."
+        },
+        {
+          "question": "Can you wear two external condoms at once for extra protection?",
+          "options": ["Yes, always", "No", "Yes, for extra protection", "Only at night"],
+          "answer": "No",
+          "explanation": "Wearing two condoms at once (double-bagging) is not safer — it creates friction that can cause both condoms to tear. One correctly used condom is the safest option."
+        },
+        {
+          "question": "What should you do with a used condom after sex?",
+          "options": ["Reuse it", "Flush it down the toilet", "Throw it in the trash", "Wash it"],
+          "answer": "Throw it in the trash",
+          "explanation": "Wrap the used condom in tissue and dispose of it in the trash. Never flush condoms — they can block pipes and damage the environment."
+        },
+        {
+          "question": "How many times can one condom be used?",
+          "options": ["Once", "Twice", "Three times", "Many times"],
+          "answer": "Once",
+          "explanation": "Each condom is designed for single use only. Reusing a condom weakens the material, increasing the risk of breakage, pregnancy, and STI transmission."
+        },
+        {
+          "question": "What does consent mean in the context of sexual activity?",
+          "options": ["Pressure", "Agreement given freely", "Force", "Obedience"],
+          "answer": "Agreement given freely",
+          "explanation": "Consent means a clear, enthusiastic, and freely given agreement to engage in sexual activity. It must be ongoing and can be withdrawn at any time."
+        },
+        {
+          "question": "Who is the most reliable source for reproductive health questions?",
+          "options": ["Rumors", "Anonymous online comments", "Qualified health professionals", "Unverified social media posts"],
+          "answer": "Qualified health professionals",
+          "explanation": "Qualified health professionals — doctors, nurses, and counselors — provide accurate, evidence-based information. Always verify health information with a trusted medical source."
         }
       ],
       "myth_busting": [
         {
-          "question": "MYTH or FACT: Breastfeeding fully protects a mother from getting pregnant.",
-          "options": ["MYTH — LAM only works under 3 strict conditions","FACT — Breastfeeding is 100% effective contraception","MYTH — You cannot get pregnant at all while breastfeeding","FACT — Breastfeeding replaces all other contraception"],
-          "answer": "MYTH — LAM only works under 3 strict conditions",
-          "explanation": "Breastfeeding as contraception (LAM) only works if: the baby is under 6 months old, breastfeeding is exclusive, and menstruation has not returned. Without all three, pregnancy is possible."
+          "question": "MYTH or FACT: Oil-based lubricants are safe to use with latex condoms.",
+          "options": ["MYTH — Oil-based products weaken latex and cause condoms to break", "FACT — Any lubricant works with latex condoms", "MYTH — Only petroleum jelly damages condoms", "FACT — Oil makes condoms more effective"],
+          "answer": "MYTH — Oil-based products weaken latex and cause condoms to break",
+          "explanation": "This is a dangerous myth. Oil-based products (cooking oil, baby oil, lotion, petroleum jelly) degrade latex within minutes. Only water-based or silicone-based lubricants are safe with latex condoms."
         },
         {
-          "question": "MYTH or FACT: Short birth spacing (less than 18 months) has no health impact on the mother or baby.",
-          "options": ["MYTH — Short spacing increases risks for both mother and infant","FACT — Spacing does not affect maternal or infant health","MYTH — The body recovers fully after 6 months","FACT — Only older mothers need to worry about birth spacing"],
-          "answer": "MYTH — Short spacing increases risks for both mother and infant",
-          "explanation": "This is a myth. Short interpregnancy intervals increase the risk of preterm birth, low birth weight, maternal anemia, and uterine rupture (especially after C-section)."
+          "question": "MYTH or FACT: Condoms should be stored in a wallet for easy access.",
+          "options": ["MYTH — Heat and friction in wallets damage condom integrity", "FACT — Wallets are the ideal storage for condoms", "MYTH — Only old condoms are damaged by wallets", "FACT — Condoms in wallets last longer due to compression"],
+          "answer": "MYTH — Heat and friction in wallets damage condom integrity",
+          "explanation": "Storing condoms in wallets exposes them to heat, pressure, and friction which degrade the latex and weaken the material. Store condoms in a cool, dry place away from direct sunlight."
         },
         {
-          "question": "MYTH or FACT: The condom is the least effective method of contraception.",
-          "options": ["MYTH — With correct and consistent use, condoms are 97-98% effective","FACT — Condoms fail most of the time","MYTH — Condoms only work 50% of the time","FACT — Condoms are not considered a real contraceptive method"],
-          "answer": "MYTH — With correct and consistent use, condoms are 97-98% effective",
-          "explanation": "This is a myth. When used correctly and consistently, condoms are 97-98% effective. They also uniquely provide dual protection against both pregnancy and STIs."
+          "question": "MYTH or FACT: If a condom feels tight, it is safe to use a larger size.",
+          "options": ["FACT — Condoms come in different sizes and the right fit is important", "MYTH — All condoms are the same size", "FACT — Tighter condoms always provide better protection", "MYTH — Size does not affect condom performance"],
+          "answer": "FACT — Condoms come in different sizes and the right fit is important",
+          "explanation": "This is true. Condoms that are too tight are more likely to break, while condoms that are too loose may slip off. Using the correct size improves both comfort and effectiveness."
         },
         {
-          "question": "MYTH or FACT: You do not need prenatal care if you feel healthy during pregnancy.",
-          "options": ["MYTH — Many pregnancy complications show no symptoms early on","FACT — Prenatal care is only needed if you feel sick","MYTH — Home remedies can replace clinical prenatal care","FACT — Only high-risk mothers need prenatal visits"],
-          "answer": "MYTH — Many pregnancy complications show no symptoms early on",
-          "explanation": "This is a dangerous myth. Many serious conditions like hypertension, gestational diabetes, and fetal abnormalities have no obvious symptoms. Regular prenatal visits are essential for all pregnancies."
+          "question": "MYTH or FACT: You do not need to use a condom if your partner is on the pill.",
+          "options": ["MYTH — The pill prevents pregnancy but does not protect against STIs", "FACT — The pill makes condoms unnecessary", "MYTH — Only condoms prevent STIs at all", "FACT — Combining methods increases risk"],
+          "answer": "MYTH — The pill prevents pregnancy but does not protect against STIs",
+          "explanation": "The contraceptive pill is highly effective at preventing pregnancy but offers no protection against STIs. Condoms remain essential for STI prevention regardless of other contraceptive methods."
         },
         {
-          "question": "MYTH or FACT: IUDs are only suitable for women who have already had children.",
-          "options": ["MYTH — IUDs are safe and effective for most women regardless of childbirth history","FACT — IUDs can only be used after giving birth","MYTH — IUDs cause permanent damage in young women","FACT — IUDs reduce future fertility permanently"],
-          "answer": "MYTH — IUDs are safe and effective for most women regardless of childbirth history",
-          "explanation": "This is a myth. Modern guidelines confirm IUDs are appropriate for most women including adolescents and those who have never been pregnant, subject to clinical assessment."
+          "question": "MYTH or FACT: Consent can be given once and does not need to be renewed.",
+          "options": ["MYTH — Consent must be given for each sexual encounter and can be withdrawn", "FACT — One agreement covers all future encounters", "MYTH — Consent only matters the first time", "FACT — Past consent means future consent"],
+          "answer": "MYTH — Consent must be given for each sexual encounter and can be withdrawn",
+          "explanation": "Consent is not a one-time agreement. It must be freely given for each encounter and can be withdrawn at any point. Past consent does not imply future consent."
         }
       ],
       "scenario": [
         {
-          "question": "Ana just gave birth 3 months ago and is exclusively breastfeeding. She asks the midwife if she needs contraception. What should the midwife advise?",
-          "options": ["No — she is fully protected by breastfeeding indefinitely","Yes — LAM only works reliably for up to 6 months and she should plan ahead","No — new mothers cannot get pregnant for a year","Yes — she should immediately use an IUD with no other options"],
-          "answer": "Yes — LAM only works reliably for up to 6 months and she should plan ahead",
-          "explanation": "LAM is effective for up to 6 months with exclusive breastfeeding and no return of menstruation. Ana should begin planning her next contraceptive method before the 6-month mark."
+          "question": "You open a condom and notice it feels dry and brittle. What should you do?",
+          "options": ["Use it — it is probably fine", "Discard it and use a new condom", "Add extra lubrication and use it", "Soak it in water first"],
+          "answer": "Discard it and use a new condom",
+          "explanation": "A dry, brittle condom has degraded latex and is likely to break during use. Discard it immediately and use a condom from a new, properly sealed package."
         },
         {
-          "question": "A mother who had a cesarean section 10 months ago wants to get pregnant again. Her doctor advises waiting. Why?",
-          "options": ["The doctor wants her to lose weight first","WHO recommends at least 24 months after C-section to allow uterine scar healing","It is only a cultural preference with no medical basis","She must complete a nutrition program first"],
-          "answer": "WHO recommends at least 24 months after C-section to allow uterine scar healing",
-          "explanation": "WHO recommends a minimum of 24 months after a cesarean section before the next pregnancy. The uterine scar needs adequate time to heal to reduce the risk of rupture."
+          "question": "Your partner says they are on the pill so you do not need a condom. What is the best response?",
+          "options": ["Agree — the pill is enough", "Explain that the pill does not protect against STIs and suggest using a condom too", "Trust them and skip the condom", "Only use a condom sometimes"],
+          "answer": "Explain that the pill does not protect against STIs and suggest using a condom too",
+          "explanation": "The pill prevents pregnancy but provides zero STI protection. Using both the pill and a condom (dual protection) provides the best coverage for both pregnancy and STI prevention."
         },
         {
-          "question": "Ana's neighbor says she stopped taking folic acid once her pregnancy test was positive. Is this the right time to start or stop?",
-          "options": ["Correct — folic acid is only needed before pregnancy","Wrong — folic acid should be started before conception and continued through early pregnancy","Correct — folic acid is only for high-risk pregnancies","Wrong — folic acid is only needed in the third trimester"],
-          "answer": "Wrong — folic acid should be started before conception and continued through early pregnancy",
-          "explanation": "Folic acid should ideally be started at least 1 month BEFORE conception and continued through the first trimester. Neural tube formation happens very early, before many women know they are pregnant."
+          "question": "A health worker recommends you get an STI test. You feel embarrassed. What is the best mindset?",
+          "options": ["Refuse — only unhealthy people need STI tests", "Accept — STI testing is a normal part of sexual health care", "Ignore the recommendation", "Only test if you have symptoms"],
+          "answer": "Accept — STI testing is a normal part of sexual health care",
+          "explanation": "Regular STI testing is a responsible health practice, not a sign of shameful behavior. Many STIs have no symptoms, so testing is the only way to know your status."
         },
         {
-          "question": "A postnatal patient says she wants to use contraception but her husband is against it. What is the health worker's best response?",
-          "options": ["Tell her to obey her husband's wishes","Invite both partners for counseling and explain the health benefits of birth spacing","Prescribe contraception secretly without telling the husband","Tell her to wait until her husband agrees"],
-          "answer": "Invite both partners for counseling and explain the health benefits of birth spacing",
-          "explanation": "The health worker should respect patient autonomy while addressing the husband's concerns. Couples counseling often resolves conflicts by explaining the medical and family benefits of planned birth spacing."
+          "question": "You are about to use a condom but realize you do not have water-based lubricant — only hand lotion is available. What should you do?",
+          "options": ["Use the hand lotion", "Use the condom without extra lubricant", "Do not use the condom if no lubricant is available", "Find a water-based lubricant before proceeding"],
+          "answer": "Use the condom without extra lubricant",
+          "explanation": "Most condoms come pre-lubricated. Using oil or lotion-based products will degrade the latex. It is safer to use the pre-lubricated condom without adding extra lubricant than to use an oil-based product."
         },
         {
-          "question": "A new mother is using a condom as her only contraceptive method postpartum. She reports occasional inconsistent use. What should the health worker recommend?",
-          "options": ["Condoms are fine even with inconsistent use","Add a more reliable long-term method such as an IUD or implant alongside condoms","Stop using contraception since inconsistency makes it pointless","Switch to the rhythm method instead"],
-          "answer": "Add a more reliable long-term method such as an IUD or implant alongside condoms",
-          "explanation": "Inconsistent condom use significantly raises failure risk. Adding a reliable long-acting method (like an IUD or implant) while continuing condoms provides dual protection — against both pregnancy and STIs."
+          "question": "Your partner wants to stop using a condom mid-way through sex. What should you do?",
+          "options": ["Agree to make them happy", "Firmly decline and explain that protection must continue", "Agree just this once", "Ignore your concerns"],
+          "answer": "Firmly decline and explain that protection must continue",
+          "explanation": "Sexual health decisions apply throughout the entire encounter. You have the right to maintain protection at all times. Removing a condom without agreement (known as stealthing) is a violation of consent."
+        }
+      ],
+      "couple_decisions": [
+        {
+          "scenario": "Morgan and Taylor are buying condoms for the first time. Taylor wants to grab the cheapest pack without checking sizes or expiry dates. Morgan thinks they should check properly.",
+          "question": "Should they check the size options and expiry dates before buying?",
+          "player1_label": "Morgan",
+          "player2_label": "Taylor",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Informed Purchase", "text": "Both Morgan and Taylor agree to check sizes and expiry dates. They choose a properly sized, in-date condom. Good fit and freshness significantly improve condom effectiveness.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "One Partner Diligent", "text": "Morgan checks carefully but Taylor rushes. Morgan spots an expired pack — a good catch. Both partners should be involved in safe choices.", "xp": 8, "positive": false},
+            "No-Yes": {"title": "Taylor Steps Up", "text": "Taylor insists on checking even though Morgan wants to hurry. Taylor finds a better-fit option. Checking before buying is always worth the extra minute.", "xp": 8, "positive": false},
+            "No-No": {"title": "Rushed and Risky", "text": "Neither checks. They end up with an ill-fitting condom close to its expiry date. Both issues increase failure risk. Always take a moment to check before buying.", "xp": 0, "positive": false}
+          }
+        },
+        {
+          "scenario": "Drew and Avery have been together for 6 months. Avery says they no longer need to use condoms since they trust each other. Drew is unsure.",
+          "question": "Should they continue using condoms or get tested together first before changing their approach?",
+          "player1_label": "Drew",
+          "player2_label": "Avery",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Responsible Transition", "text": "Both Drew and Avery agree to get tested together before making any changes. This is the healthiest approach — knowing each other's STI status before dropping condom use is responsible and caring.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "Drew Stands Firm", "text": "Drew wants to test first but Avery refuses. Drew is right to be cautious. Without testing, you cannot know either partner's STI status regardless of trust.", "xp": 8, "positive": false},
+            "No-Yes": {"title": "Avery Reconsiders", "text": "Avery initially wants to drop condoms but Drew suggests testing first. Good thinking from Drew. Getting tested together is a sign of mutual respect and care.", "xp": 8, "positive": false},
+            "No-No": {"title": "Trust Without Testing", "text": "Both agree to stop using condoms without testing. This is risky — either partner may have an undetected STI. Trust is important but testing is the responsible step before changing protection methods.", "xp": 0, "positive": false}
+          }
+        },
+        {
+          "scenario": "Jamie needs to get condoms but feels embarrassed about buying them at the pharmacy. Their partner suggests asking a friend to buy them instead or going to a health clinic.",
+          "question": "Should Jamie go to the health clinic where condoms may be available for free and without embarrassment?",
+          "player1_label": "Jamie",
+          "player2_label": "Partner",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Accessible Protection", "text": "Both Jamie and their partner agree to visit the health clinic. They get free condoms from a health worker who also answers their questions. Health clinics are safe, judgment-free spaces for reproductive health.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "Jamie Takes the Step", "text": "Jamie visits the clinic despite their partner's reluctance. They return with free condoms and better information. Taking initiative for your health is always the right move.", "xp": 10, "positive": true},
+            "No-Yes": {"title": "Partner Encourages", "text": "The partner wants to go but Jamie is too embarrassed. The partner visits alone. It would have been more effective if Jamie came too — health knowledge is for both partners.", "xp": 5, "positive": false},
+            "No-No": {"title": "Avoiding Protection", "text": "Neither visits the clinic. They end up without condoms and at risk. Embarrassment should never come before health. Health clinics are there to help without judgment.", "xp": 0, "positive": false}
+          }
         }
       ]
     },
     {
       "id": 3,
-      "title": "The Community Seminar",
-      "difficulty": "Medium",
-      "difficulty_color": "#f39c12",
-      "story": "A community health worker named Lito is conducting a family planning seminar in a small village. Many couples and young adults have gathered, curious but also with many questions. Lito opens with a serious message: 'Understanding your options can save lives and build stronger families. Are you ready to go deeper?' The room goes quiet with anticipation.",
+      "title": "Chapter 1 — Difficult",
+      "difficulty": "Hard",
+      "difficulty_color": "#e74c3c",
+      "story": "Ready for the challenge? This is the Difficult level of Chapter 1: The Condom Quiz.\n\n(Video story coming soon...)\n\nAnswer the 10 questions below to complete the Difficult tier.",
       "story_image": "seminar",
       "questions": [
         {
-          "question": "What is an Intrauterine Device (IUD)?",
-          "options": ["A daily oral pill to prevent pregnancy","A small device inserted into the uterus to prevent pregnancy","A hormonal patch worn on the skin","A surgical procedure for permanent contraception"],
-          "answer": "A small device inserted into the uterus to prevent pregnancy",
-          "explanation": "An IUD is a small T-shaped device placed inside the uterus by a healthcare provider. It can be hormonal or copper-based and provides long-term contraception."
+          "question": "What should you do if a condom breaks during sex?",
+          "options": ["Ignore it", "Seek prompt medical advice", "Reuse a new condom immediately", "Wait for symptoms"],
+          "answer": "Seek prompt medical advice",
+          "explanation": "If a condom breaks, seek medical advice promptly. Emergency contraception is most effective within 72 hours. HIV PEP (post-exposure prophylaxis) must start within 72 hours if HIV exposure is a concern."
         },
         {
-          "question": "Which contraceptive method also protects against sexually transmitted infections (STIs)?",
-          "options": ["Birth control pills","IUD","Condoms","Hormonal implant"],
-          "answer": "Condoms",
-          "explanation": "Condoms are the only contraceptive method that provides dual protection — preventing both pregnancy and STIs, including HIV."
+          "question": "What should you do if a condom slips off during sex?",
+          "options": ["Ignore it", "Continue without any protection", "Address the situation and seek health advice promptly", "Wash and reuse it"],
+          "answer": "Address the situation and seek health advice promptly",
+          "explanation": "A slipped condom is a contraceptive failure. Stop, address the situation, and seek health advice — including emergency contraception and STI testing if appropriate."
         },
         {
-          "question": "What is meant by 'unmet need for family planning'?",
-          "options": ["Women who want more children","Women who want to avoid pregnancy but are not using contraception","Couples who cannot afford to have children","Men who refuse to discuss family planning"],
-          "answer": "Women who want to avoid pregnancy but are not using contraception",
-          "explanation": "Unmet need refers to women who are sexually active, want to delay or stop childbearing, but are not using any form of contraception."
+          "question": "Are condoms 100% effective at preventing pregnancy and STIs?",
+          "options": ["Yes", "No", "Always, if used correctly", "Only for teenagers"],
+          "answer": "No",
+          "explanation": "No contraceptive method is 100% effective. With perfect use, condoms are 97-98% effective at preventing pregnancy. Human error (incorrect use, inconsistent use) reduces effectiveness further."
         },
         {
-          "question": "What is the typical effectiveness rate of birth control pills when used correctly?",
-          "options": ["Around 70%","Around 80%","Around 91-99%","100%"],
-          "answer": "Around 91-99%",
-          "explanation": "With perfect use, birth control pills are about 99% effective. With typical use (occasional missed pills), effectiveness is around 91%."
+          "question": "Does trusting a partner completely eliminate the risk of STIs?",
+          "options": ["Yes", "No", "Always", "Only for adults"],
+          "answer": "No",
+          "explanation": "Trust does not eliminate STI risk. Many people are unaware they carry an STI because many infections are asymptomatic. Regular testing and consistent condom use remain essential."
         },
         {
-          "question": "Which of the following is a permanent method of contraception for men?",
-          "options": ["Vasectomy","Tubal ligation","Hormonal implant","Male condom"],
-          "answer": "Vasectomy",
-          "explanation": "A vasectomy is a surgical procedure that cuts or blocks the vas deferens, preventing sperm from being released. It is considered permanent contraception for men."
+          "question": "Where should teenagers go for reliable information about sexual health?",
+          "options": ["Rumors from peers", "Random social media posts", "Qualified health professionals", "Gossip"],
+          "answer": "Qualified health professionals",
+          "explanation": "Qualified health professionals — doctors, nurses, school health counselors — provide accurate, age-appropriate, and evidence-based sexual health information."
+        },
+        {
+          "question": "Within how many hours must HIV PEP (Post-Exposure Prophylaxis) be started after possible HIV exposure?",
+          "options": ["Within 24 weeks", "Within 72 hours", "After one month", "After one year"],
+          "answer": "Within 72 hours",
+          "explanation": "HIV PEP must be started as soon as possible after potential HIV exposure and no later than 72 hours (3 days). It must then be taken daily for 28 days to be effective."
+        },
+        {
+          "question": "What can oil-based products do to latex condoms?",
+          "options": ["Strengthen them", "Change their color", "Weaken and break them down", "Make them reusable"],
+          "answer": "Weaken and break them down",
+          "explanation": "Oil-based products (petroleum jelly, cooking oil, lotion) degrade latex within minutes, dramatically increasing the risk of the condom breaking during use."
+        },
+        {
+          "question": "What should you do if you are pressured into sex without a condom?",
+          "options": ["Agree immediately to avoid conflict", "Ignore your feelings", "Set boundaries clearly and say no if you wish", "Follow what your partner wants"],
+          "answer": "Set boundaries clearly and say no if you wish",
+          "explanation": "You always have the right to say no or to insist on protection. Sexual coercion — pressuring someone into sex or into unprotected sex — is a form of abuse. Your boundaries must be respected."
+        },
+        {
+          "question": "Why might someone choose to combine condoms with another contraceptive method?",
+          "options": ["To provide additional pregnancy protection beyond what a condom alone offers", "To cure existing STIs", "To reuse condoms safely", "To guarantee absolutely zero risk"],
+          "answer": "To provide additional pregnancy protection beyond what a condom alone offers",
+          "explanation": "Using condoms alongside another contraceptive method (like the pill or IUD) provides dual protection — the second method adds a safety net if the condom fails, significantly reducing pregnancy risk."
+        },
+        {
+          "question": "Can a person have an STI without showing any symptoms?",
+          "options": ["No — all STIs cause visible symptoms", "Yes — many STIs are asymptomatic", "Never", "Only in children"],
+          "answer": "Yes — many STIs are asymptomatic",
+          "explanation": "Many STIs including HIV, chlamydia, gonorrhea, and herpes can be present for months or years without any visible symptoms. This is why regular testing is essential for sexually active individuals."
         }
       ],
       "myth_busting": [
         {
-          "question": "MYTH or FACT: The IUD causes abortion because it prevents a fertilized egg from implanting.",
-          "options": ["MYTH — IUDs primarily prevent fertilization, not implantation","FACT — IUDs always work by destroying fertilized eggs","MYTH — IUDs have no effect on fertilization","FACT — All IUDs are medically classified as abortifacients"],
-          "answer": "MYTH — IUDs primarily prevent fertilization, not implantation",
-          "explanation": "This is a myth. The primary mechanism of IUDs is to prevent fertilization — copper IUDs via sperm toxicity, hormonal IUDs via cervical mucus thickening and ovulation suppression. Most medical bodies do not classify IUDs as abortifacients."
+          "question": "MYTH or FACT: PEP (Post-Exposure Prophylaxis) is a cure for HIV.",
+          "options": ["MYTH — PEP prevents HIV infection if started within 72 hours but is not a cure", "FACT — PEP cures HIV if taken quickly", "MYTH — PEP works weeks after exposure", "FACT — PEP is available for all STIs"],
+          "answer": "MYTH — PEP prevents HIV infection if started within 72 hours but is not a cure",
+          "explanation": "PEP is not a cure. It is emergency medication that can prevent HIV from establishing infection if started within 72 hours of exposure and taken daily for 28 days. There is currently no cure for HIV."
         },
         {
-          "question": "MYTH or FACT: Contraceptive implants make women gain a lot of weight.",
-          "options": ["MYTH — Studies show no significant average weight gain with implants","FACT — All women gain 10+ kg from hormonal implants","MYTH — Weight gain is the main reason implants are removed","FACT — Implants cause weight gain in all users"],
-          "answer": "MYTH — Studies show no significant average weight gain with implants",
-          "explanation": "Clinical studies show no statistically significant average weight gain associated with contraceptive implants. Some individuals may notice minor changes, but this is not a universal effect."
+          "question": "MYTH or FACT: You can only get an STI through penetrative sex.",
+          "options": ["MYTH — STIs can be transmitted through oral sex, skin contact, and blood", "FACT — Only penetrative sex spreads STIs", "MYTH — STIs spread only through bodily fluids", "FACT — Kissing is the main route of STI transmission"],
+          "answer": "MYTH — STIs can be transmitted through oral sex, skin contact, and blood",
+          "explanation": "This is a myth. STIs can be transmitted through oral sex, anal sex, skin-to-skin contact (herpes, HPV), sharing needles, and blood transfusions. Penetrative sex is not the only route."
         },
         {
-          "question": "MYTH or FACT: A vasectomy reduces a man's sexual drive and performance.",
-          "options": ["MYTH — Vasectomy has no effect on testosterone, libido, or sexual function","FACT — Vasectomy causes hormonal changes that reduce desire","MYTH — Vasectomy changes the appearance of ejaculate","FACT — Men become infertile and lose interest in sex after vasectomy"],
-          "answer": "MYTH — Vasectomy has no effect on testosterone, libido, or sexual function",
-          "explanation": "This is a myth. A vasectomy only blocks the vas deferens. It does not affect testosterone production, sexual drive, erection quality, or orgasm. The only change is that semen no longer contains sperm."
+          "question": "MYTH or FACT: Someone who tests negative for HIV cannot have other STIs.",
+          "options": ["MYTH — HIV testing only tests for HIV, not other STIs", "FACT — A negative HIV test means you are STI-free", "MYTH — All STI tests check for everything at once", "FACT — HIV negative means all STIs are negative"],
+          "answer": "MYTH — HIV testing only tests for HIV, not other STIs",
+          "explanation": "An HIV test only checks for HIV. Separate tests are needed for chlamydia, gonorrhea, syphilis, herpes, HPV, and other STIs. Always ask for a comprehensive STI screen."
         },
         {
-          "question": "MYTH or FACT: The pill protects against sexually transmitted infections.",
-          "options": ["MYTH — Only condoms provide STI protection; the pill does not","FACT — The pill creates a barrier against bacteria and viruses","MYTH — All hormonal methods protect against STIs","FACT — The pill reduces STI risk by 50%"],
-          "answer": "MYTH — Only condoms provide STI protection; the pill does not",
-          "explanation": "This is a critical myth to bust. Birth control pills prevent pregnancy by hormonal means but provide zero protection against STIs including HIV, chlamydia, and gonorrhea. Only condoms provide STI protection."
+          "question": "MYTH or FACT: Using a condom correctly every time is too difficult to maintain long-term.",
+          "options": ["MYTH — With practice, correct condom use becomes routine and automatic", "FACT — Consistent correct use is unrealistic for most people", "MYTH — Only health workers can use condoms correctly", "FACT — Most people use condoms incorrectly"],
+          "answer": "MYTH — With practice, correct condom use becomes routine and automatic",
+          "explanation": "With education and practice, using a condom correctly becomes second nature. Consistent correct use is absolutely achievable and is the most effective way to prevent both pregnancy and STIs."
         },
         {
-          "question": "MYTH or FACT: Communities with high unmet need for family planning simply do not want contraception.",
-          "options": ["MYTH — Unmet need is driven by barriers like access, cost, and misinformation","FACT — People in underserved areas prefer large families","MYTH — Lack of contraception use means lack of interest","FACT — Unmet need means there are too many contraceptive options"],
-          "answer": "MYTH — Unmet need is driven by barriers like access, cost, and misinformation",
-          "explanation": "This is a myth. Unmet need is driven by barriers including geographic inaccessibility, cost, fear of side effects, partner or community opposition, cultural beliefs, and misinformation — not lack of desire."
+          "question": "MYTH or FACT: Emergency contraception (morning-after pill) is the same as an abortion.",
+          "options": ["MYTH — Emergency contraception prevents fertilization or implantation, it does not end a pregnancy", "FACT — Emergency contraception is a form of abortion", "MYTH — Emergency contraception has no medical basis", "FACT — Emergency contraception only works after pregnancy starts"],
+          "answer": "MYTH — Emergency contraception prevents fertilization or implantation, it does not end a pregnancy",
+          "explanation": "Emergency contraception works by delaying or preventing ovulation, or preventing fertilization. It does not terminate an established pregnancy. It is a contraceptive, not an abortifacient."
         }
       ],
       "scenario": [
         {
-          "question": "During the seminar, a woman says she stopped using the pill because she heard it causes cancer. How should Lito respond?",
-          "options": ["Validate her fear and tell her to avoid all hormonal methods","Explain that while there are small risk increases for some cancers, the pill also reduces risk of ovarian and endometrial cancer","Tell her that the pill is completely risk-free","Ignore her concern and move on"],
-          "answer": "Explain that while there are small risk increases for some cancers, the pill also reduces risk of ovarian and endometrial cancer",
-          "explanation": "A balanced, evidence-based response is needed. Combined oral contraceptives slightly increase breast and cervical cancer risk but significantly reduce ovarian and endometrial cancer risk. The overall benefit-risk profile depends on individual health factors."
+          "question": "You had unprotected sex 48 hours ago. A friend tells you about PEP. What should you do?",
+          "options": ["Wait — it has been too long", "Visit a health facility immediately since PEP is still within the 72-hour window", "Take any available antibiotics instead", "Ignore it and hope for the best"],
+          "answer": "Visit a health facility immediately since PEP is still within the 72-hour window",
+          "explanation": "48 hours is still within the 72-hour PEP window. Go to a health facility immediately. Every hour counts — the sooner PEP is started, the more effective it is at preventing HIV infection."
         },
         {
-          "question": "A village couple wants a long-term method since they have already had 3 children and want no more. What is the most appropriate recommendation?",
-          "options": ["Continue with condoms only","Recommend a long-acting reversible method like an IUD or implant, or discuss permanent options","Tell them to use abstinence","Suggest the rhythm method only"],
-          "answer": "Recommend a long-acting reversible method like an IUD or implant, or discuss permanent options",
-          "explanation": "For couples who have completed their family, long-acting reversible contraceptives (IUD, implant) are highly effective with no daily effort. If they are certain about no more children, permanent methods (tubal ligation, vasectomy) can be discussed."
+          "question": "A friend tells you they were coerced into unprotected sex. What is the most important first step?",
+          "options": ["Tell them to forget about it", "Encourage them to seek medical care, STI testing, and counseling immediately", "Tell them it was their fault", "Advise them to wait and see"],
+          "answer": "Encourage them to seek medical care, STI testing, and counseling immediately",
+          "explanation": "Sexual coercion is a serious matter. The priority is your friend's safety and health — medical care (including emergency contraception and PEP if needed), STI testing, and psychological support are all essential."
         },
         {
-          "question": "A seminar attendee asks: 'If condoms are the only method that prevents STIs, why do many people not use them?' What is Lito's best answer?",
-          "options": ["Because people do not care about STIs","Because of cultural stigma, reduced sensation claims, cost, and lack of availability","Because condoms are too complicated to use","Because STIs are no longer a concern"],
-          "answer": "Because of cultural stigma, reduced sensation claims, cost, and lack of availability",
-          "explanation": "Barriers to condom use include cultural or religious stigma, the myth that condoms reduce pleasure, cost, limited access, and lack of negotiation power especially for women. Addressing these barriers is a key part of community health education."
+          "question": "You are sexually active and have never been tested for STIs. You have no symptoms. Should you get tested?",
+          "options": ["No — if you feel fine, you are fine", "Yes — regular STI testing is recommended for all sexually active people", "Only if your partner asks you to", "Only if you have multiple partners"],
+          "answer": "Yes — regular STI testing is recommended for all sexually active people",
+          "explanation": "Many STIs have no symptoms. Regular testing is a key part of sexual health care for all sexually active individuals, regardless of symptoms, relationship status, or number of partners."
         },
         {
-          "question": "A man in the seminar says he supports family planning but believes it is only for his wife to manage. What should Lito emphasize?",
-          "options": ["Agree — women are biologically responsible for contraception","Male involvement improves contraceptive use, communication, and overall family health outcomes","Tell him to stay quiet since he has no role","Suggest he attend a different seminar"],
-          "answer": "Male involvement improves contraceptive use, communication, and overall family health outcomes",
-          "explanation": "Research consistently shows that male involvement in family planning leads to better contraceptive adherence, reduced unintended pregnancies, and improved maternal and child health outcomes. Men can use condoms, vasectomy, or actively support their partner."
+          "question": "Your partner refuses to get tested for STIs before you stop using condoms. What should you do?",
+          "options": ["Agree to stop using condoms anyway", "Continue using condoms until both partners are tested", "End the relationship immediately", "Assume they are negative and proceed"],
+          "answer": "Continue using condoms until both partners are tested",
+          "explanation": "Testing together before changing protection methods is the responsible choice. Until both partners know their STI status, continuing to use condoms is the safest option."
         },
         {
-          "question": "A couple asks if they should use dual protection even though the wife is already on the pill. What should Lito advise?",
-          "options": ["No — the pill is enough","Yes — if there is any STI risk, condoms should be added alongside the pill","No — using two methods at once is dangerous","Yes — but only if the husband agrees"],
-          "answer": "Yes — if there is any STI risk, condoms should be added alongside the pill",
-          "explanation": "The pill prevents pregnancy but not STIs. Dual protection (pill + condom) is recommended for couples where either partner has STI risk factors. This provides protection against both unintended pregnancy and infection."
+          "question": "A school health teacher says combining the pill with condoms is unnecessary. Is this correct?",
+          "options": ["Yes — one method is always enough", "No — dual protection reduces both pregnancy and STI risk more effectively", "Yes — condoms alone are sufficient", "No — but only older adults need dual protection"],
+          "answer": "No — dual protection reduces both pregnancy and STI risk more effectively",
+          "explanation": "Using both the pill and a condom provides dual protection: the pill provides highly effective pregnancy prevention as a backup if the condom fails, while the condom prevents STIs. This combination is recommended for sexually active people who want maximum protection."
+        }
+      ],
+      "couple_decisions": [
+        {
+          "scenario": "Sam and Alex had sex and the condom broke. Sam is aware that HIV PEP exists. Alex is reluctant to go to the clinic saying it was probably fine. Time is critical — they are now 30 hours past the incident.",
+          "question": "Should Sam and Alex go to the health clinic immediately to discuss PEP?",
+          "player1_label": "Sam",
+          "player2_label": "Alex",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Time-Sensitive Action", "text": "Both Sam and Alex agree to go to the clinic immediately. They are within the 72-hour window for PEP. The health worker assesses their risk and provides appropriate care. Acting fast is the most important thing after a condom failure.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "Sam Acts Alone", "text": "Sam goes to the clinic but Alex stays home. Sam is assessed and given PEP. Alex should have come too — both partners need to be checked after a condom failure event.", "xp": 8, "positive": false},
+            "No-Yes": {"title": "Alex Changes Their Mind", "text": "Alex initially refuses but Sam convinces them to go. They make it in time for PEP. Sam's insistence may have prevented an HIV infection — speaking up when it matters is vital.", "xp": 10, "positive": true},
+            "No-No": {"title": "Window Closing", "text": "Neither goes to the clinic. The 72-hour PEP window is closing. This is a critical health risk. When a condom breaks, seeking medical advice immediately is always the right choice.", "xp": 0, "positive": false}
+          }
+        },
+        {
+          "scenario": "Riley and Casey have been together for a year. They have never been tested for STIs. Casey says testing is only for people with many partners. Riley thinks they should both get tested as part of responsible health care.",
+          "question": "Should Riley and Casey get STI tests together?",
+          "player1_label": "Riley",
+          "player2_label": "Casey",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Mutual Health Responsibility", "text": "Both Riley and Casey agree to get tested. The health worker confirms that testing is for everyone who is sexually active, regardless of partner count. They both test negative and feel reassured. Regular testing is part of responsible sexual health.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "One Partner Proactive", "text": "Riley gets tested but Casey refuses. Riley tests negative which is reassuring, but without Casey testing, they cannot be fully certain. Both partners need to participate for complete peace of mind.", "xp": 8, "positive": false},
+            "No-Yes": {"title": "Casey Steps Up", "text": "Casey agrees to test but Riley is reluctant. Casey goes ahead. When Riley sees the result, they agree to test too. One partner's proactivity can inspire the other.", "xp": 8, "positive": false},
+            "No-No": {"title": "Unchecked Risk", "text": "Neither Riley nor Casey gets tested. Without knowing their STI status, either partner could unknowingly have and transmit an infection. Regular testing is not about distrust — it is about responsibility.", "xp": 0, "positive": false}
+          }
+        },
+        {
+          "scenario": "Jordan and their partner have been using only condoms. Jordan wants to add the pill for extra pregnancy protection. Their partner says condoms are enough and adding the pill is unnecessary.",
+          "question": "Should Jordan and their partner discuss dual protection with a health professional?",
+          "player1_label": "Jordan",
+          "player2_label": "Partner",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Informed Dual Protection", "text": "Both Jordan and their partner agree to consult a health professional. The professional explains how dual protection (pill + condom) provides excellent pregnancy prevention while the condom still covers STI risk. They make an informed joint decision.", "xp": 15, "positive": true},
+            "Yes-No": {"title": "Jordan Seeks Guidance", "text": "Jordan consults the health professional alone. They learn about dual protection and share the information with their partner. Knowledge shared between partners leads to better health decisions.", "xp": 8, "positive": false},
+            "No-Yes": {"title": "Partner Open to Learning", "text": "Jordan's partner wants to consult but Jordan is unsure. They end up going anyway — and both learn that dual protection is safe and recommended. Being open to learning improves health outcomes.", "xp": 8, "positive": false},
+            "No-No": {"title": "Missed Opportunity", "text": "Neither consults a health professional. They continue with condoms only, unaware that adding another method could significantly reduce their pregnancy risk. Professional advice is always valuable.", "xp": 0, "positive": false}
+          }
         }
       ]
     },
     {
       "id": 4,
-      "title": "The Teenage Dilemma",
+      "title": "Chapter 2 — Coming Soon",
       "difficulty": "Medium",
       "difficulty_color": "#f39c12",
-      "story": "In a high school health class, teacher Ms. Santos faces a room full of teenagers with big questions about reproductive health. Many of them are confused by myths they've heard from friends. Ms. Santos speaks firmly: 'The truth about your reproductive health matters more than rumors. Let's separate fact from fiction — your future depends on it.'",
+      "story": "Chapter 2 is coming soon! The video story is still being prepared.\n\nCheck back later for the next chapter of the DeciWise quiz journey.\n\nThank you for your patience!",
       "story_image": "classroom",
       "questions": [
         {
-          "question": "TRUE or FALSE: A woman can get pregnant during her period.",
-          "options": ["False — it is impossible","True — it is possible, though less likely","Only if it is her first period","Only in older women"],
-          "answer": "True — it is possible, though less likely",
-          "explanation": "While less likely, pregnancy during menstruation is possible because sperm can survive up to 5 days, and some women have short cycles with early ovulation."
+          "question": "Placeholder — Chapter 2 is coming soon. Which answer is correct?",
+          "options": ["A", "B — This one", "C", "D"],
+          "answer": "B — This one",
+          "explanation": "Chapter 2 content is being prepared. Check back soon!"
         },
         {
-          "question": "What is adolescent reproductive health?",
-          "options": ["Health issues only affecting teenage boys","The physical, mental, and social well-being related to reproduction in young people aged 10-24","A program for married teenagers","Nutrition advice for teenagers"],
-          "answer": "The physical, mental, and social well-being related to reproduction in young people aged 10-24",
-          "explanation": "Adolescent reproductive health encompasses the physical, emotional, and social aspects of sexual and reproductive health for young people aged 10-24."
+          "question": "Placeholder question 2",
+          "options": ["A", "B", "C — This one", "D"],
+          "answer": "C — This one",
+          "explanation": "Chapter 2 content is being prepared. Check back soon!"
         },
         {
-          "question": "What is a common risk of teenage pregnancy?",
-          "options": ["Faster recovery after birth","Higher likelihood of completing education","Higher risks of maternal and infant complications","No significant health differences"],
-          "answer": "Higher risks of maternal and infant complications",
-          "explanation": "Teenage pregnancies carry higher risks including preeclampsia, anemia, premature birth, low birth weight, and higher maternal and infant mortality."
+          "question": "Placeholder question 3",
+          "options": ["A — This one", "B", "C", "D"],
+          "answer": "A — This one",
+          "explanation": "Chapter 2 content is being prepared. Check back soon!"
         },
         {
-          "question": "Which hormone triggers ovulation in women?",
-          "options": ["Estrogen","Progesterone","Luteinizing Hormone (LH)","Testosterone"],
-          "answer": "Luteinizing Hormone (LH)",
-          "explanation": "A surge in Luteinizing Hormone (LH) triggers the release of a mature egg from the ovary — this process is called ovulation."
+          "question": "Placeholder question 4",
+          "options": ["A", "B", "C", "D — This one"],
+          "answer": "D — This one",
+          "explanation": "Chapter 2 content is being prepared. Check back soon!"
         },
         {
-          "question": "What is the fertile window in a typical 28-day menstrual cycle?",
-          "options": ["Days 1-5","Days 10-17","Days 20-25","Days 25-28"],
-          "answer": "Days 10-17",
-          "explanation": "In a 28-day cycle, ovulation typically occurs around day 14. The fertile window spans about 5 days before and 1-2 days after ovulation — approximately days 10-17."
+          "question": "Placeholder question 5",
+          "options": ["A", "B — This one", "C", "D"],
+          "answer": "B — This one",
+          "explanation": "Chapter 2 content is being prepared. Check back soon!"
         }
       ],
       "myth_busting": [
         {
-          "question": "MYTH or FACT: Teenagers cannot access family planning services without parental consent.",
-          "options": ["MYTH — Adolescents have the right to confidential reproductive health services in many countries","FACT — All minors must have parental approval for any health service","MYTH — Health workers must always call parents when treating teens","FACT — Teens are legally barred from health centers alone"],
-          "answer": "MYTH — Adolescents have the right to confidential reproductive health services in many countries",
-          "explanation": "This is a myth. In many countries including the Philippines, adolescents have the right to access reproductive health information and services confidentially. Parental consent is not always legally required."
-        },
-        {
-          "question": "MYTH or FACT: Talking to teenagers about contraception encourages early sexual activity.",
-          "options": ["MYTH — Research shows sex education delays sexual debut and promotes safer behaviour","FACT — Teaching about contraception leads directly to more teen sex","MYTH — Ignorance is the best protection for teenagers","FACT — Schools that teach sex ed have higher teen pregnancy rates"],
-          "answer": "MYTH — Research shows sex education delays sexual debut and promotes safer behaviour",
-          "explanation": "This is a well-documented myth. Multiple studies show that comprehensive sex education actually delays the age of first sexual activity and increases safer sexual behavior when it does occur."
-        },
-        {
-          "question": "MYTH or FACT: A girl cannot get pregnant if it is her first time having sex.",
-          "options": ["MYTH — Pregnancy is possible any time ovulation has occurred, including the first time","FACT — The body is not fertile during first sexual experience","MYTH — The hymen prevents pregnancy on the first encounter","FACT — First-time sex cannot result in fertilization"],
-          "answer": "MYTH — Pregnancy is possible any time ovulation has occurred, including the first time",
-          "explanation": "This is a very dangerous myth. Pregnancy can absolutely occur during a first sexual encounter if ovulation has taken place. There is no biological protection tied to sexual experience level."
-        },
-        {
-          "question": "MYTH or FACT: Teenage pregnancy only affects girls from poor or uneducated families.",
-          "options": ["MYTH — Teenage pregnancy affects young people across all socioeconomic groups","FACT — Only girls without education get pregnant as teenagers","MYTH — Wealth fully protects against teenage pregnancy","FACT — Teen pregnancy is a problem only in rural areas"],
-          "answer": "MYTH — Teenage pregnancy affects young people across all socioeconomic groups",
-          "explanation": "This is a myth. Teenage pregnancy occurs across all socioeconomic backgrounds, educational levels, and communities. It is influenced by access to information, support systems, peer pressure, and relationship dynamics — not just poverty."
-        },
-        {
-          "question": "MYTH or FACT: Emergency contraception (the morning-after pill) is the same as an abortion pill.",
-          "options": ["MYTH — Emergency contraception prevents fertilization; it does not terminate an existing pregnancy","FACT — Both pills work in exactly the same way","MYTH — Emergency contraception works by removing a fertilized egg","FACT — Morning-after pills and abortion pills have identical mechanisms"],
-          "answer": "MYTH — Emergency contraception prevents fertilization; it does not terminate an existing pregnancy",
-          "explanation": "This is a myth. Emergency contraception (like levonorgestrel) works primarily by delaying or preventing ovulation, stopping fertilization before it occurs. It is not effective if implantation has already happened and is not an abortion pill."
+          "question": "Placeholder myth question",
+          "options": ["MYTH — Placeholder", "FACT — Placeholder", "MYTH — Option C", "FACT — Option D"],
+          "answer": "MYTH — Placeholder",
+          "explanation": "Chapter 2 content is being prepared."
         }
       ],
       "scenario": [
         {
-          "question": "A 16-year-old girl confides in Ms. Santos that she is sexually active and worried about pregnancy. She is afraid to tell her parents. What should Ms. Santos do?",
-          "options": ["Immediately call her parents without her consent","Provide confidential counseling and information about reproductive health services available to adolescents","Tell her to stop being sexually active and send her home","Ignore the situation to avoid controversy"],
-          "answer": "Provide confidential counseling and information about reproductive health services available to adolescents",
-          "explanation": "Ms. Santos should provide a safe, non-judgmental space. Adolescents have rights to confidential reproductive health counseling. The teacher should guide her toward appropriate health services and support."
-        },
+          "question": "Placeholder scenario question",
+          "options": ["Option A", "Option B", "Option C — Correct", "Option D"],
+          "answer": "Option C — Correct",
+          "explanation": "Chapter 2 content is being prepared."
+        }
+      ],
+      "couple_decisions": [
         {
-          "question": "Two male students in the class say that contraception is 'not their problem.' How should Ms. Santos address this?",
-          "options": ["Agree and focus only on female students","Explain that male responsibility in contraception is medically, socially, and ethically important","Ask the boys to leave the class","Skip the topic to avoid conflict"],
-          "answer": "Explain that male responsibility in contraception is medically, socially, and ethically important",
-          "explanation": "Ms. Santos should directly challenge this misconception. Male partners play a critical role in contraceptive decisions. Condoms, vasectomy, and active communication are male contributions to family planning and sexual health."
-        },
-        {
-          "question": "A student says her friend took emergency contraception 4 days after unprotected sex and it did not work. Why might this have happened?",
-          "options": ["Emergency contraception never works","Emergency contraception is most effective within 72 hours and effectiveness drops after 72 hours","The brand she used was fake","Emergency contraception only works for married women"],
-          "answer": "Emergency contraception is most effective within 72 hours and effectiveness drops after 72 hours",
-          "explanation": "Levonorgestrel-based emergency contraception is most effective within 72 hours (3 days) of unprotected sex. By day 4-5, effectiveness is significantly reduced. A copper IUD is the most effective emergency contraception up to 5 days after."
-        },
-        {
-          "question": "A 17-year-old student asks: 'If I am on the pill, do I still need to use a condom?' What is the correct answer?",
-          "options": ["No — the pill protects against everything","Yes — condoms should be added if there is any risk of STIs, since the pill only prevents pregnancy","No — using both together is dangerous","Yes — you must always use both methods with no exceptions"],
-          "answer": "Yes — condoms should be added if there is any risk of STIs, since the pill only prevents pregnancy",
-          "explanation": "The pill is highly effective at preventing pregnancy but provides zero STI protection. If there is any risk of STI exposure, a condom should also be used. This dual protection approach is strongly recommended for sexually active adolescents."
-        },
-        {
-          "question": "A student reports that her 15-year-old classmate is already 3 months pregnant and hiding it from everyone. What is the priority health concern?",
-          "options": ["The classmate should be expelled from school","She needs immediate access to prenatal care regardless of the circumstances","She should be encouraged to hide the pregnancy longer","The situation is not the school's concern"],
-          "answer": "She needs immediate access to prenatal care regardless of the circumstances",
-          "explanation": "Teenage pregnancy carries elevated risks of complications. The immediate health priority is accessing prenatal care to monitor both mother and fetus. Schools and health workers should support, not stigmatize, pregnant adolescents."
+          "scenario": "Chapter 2 couple decision placeholder scenario.",
+          "question": "Should they make the right choice?",
+          "player1_label": "Player 1",
+          "player2_label": "Player 2",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared. Check back soon!", "xp": 10, "positive": true},
+            "Yes-No": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared.", "xp": 5, "positive": false},
+            "No-Yes": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared.", "xp": 5, "positive": false},
+            "No-No": {"title": "Coming Soon", "text": "Chapter 2 content is being prepared.", "xp": 0, "positive": false}
+          }
         }
       ]
     },
     {
       "id": 5,
-      "title": "The Midwife's Challenge",
+      "title": "Chapter 3 — Coming Soon",
       "difficulty": "Hard",
-      "difficulty_color": "#e74c3c",
-      "story": "You are a newly licensed midwife assigned to a remote rural health unit. Your senior midwife, Ma'am Reyes, hands you a thick case file and says with a serious look: 'These families are counting on you. You need to know more than the basics — you need expert-level knowledge. Lives depend on the advice you give.' Your training is about to be truly tested.",
-      "story_image": "midwife",
-      "questions": [
-        {
-          "question": "What is the primary mechanism of action of combined oral contraceptive pills (COCPs)?",
-          "options": ["They destroy sperm in the cervix","They thicken cervical mucus only","They suppress ovulation by preventing LH and FSH surges","They prevent implantation only"],
-          "answer": "They suppress ovulation by preventing LH and FSH surges",
-          "explanation": "COCPs primarily work by suppressing the LH and FSH surges needed for ovulation. They also thicken cervical mucus and thin the endometrial lining as secondary mechanisms."
-        },
-        {
-          "question": "What is the key eligibility criterion for the Lactational Amenorrhea Method (LAM) to be effective?",
-          "options": ["Baby must be under 12 months, any breastfeeding","Baby under 6 months, exclusively breastfed, and menses not resumed","Mother is taking iron supplements","Baby under 1 year and partially breastfed"],
-          "answer": "Baby under 6 months, exclusively breastfed, and menses not resumed",
-          "explanation": "LAM requires all three conditions: infant less than 6 months old, exclusively breastfeeding (no supplemental feeds), and maternal amenorrhea (no return of menstruation)."
-        },
-        {
-          "question": "Which condition is classified as a Category 4 (absolute contraindication) for combined hormonal contraceptives under WHO Medical Eligibility Criteria?",
-          "options": ["Mild hypertension","History of migraines without aura","Breastfeeding a 3-month-old infant","History of deep vein thrombosis (DVT)"],
-          "answer": "History of deep vein thrombosis (DVT)",
-          "explanation": "History of DVT is WHO MEC Category 4, meaning combined hormonal contraceptives must not be used as the estrogen component significantly increases the risk of recurrent thromboembolism."
-        },
-        {
-          "question": "What is 'postpartum family planning' primarily focused on?",
-          "options": ["Planning the next pregnancy immediately after birth","Preventing unintended pregnancy in the first 12 months after delivery","Nutritional planning for the newborn","Scheduling postnatal doctor visits"],
-          "answer": "Preventing unintended pregnancy in the first 12 months after delivery",
-          "explanation": "Postpartum family planning focuses on helping women avoid unintended pregnancy during the first 12 months after birth, protecting both maternal health and birth spacing."
-        },
-        {
-          "question": "According to WHO, what is the recommended interpregnancy interval after a cesarean section?",
-          "options": ["At least 6 months","At least 12 months","At least 18 months","At least 24 months"],
-          "answer": "At least 24 months",
-          "explanation": "WHO recommends a minimum interpregnancy interval of 24 months after a cesarean section to allow adequate uterine scar healing and reduce risks of uterine rupture."
-        }
-      ],
-      "myth_busting": [
-        {
-          "question": "MYTH or FACT: The progestin-only pill (minipill) is safe for breastfeeding mothers.",
-          "options": ["FACT — The minipill does not contain estrogen and is safe for postpartum breastfeeding women","MYTH — All oral contraceptives reduce breast milk supply","MYTH — The minipill affects infant hormone levels significantly","FACT — All pills are equally safe during breastfeeding"],
-          "answer": "FACT — The minipill does not contain estrogen and is safe for postpartum breastfeeding women",
-          "explanation": "This is a FACT. Unlike combined pills, the progestin-only pill contains no estrogen and does not significantly affect breast milk supply or infant health. It is a WHO-recommended option for breastfeeding women after 6 weeks postpartum."
-        },
-        {
-          "question": "MYTH or FACT: Hormonal implants must be replaced every year.",
-          "options": ["MYTH — Most implants last 3-5 years depending on the type","FACT — All implants need annual replacement","MYTH — Implants expire after exactly 12 months","FACT — Implants stop working after 18 months"],
-          "answer": "MYTH — Most implants last 3-5 years depending on the type",
-          "explanation": "This is a myth. Single-rod implants (e.g., Implanon/Nexplanon) are effective for up to 3 years. Some newer types last up to 5 years. Annual replacement is not required."
-        },
-        {
-          "question": "MYTH or FACT: A woman with controlled hypertension cannot use any form of hormonal contraception.",
-          "options": ["MYTH — Progestin-only methods are generally acceptable even with controlled hypertension","FACT — All hormonal methods are banned for any hypertensive patient","MYTH — Hypertension automatically means WHO MEC Category 4 for all methods","FACT — Only combined pills are restricted for hypertensive women"],
-          "answer": "MYTH — Progestin-only methods are generally acceptable even with controlled hypertension",
-          "explanation": "This is a myth. WHO MEC distinguishes between method types and hypertension severity. Combined hormonal contraceptives may be restricted (Category 3-4) depending on severity, but progestin-only pills, implants, and IUDs are generally Category 1-2 for controlled hypertension."
-        },
-        {
-          "question": "MYTH or FACT: After a vasectomy, a man is immediately sterile.",
-          "options": ["MYTH — It takes several weeks and a semen analysis to confirm sterility after vasectomy","FACT — Vasectomy makes a man instantly and completely sterile","MYTH — Sterility is confirmed 24 hours after vasectomy","FACT — A vasectomy takes effect the moment the procedure ends"],
-          "answer": "MYTH — It takes several weeks and a semen analysis to confirm sterility after vasectomy",
-          "explanation": "This is a myth. After a vasectomy, sperm already in the reproductive tract must be cleared. A semen analysis (typically after 20 ejaculations or 3 months) is required to confirm azoospermia (no sperm). Another method must be used in the interim."
-        },
-        {
-          "question": "MYTH or FACT: Tubal ligation is reversible in all cases.",
-          "options": ["MYTH — Tubal ligation should be considered permanent; reversal is not guaranteed","FACT — Tubal ligation can always be fully reversed","MYTH — Reversal is simple and has a 100% success rate","FACT — All women who want reversal can achieve pregnancy"],
-          "answer": "MYTH — Tubal ligation should be considered permanent; reversal is not guaranteed",
-          "explanation": "This is a myth. While tubal ligation reversal surgery exists, success rates vary widely (30-90%) depending on the method used, age, and time elapsed. It should be counseled as a permanent method."
-        }
-      ],
-      "scenario": [
-        {
-          "question": "A 30-year-old patient with a history of DVT requests combined oral contraceptives. What is the correct clinical response?",
-          "options": ["Prescribe them — DVT history is only a relative contraindication","Decline and offer progestin-only or non-hormonal alternatives — DVT is WHO MEC Category 4 for COCs","Prescribe a low-dose option as a compromise","Ask her to consult a cardiologist first then prescribe"],
-          "answer": "Decline and offer progestin-only or non-hormonal alternatives — DVT is WHO MEC Category 4 for COCs",
-          "explanation": "History of DVT is an absolute contraindication (WHO MEC Category 4) for combined hormonal contraceptives due to the thrombogenic effect of estrogen. The midwife must offer safer alternatives such as progestin-only pills, copper IUD, or implants."
-        },
-        {
-          "question": "A new mother who is 8 weeks postpartum is exclusively breastfeeding and wants to start contraception. She wants an oral method. What is the most appropriate recommendation?",
-          "options": ["Combined oral contraceptive pills (COCPs)","Progestin-only pill (minipill) started at 6 weeks postpartum","Emergency contraceptive pills","No oral method is safe postpartum"],
-          "answer": "Progestin-only pill (minipill) started at 6 weeks postpartum",
-          "explanation": "COCPs are generally not recommended before 6 months postpartum in breastfeeding women (WHO MEC Category 4 before 6 weeks, Category 3 from 6 weeks to 6 months). The progestin-only pill is safe from 6 weeks postpartum and does not affect milk supply."
-        },
-        {
-          "question": "A rural patient with limited literacy comes alone for contraceptive counseling. She is afraid of injections and surgical procedures. What is the best approach?",
-          "options": ["Prescribe the most effective method regardless of her fears","Use visual aids and simple language to explain options, and collaboratively choose a method she is comfortable with","Tell her only injections and implants are available","Send her to a specialist in the city"],
-          "answer": "Use visual aids and simple language to explain options, and collaboratively choose a method she is comfortable with",
-          "explanation": "Person-centered counseling requires adapting communication to the patient's literacy level and respecting her fears and preferences. A method the patient is comfortable with and will consistently use is more effective than a theoretically superior method she refuses or misuses."
-        },
-        {
-          "question": "A patient 4 months after C-section wants to start using a copper IUD. Her last pregnancy was uncomplicated except for the surgical delivery. Is this appropriate?",
-          "options": ["No — copper IUDs are permanently contraindicated after C-section","Yes — after complete uterine healing, a copper IUD is appropriate and WHO supports this","No — she must wait 5 years after C-section","Yes — but she must be on antibiotics for 6 months first"],
-          "answer": "Yes — after complete uterine healing, a copper IUD is appropriate and WHO supports this",
-          "explanation": "WHO MEC classifies IUD insertion at 4+ weeks postpartum (including after C-section) as Category 1-2. By 4 months, the uterus has adequately healed. A copper IUD is a highly effective long-term option with no hormonal effects."
-        },
-        {
-          "question": "During home visits, a midwife notices a woman has 5 children under age 6, is anemic, and has no contraception. What is the priority action?",
-          "options": ["Advise diet changes only","Provide immediate contraceptive counseling focused on long-acting methods and refer for anemia treatment","Tell her to have no more children without offering options","Document the case and return next month"],
-          "answer": "Provide immediate contraceptive counseling focused on long-acting methods and refer for anemia treatment",
-          "explanation": "This is a high-priority situation involving both reproductive health and nutritional risk. The midwife should provide counseling on reliable long-acting methods (IUD, implant) to prevent further rapid pregnancies while also addressing the anemia through referral and supplementation."
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "title": "The Expert Counselor",
-      "difficulty": "Hard",
-      "difficulty_color": "#e74c3c",
-      "story": "You are the most experienced family planning counselor in the region. A difficult case arrives: a woman with multiple health conditions seeking contraceptive advice, and a community with deeply rooted misconceptions. The Department of Health has sent you to resolve this complex situation. Your supervisor says gravely: 'Only someone with mastery of family planning can handle this. This is the final test of your expertise.'",
+      "difficulty_color": "#9b59b6",
+      "story": "Chapter 3 is coming soon! The video story is still being prepared.\n\nCheck back later for more content.\n\nThank you for your patience!",
       "story_image": "counselor",
       "questions": [
         {
-          "question": "A 35-year-old woman who smokes more than 15 cigarettes per day wants to use combined oral contraceptives. What is the WHO MEC classification?",
-          "options": ["Category 1 — no restriction","Category 2 — advantages generally outweigh risks","Category 3 — risks generally outweigh advantages","Category 4 — unacceptable health risk, must not use"],
-          "answer": "Category 4 — unacceptable health risk, must not use",
-          "explanation": "A woman aged 35+ who smokes ≥15 cigarettes/day is WHO MEC Category 4 for combined hormonal contraceptives due to significantly elevated cardiovascular and thromboembolic risk."
+          "question": "Placeholder — Chapter 3 is coming soon. Which answer is correct?",
+          "options": ["A", "B — This one", "C", "D"],
+          "answer": "B — This one",
+          "explanation": "Chapter 3 content is being prepared. Check back soon!"
         },
         {
-          "question": "What is the copper IUD's secondary mechanism that makes it effective as emergency contraception?",
-          "options": ["It suppresses ovulation within 72 hours","Copper ions are spermicidal and may prevent fertilization or implantation","It releases levonorgestrel to prevent fertilization","It creates a hormonal barrier in the cervix"],
-          "answer": "Copper ions are spermicidal and may prevent fertilization or implantation",
-          "explanation": "The copper IUD works primarily by releasing copper ions that are toxic to sperm (spermicidal), impairing sperm motility and viability. It may also prevent implantation. It can be used as emergency contraception up to 5 days after unprotected sex."
+          "question": "Placeholder question 2",
+          "options": ["A", "B", "C — This one", "D"],
+          "answer": "C — This one",
+          "explanation": "Chapter 3 content is being prepared. Check back soon!"
         },
         {
-          "question": "In the context of family planning counseling, what does the GATHER model stand for?",
-          "options": ["Greet, Ask, Tell, Help, Explain, Return","Guide, Assess, Treat, Help, Evaluate, Refer","Greet, Ask, Tell, Help, Educate, Request","Guide, Address, Talk, Handle, Educate, Return"],
-          "answer": "Greet, Ask, Tell, Help, Explain, Return",
-          "explanation": "The GATHER model is a family planning counseling framework: Greet the client, Ask about their needs, Tell them about options, Help them choose, Explain how to use the method, and Return/follow-up visit."
+          "question": "Placeholder question 3",
+          "options": ["A — This one", "B", "C", "D"],
+          "answer": "A — This one",
+          "explanation": "Chapter 3 content is being prepared. Check back soon!"
         },
         {
-          "question": "Which of the following best describes 'dual protection' in family planning?",
-          "options": ["Using two different hormonal methods simultaneously","Using condoms to prevent both STIs and unintended pregnancy, along with another method","Protecting both partners using separate methods","Using contraception during and after pregnancy"],
-          "answer": "Using condoms to prevent both STIs and unintended pregnancy, along with another method",
-          "explanation": "Dual protection means using condoms (to prevent STI/HIV transmission) together with another reliable contraceptive method (for pregnancy prevention), providing protection against both risks."
+          "question": "Placeholder question 4",
+          "options": ["A", "B", "C", "D — This one"],
+          "answer": "D — This one",
+          "explanation": "Chapter 3 content is being prepared. Check back soon!"
         },
         {
-          "question": "What is the global unmet need for family planning primarily attributed to?",
-          "options": ["Lack of desire for contraception","Barriers including access, cost, misinformation, partner opposition, and fear of side effects","Government policies banning contraception","Lack of contraceptive technology"],
-          "answer": "Barriers including access, cost, misinformation, partner opposition, and fear of side effects",
-          "explanation": "The global unmet need (affecting ~218 million women) is driven by multiple barriers: geographic access, cost, social and cultural norms, partner or family opposition, misinformation, and fear of side effects — not lack of desire."
+          "question": "Placeholder question 5",
+          "options": ["A", "B — This one", "C", "D"],
+          "answer": "B — This one",
+          "explanation": "Chapter 3 content is being prepared. Check back soon!"
         }
       ],
       "myth_busting": [
         {
-          "question": "MYTH or FACT: Family planning programs are a form of population control imposed on developing nations.",
-          "options": ["MYTH — Ethical FP programs are rights-based and empower individuals to make their own choices","FACT — All family planning programs are designed to reduce population in poor countries","MYTH — International health organizations have no interest in individual reproductive rights","FACT — FP programs always set quotas for how many children families can have"],
-          "answer": "MYTH — Ethical FP programs are rights-based and empower individuals to make their own choices",
-          "explanation": "This is a myth. Ethical family planning programs, as defined by WHO, UNFPA, and the Reproductive Health Law, are fundamentally rights-based. They empower individuals and couples to decide freely the number and spacing of their children — they do not coerce or impose limits."
-        },
-        {
-          "question": "MYTH or FACT: Hormonal contraceptives cause depression in all users.",
-          "options": ["MYTH — While some users report mood changes, the evidence for universal depression is not established","FACT — All hormonal contraceptives clinically cause depression","MYTH — Hormonal methods have zero effect on mental health","FACT — All women should be screened for depression before using any hormonal method"],
-          "answer": "MYTH — While some users report mood changes, the evidence for universal depression is not established",
-          "explanation": "Research on hormonal contraceptives and mood is mixed. Some studies suggest a small increased risk of depression in certain users, particularly adolescents. However, universal causation has not been established. Counseling should include discussion of potential mood effects."
-        },
-        {
-          "question": "MYTH or FACT: The copper IUD has no hormonal effects and is suitable for women who cannot use hormonal methods.",
-          "options": ["FACT — The copper IUD is non-hormonal and is a strong option for women with hormonal contraindications","MYTH — All IUDs release hormones","MYTH — Copper IUDs affect estrogen levels","FACT — Copper IUDs and hormonal IUDs work identically"],
-          "answer": "FACT — The copper IUD is non-hormonal and is a strong option for women with hormonal contraindications",
-          "explanation": "This is a FACT. The copper IUD works entirely through copper ion toxicity to sperm — no hormones are involved. It is an excellent option for women with conditions like DVT, breast cancer history, or other WHO MEC Category 4 conditions for hormonal methods."
-        },
-        {
-          "question": "MYTH or FACT: Long-acting reversible contraceptives (LARCs) are more cost-effective than short-acting methods over time.",
-          "options": ["FACT — LARCs have higher upfront cost but lower long-term cost per year of protection","MYTH — Daily pills are always cheaper than LARCs","MYTH — LARCs cost the same as daily pills over 5 years","FACT — Only governments can afford LARCs; they are not practical for individuals"],
-          "answer": "FACT — LARCs have higher upfront cost but lower long-term cost per year of protection",
-          "explanation": "This is a FACT. While IUDs and implants cost more upfront, they are significantly more cost-effective over their lifespan (3-10 years) compared to daily pills, monthly injections, or condoms. Health economists consistently rank LARCs as the most cost-effective contraceptive options."
-        },
-        {
-          "question": "MYTH or FACT: The GATHER counseling model is outdated and no longer used in modern family planning.",
-          "options": ["MYTH — GATHER remains a widely taught and applied framework in reproductive health counseling globally","FACT — GATHER has been replaced by newer digital tools","MYTH — GATHER is only used in the Philippines","FACT — Modern counseling has abandoned all structured frameworks"],
-          "answer": "MYTH — GATHER remains a widely taught and applied framework in reproductive health counseling globally",
-          "explanation": "This is a myth. The GATHER model (Greet, Ask, Tell, Help, Explain, Return) continues to be widely used and taught in family planning training globally. It provides a structured, client-centered approach that improves counseling quality and client satisfaction."
+          "question": "Placeholder myth question",
+          "options": ["MYTH — Placeholder", "FACT — Placeholder", "MYTH — Option C", "FACT — Option D"],
+          "answer": "MYTH — Placeholder",
+          "explanation": "Chapter 3 content is being prepared."
         }
       ],
       "scenario": [
         {
-          "question": "A 38-year-old woman with migraine with aura, who smokes, requests combined oral contraceptives. How should the expert counselor respond?",
-          "options": ["Prescribe low-dose COCs as a compromise","Decline — both migraine with aura and smoking at 35+ are independent WHO MEC Category 4 conditions for COCs","Offer COCs but monitor her closely","Tell her only natural methods are safe for her"],
-          "answer": "Decline — both migraine with aura and smoking at 35+ are independent WHO MEC Category 4 conditions for COCs",
-          "explanation": "Migraine with aura and smoking aged 35+ are each independently WHO MEC Category 4 for combined hormonal contraceptives due to markedly elevated stroke risk. The counselor must firmly decline and offer safe alternatives such as progestin-only methods or copper IUD."
-        },
+          "question": "Placeholder scenario question",
+          "options": ["Option A", "Option B", "Option C — Correct", "Option D"],
+          "answer": "Option C — Correct",
+          "explanation": "Chapter 3 content is being prepared."
+        }
+      ],
+      "couple_decisions": [
         {
-          "question": "A community requests family planning education but community leaders insist contraception is against their beliefs. How should the counselor approach this?",
-          "options": ["Cancel the program and leave","Respect cultural values, engage leaders, and focus on information and voluntary choice — not coercion","Force the program through without community consent","Report the community leaders to health authorities"],
-          "answer": "Respect cultural values, engage leaders, and focus on information and voluntary choice — not coercion",
-          "explanation": "Ethical family planning counseling respects autonomy and community values. The counselor should engage community leaders in dialogue, frame family planning as a rights-based health service, and ensure all participation is voluntary. Coercion is a violation of reproductive rights."
-        },
-        {
-          "question": "A woman asks about using the copper IUD for emergency contraception 4 days after unprotected sex. She is not interested in continuing it long-term. Is this appropriate?",
-          "options": ["No — copper IUDs cannot be used for emergency contraception","Yes — the copper IUD is effective up to 5 days after unprotected sex and can be removed after the next period","No — she must use it for at least 1 year","Yes — but only if she agrees to keep it for 5 years"],
-          "answer": "Yes — the copper IUD is effective up to 5 days after unprotected sex and can be removed after the next period",
-          "explanation": "The copper IUD is the most effective emergency contraception available (>99% effective up to 5 days). It can be removed after the next menstrual period if the woman does not wish to continue long-term use. She should be counseled on this option."
-        },
-        {
-          "question": "During a GATHER counseling session, a client seems embarrassed and gives vague answers about her reproductive history. What is the counselor's priority at this stage?",
-          "options": ["Skip the assessment and go straight to prescribing","Build trust and rapport — make the client feel safe before proceeding with detailed questions","Tell the client that honesty is required by law","End the session and reschedule"],
-          "answer": "Build trust and rapport — make the client feel safe before proceeding with detailed questions",
-          "explanation": "The GATHER model begins with Greet — establishing rapport and a non-judgmental environment. Clients who feel safe provide more accurate reproductive histories, enabling better counseling. Rushing past this step compromises the quality of the entire encounter."
-        },
-        {
-          "question": "A couple asks for the most effective reversible contraceptive method available. What should the expert recommend?",
-          "options": ["Combined oral contraceptive pills (91-99% typical use)","Male condom (85% typical use)","Intrauterine device or contraceptive implant (>99% typical and perfect use)","Fertility awareness methods (76-88% typical use)"],
-          "answer": "Intrauterine device or contraceptive implant (>99% typical and perfect use)",
-          "explanation": "IUDs and contraceptive implants are the most effective reversible contraceptive methods available, with over 99% effectiveness for both typical and perfect use. Unlike pills or condoms, they require no daily action and have minimal user-error failure."
+          "scenario": "Chapter 3 couple decision placeholder scenario.",
+          "question": "Should they make the right choice?",
+          "player1_label": "Player 1",
+          "player2_label": "Player 2",
+          "choices": ["Yes", "No"],
+          "outcomes": {
+            "Yes-Yes": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared. Check back soon!", "xp": 10, "positive": true},
+            "Yes-No": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared.", "xp": 5, "positive": false},
+            "No-Yes": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared.", "xp": 5, "positive": false},
+            "No-No": {"title": "Coming Soon", "text": "Chapter 3 content is being prepared.", "xp": 0, "positive": false}
+          }
         }
       ]
     }
