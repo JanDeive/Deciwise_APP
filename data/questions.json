@@ -703,6 +703,358 @@
           "explanation": "Birth control pills are medicines containing hormones that help prevent pregnancy."
         }
       ]
+    },
+    {
+      "id": 3,
+      "title": "Chapter 3: Implants",
+      "difficulty": "Easy",
+      "difficulty_color": "#9b59b6",
+      "story": "Welcome to Chapter 3: Implants!\n\nLily and Yvan are talking about different family planning methods when they see a poster about contraceptive implants. Dra. Maia and Dr. Khalid appear to explain what implants are, how they work, who can use them, and important reminders.\n\n(Watch the full video story before answering!)\n\nNow choose your difficulty and take the quiz!",
+      "story_image": "midwife",
+      "beginner": [
+        {
+          "question": "According to Dra. Maia, what is a contraceptive implant?",
+          "options": [
+            "A pill taken every day",
+            "A small, thin, flexible rod placed under the skin of the upper arm",
+            "An injection given monthly",
+            "A patch worn on the skin"
+          ],
+          "answer": "A small, thin, flexible rod placed under the skin of the upper arm",
+          "explanation": "Dra. Maia explains: 'A contraceptive implant is a small, thin, flexible rod placed under the skin of a person's upper arm by a trained healthcare professional.'"
+        },
+        {
+          "question": "Where exactly is a contraceptive implant placed?",
+          "options": [
+            "Under the skin of the upper arm",
+            "Inside the stomach",
+            "Behind the ear",
+            "Under the skin of the leg"
+          ],
+          "answer": "Under the skin of the upper arm",
+          "explanation": "The implant is placed under the skin of a person's upper arm by a trained healthcare professional."
+        },
+        {
+          "question": "What hormone does the contraceptive implant release?",
+          "options": [
+            "Estrogen",
+            "Testosterone",
+            "Progestin",
+            "Insulin"
+          ],
+          "answer": "Progestin",
+          "explanation": "Dra. Maia explains that the implant 'releases a hormone called progestin that helps prevent pregnancy.'"
+        },
+        {
+          "question": "Does the implant protect against sexually transmitted infections (STIs)?",
+          "options": [
+            "Yes, it protects against all STIs",
+            "Yes, but only HIV",
+            "No, it does not protect against STIs",
+            "Only if combined with a pill"
+          ],
+          "answer": "No, it does not protect against STIs",
+          "explanation": "Dr. Khalid clearly states: 'The implant prevents pregnancy, but it does not protect against sexually transmitted infections, including HIV.'"
+        },
+        {
+          "question": "What does Dr. Khalid say helps reduce the risk of STIs?",
+          "options": [
+            "The implant",
+            "Birth control pills",
+            "Condoms",
+            "Vitamins"
+          ],
+          "answer": "Condoms",
+          "explanation": "Dr. Khalid says: 'Condoms help reduce the risk of these infections.'"
+        },
+        {
+          "question": "Can the implant be removed if someone wants to stop using it?",
+          "options": [
+            "No, it is permanent",
+            "Yes, a trained healthcare professional can remove it whenever the user wants",
+            "Yes, but only after five years",
+            "Only a hospital can remove it after two years"
+          ],
+          "answer": "Yes, a trained healthcare professional can remove it whenever the user wants",
+          "explanation": "Dr. Khalid confirms: 'A trained healthcare professional can remove it whenever the user wants.'"
+        },
+        {
+          "question": "What does Lily say about implants in the closing summary?",
+          "options": [
+            "They are painful and not recommended",
+            "They are effective, convenient, and reversible, but may cause side effects and do not protect against STIs",
+            "They are 100% effective and have no side effects",
+            "They replace all other contraceptive methods"
+          ],
+          "answer": "They are effective, convenient, and reversible, but may cause side effects and do not protect against STIs",
+          "explanation": "Lily summarises: 'They are effective, convenient, and reversible, but they may cause side effects and do not protect against STIs.'"
+        },
+        {
+          "question": "Who places the contraceptive implant?",
+          "options": [
+            "The user themselves",
+            "A friend or family member",
+            "A trained healthcare professional",
+            "A pharmacist"
+          ],
+          "answer": "A trained healthcare professional",
+          "explanation": "Dra. Maia states the implant is placed 'by a trained healthcare professional.'"
+        },
+        {
+          "question": "What does Dra. Maia say everyone deserves regarding contraception?",
+          "options": [
+            "Free contraceptives",
+            "Accurate information and respectful healthcare",
+            "A prescription from a doctor",
+            "Monthly check-ups"
+          ],
+          "answer": "Accurate information and respectful healthcare",
+          "explanation": "Dra. Maia says: 'Every person deserves accurate information and respectful healthcare.'"
+        },
+        {
+          "question": "What is the closing message said by all four characters together?",
+          "options": [
+            "Stay healthy and take your medicine!",
+            "Learn today, decide wisely, and build a healthier future!",
+            "Ask your doctor before choosing any method!",
+            "Knowledge is power — use it wisely!"
+          ],
+          "answer": "Learn today, decide wisely, and build a healthier future!",
+          "explanation": "All four characters say together: 'Learn today, decide wisely, and build a healthier future!'"
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "According to Dr. Khalid, how does the implant mainly prevent pregnancy?",
+          "options": [
+            "By releasing estrogen daily",
+            "By preventing the ovaries from releasing an egg",
+            "By stopping menstruation permanently",
+            "By destroying sperm cells"
+          ],
+          "answer": "By preventing the ovaries from releasing an egg",
+          "explanation": "Dr. Khalid explains: 'It mainly works by preventing the ovaries from releasing an egg.'"
+        },
+        {
+          "question": "What is the second way the implant helps prevent pregnancy?",
+          "options": [
+            "It destroys eggs in the ovaries",
+            "It thickens the cervical mucus making it harder for sperm to reach an egg",
+            "It prevents the uterus from forming a lining",
+            "It releases estrogen to block fertilization"
+          ],
+          "answer": "It thickens the cervical mucus making it harder for sperm to reach an egg",
+          "explanation": "Dr. Khalid explains the implant 'also thickens the cervical mucus, making it harder for sperm to reach an egg.'"
+        },
+        {
+          "question": "How effective is the contraceptive implant at preventing pregnancy according to Dra. Maia?",
+          "options": [
+            "About 75% effective",
+            "About 90% effective",
+            "More than 99% effective when used correctly",
+            "Exactly 100% effective"
+          ],
+          "answer": "More than 99% effective when used correctly",
+          "explanation": "Dra. Maia states: 'Implants are more than 99% effective at preventing pregnancy when used correctly.'"
+        },
+        {
+          "question": "Why does Dra. Maia say implants are convenient?",
+          "options": [
+            "Because they are free of charge",
+            "Because users do not need to remember to take a pill every day",
+            "Because they can be self-inserted",
+            "Because they protect against STIs"
+          ],
+          "answer": "Because users do not need to remember to take a pill every day",
+          "explanation": "Dra. Maia says implants 'are convenient because users do not need to remember to take a pill every day.'"
+        },
+        {
+          "question": "What happens to the ability to become pregnant after the implant is removed?",
+          "options": [
+            "It is permanently lost",
+            "It takes five years to return",
+            "It generally returns quickly after removal",
+            "It only returns after medical treatment"
+          ],
+          "answer": "It generally returns quickly after removal",
+          "explanation": "Dr. Khalid explains: 'The ability to become pregnant generally returns quickly after removal.'"
+        },
+        {
+          "question": "According to Dr. Khalid, what may be needed for the first seven days after insertion depending on timing?",
+          "options": [
+            "Daily hormonal pills",
+            "A follow-up injection",
+            "Another method such as condoms",
+            "Complete rest and no activity"
+          ],
+          "answer": "Another method such as condoms",
+          "explanation": "Dr. Khalid says: 'Depending on the timing, another method, such as condoms, may be needed for the first seven days.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about inserting or removing an implant yourself?",
+          "options": [
+            "It is possible with the right tools",
+            "It can be done with help from a friend",
+            "Never attempt to insert or remove an implant yourself",
+            "It is allowed if you watch an instructional video"
+          ],
+          "answer": "Never attempt to insert or remove an implant yourself",
+          "explanation": "Dr. Khalid clearly states: 'Never attempt to insert or remove an implant yourself.'"
+        },
+        {
+          "question": "How long does the insertion procedure usually take according to Dr. Khalid?",
+          "options": [
+            "About one hour",
+            "Only a few minutes",
+            "Half a day",
+            "About thirty minutes"
+          ],
+          "answer": "Only a few minutes",
+          "explanation": "Dr. Khalid explains: 'The procedure usually takes only a few minutes.'"
+        },
+        {
+          "question": "What does Dra. Maia say about the duration of different implant products?",
+          "options": [
+            "All implants last exactly three years",
+            "All implants last ten years",
+            "Some types work for three years while others may last longer",
+            "Duration depends only on the user's health"
+          ],
+          "answer": "Some types work for three years while others may last longer",
+          "explanation": "Dra. Maia says: 'Some types work for three years, while others may last longer. Always follow the instructions for the specific implant.'"
+        },
+        {
+          "question": "What does Dr. Khalid say responsible decision-making starts with?",
+          "options": [
+            "Money, access, and age",
+            "Knowledge, respect, and taking care of your health",
+            "Experience, maturity, and parental consent",
+            "Medical degrees and professional advice only"
+          ],
+          "answer": "Knowledge, respect, and taking care of your health",
+          "explanation": "Dr. Khalid says: 'Remember, responsible decision-making starts with knowledge, respect, and taking care of your health.'"
+        }
+      ],
+      "difficult": [
+        {
+          "question": "What three things does Yvan summarise about implants in the closing scene?",
+          "options": [
+            "They are cheap, painless, and permanent",
+            "They are small rods placed under the skin of the upper arm to release a hormone that prevents pregnancy",
+            "They protect against STIs, are taken daily, and last forever",
+            "They are inserted in the stomach, work immediately, and have no side effects"
+          ],
+          "answer": "They are small rods placed under the skin of the upper arm to release a hormone that prevents pregnancy",
+          "explanation": "Yvan says: 'contraceptive implants are small rods placed under the skin of the upper arm to release a hormone that prevents pregnancy.'"
+        },
+        {
+          "question": "According to Dr. Khalid, when can an implant be inserted?",
+          "options": [
+            "Only at the start of a menstrual cycle",
+            "Only after childbirth",
+            "When a healthcare professional is reasonably certain the person is not pregnant",
+            "Any time without any medical assessment"
+          ],
+          "answer": "When a healthcare professional is reasonably certain the person is not pregnant",
+          "explanation": "Dr. Khalid states: 'It can be inserted when a healthcare professional is reasonably certain the person is not pregnant.'"
+        },
+        {
+          "question": "What side effects does Dra. Maia mention are possible with the implant?",
+          "options": [
+            "Only weight gain and tiredness",
+            "Changes in menstrual periods, headaches, acne, or breast tenderness",
+            "Nausea, fever, and joint pain only",
+            "Vision problems and memory loss"
+          ],
+          "answer": "Changes in menstrual periods, headaches, acne, or breast tenderness",
+          "explanation": "Dra. Maia lists: 'changes in their menstrual periods, such as irregular bleeding, lighter periods, or periods that stop. Other possible side effects include headaches, acne, or breast tenderness.'"
+        },
+        {
+          "question": "What should someone do if side effects from the implant are worrying or troublesome?",
+          "options": [
+            "Remove the implant themselves immediately",
+            "Ignore the side effects as they always go away",
+            "Consult a healthcare professional",
+            "Take extra vitamins to counter the side effects"
+          ],
+          "answer": "Consult a healthcare professional",
+          "explanation": "Dra. Maia advises: 'If symptoms are worrying or troublesome, consult a healthcare professional.'"
+        },
+        {
+          "question": "What does Dr. Khalid say the timing of insertion affects?",
+          "options": [
+            "The color and size of the implant",
+            "How quickly it begins protecting against pregnancy",
+            "Whether it can be removed later",
+            "The cost of the procedure"
+          ],
+          "answer": "How quickly it begins protecting against pregnancy",
+          "explanation": "Dr. Khalid explains: 'The timing affects how quickly it begins protecting against pregnancy.'"
+        },
+        {
+          "question": "What does Dra. Maia say about adolescents and contraceptive implants?",
+          "options": [
+            "Adolescents should never use implants",
+            "People including adolescents may consider implants if the method is medically appropriate, assessed by a healthcare professional",
+            "Implants are only for people over 25",
+            "Adolescents must use implants as their first contraceptive choice"
+          ],
+          "answer": "People including adolescents may consider implants if the method is medically appropriate, assessed by a healthcare professional",
+          "explanation": "Dra. Maia says: 'People who want to prevent pregnancy may consider implants, including adolescents, if the method is medically appropriate for them. A healthcare professional can assess their health and explain the available options.'"
+        },
+        {
+          "question": "What anesthetic is used during the implant insertion according to Dr. Khalid?",
+          "options": [
+            "General anesthetic that puts the patient to sleep",
+            "No anesthetic is used",
+            "A local anesthetic to numb the area",
+            "A pain relief injection in the spine"
+          ],
+          "answer": "A local anesthetic to numb the area",
+          "explanation": "Dr. Khalid explains: 'A healthcare professional uses a local anesthetic to numb the area.'"
+        },
+        {
+          "question": "Why does Dra. Maia say learning about reproductive health is important for adolescents?",
+          "options": [
+            "So they can teach adults about contraception",
+            "Because it helps them understand their options and make informed decisions for their future",
+            "Because it is required by school curriculum only",
+            "So they can choose contraception without consulting professionals"
+          ],
+          "answer": "Because it helps them understand their options and make informed decisions for their future",
+          "explanation": "Dra. Maia says: 'Learning about reproductive health helps adolescents understand their options and make informed decisions for their future.'"
+        },
+        {
+          "question": "What does Dra. Maia say no one should be pressured into?",
+          "options": [
+            "Learning about contraception",
+            "Visiting a healthcare professional",
+            "Choosing a contraceptive method",
+            "Discussing reproductive health with others"
+          ],
+          "answer": "Choosing a contraceptive method",
+          "explanation": "Dra. Maia states: 'No one should be pressured into choosing a contraceptive method.'"
+        },
+        {
+          "question": "What does Dra. Maia say in the closing about consulting a healthcare professional?",
+          "options": [
+            "Only consult one if you have side effects",
+            "Always consult a qualified healthcare professional to determine which contraceptive method is right for you",
+            "Consult one only if you are over 18",
+            "A healthcare professional is only needed to remove the implant"
+          ],
+          "answer": "Always consult a qualified healthcare professional to determine which contraceptive method is right for you",
+          "explanation": "Dra. Maia says: 'Always consult a qualified healthcare professional to determine which contraceptive method is right for you.'"
+        }
+      ],
+      "questions": [
+        {
+          "question": "What is a contraceptive implant?",
+          "options": ["A daily pill", "A small flexible rod placed under the skin of the upper arm", "A monthly injection", "A skin patch"],
+          "answer": "A small flexible rod placed under the skin of the upper arm",
+          "explanation": "A contraceptive implant is a small, thin, flexible rod placed under the skin of the upper arm by a trained healthcare professional."
+        }
+      ]
     }
   ]
 }
