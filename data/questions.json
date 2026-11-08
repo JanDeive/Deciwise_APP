@@ -2,195 +2,345 @@
   "levels": [
     {
       "id": 1,
-      "title": "Chapter 1: Condom Quiz",
+      "title": "Chapter 1: Condom",
       "difficulty": "Easy",
       "difficulty_color": "#2ecc71",
-      "story": "Welcome to Chapter 1!\n\nIn this chapter you will learn all about condoms — what they are, how to use them correctly, and why they matter for your health.\n\n(Video story coming soon...)\n\nAfter reading, choose your difficulty level and start the quiz!",
+      "story": "Welcome to Chapter 1: Condom!\n\nLily and Yvan are inside a school health education room. Dra. Maia and Dr. Khalid appear on screen to teach them about condoms — what they are, why they matter, who can use them, and how to use them correctly.\n\n(Watch the full video story before answering!)\n\nNow choose your difficulty and take the quiz!",
       "story_image": "condom",
       "beginner": [
         {
-          "question": "What is a condom?",
-          "options": ["Medicine", "Protective barrier", "Vitamin", "Bandage"],
-          "answer": "Protective barrier",
-          "explanation": "A condom is a protective barrier used during sex to prevent pregnancy and reduce the risk of STIs."
+          "question": "According to Dra. Maia, what is a condom?",
+          "options": [
+            "A type of medicine",
+            "A thin protective covering used during sexual activity",
+            "A vitamin supplement",
+            "A type of bandage"
+          ],
+          "answer": "A thin protective covering used during sexual activity",
+          "explanation": "Dra. Maia explains that a condom is a thin protective covering used during sexual activity."
         },
         {
-          "question": "What are the two main types of condoms?",
-          "options": ["Big and small", "Hard and soft", "External and internal", "Daily and monthly"],
+          "question": "What are the two main types of condoms mentioned by Dra. Maia?",
+          "options": [
+            "Big and small",
+            "Daily and weekly",
+            "External and internal",
+            "Hard and soft"
+          ],
           "answer": "External and internal",
-          "explanation": "There are two main types: external condoms (worn on the penis) and internal condoms (inserted into the vagina or anus)."
-        },
-        {
-          "question": "What can condoms help prevent?",
-          "options": ["Fever", "Pregnancy and STIs", "Cough", "Headache"],
-          "answer": "Pregnancy and STIs",
-          "explanation": "Condoms help prevent both unwanted pregnancy and sexually transmitted infections (STIs) at the same time."
-        },
-        {
-          "question": "What does STI stand for?",
-          "options": ["Sexually Transmitted Infection", "Safe Treatment Information", "Sexual Testing Instruction", "Standard Treatment Index"],
-          "answer": "Sexually Transmitted Infection",
-          "explanation": "STI stands for Sexually Transmitted Infection — infections passed through sexual contact, such as HIV, chlamydia, and gonorrhea."
+          "explanation": "Dra. Maia explains there are two types: the external condom worn over the penis, and the internal condom placed inside the vagina."
         },
         {
           "question": "Where is an external condom worn?",
-          "options": ["Hand", "Foot", "Penis", "Arm"],
-          "answer": "Penis",
-          "explanation": "An external condom is worn over the erect penis before sexual activity."
+          "options": [
+            "Inside the vagina",
+            "Over the penis",
+            "On the hand",
+            "On the arm"
+          ],
+          "answer": "Over the penis",
+          "explanation": "Dr. Khalid explains that external condoms are worn by the person with a penis."
         },
         {
           "question": "Where is an internal condom placed?",
-          "options": ["Inside the vagina", "Inside the mouth", "On the hand", "On the arm"],
+          "options": [
+            "Over the penis",
+            "Inside the mouth",
+            "Inside the vagina",
+            "On the wrist"
+          ],
           "answer": "Inside the vagina",
-          "explanation": "An internal condom is inserted inside the vagina (or anus) before sex to prevent pregnancy and STIs."
+          "explanation": "Internal condoms are designed to be inserted into the vagina, as explained by Dr. Khalid."
         },
         {
-          "question": "Can a condom be reused?",
-          "options": ["Yes, always", "Yes, if washed", "No", "Yes, if undamaged"],
-          "answer": "No",
-          "explanation": "Condoms are single-use only. Reusing a condom greatly increases the risk of breakage, pregnancy, and STI transmission."
+          "question": "What do condoms help prevent according to the lesson?",
+          "options": [
+            "Fever and headaches",
+            "Unintended pregnancy and STIs",
+            "Cough and colds",
+            "Vitamin deficiency"
+          ],
+          "answer": "Unintended pregnancy and STIs",
+          "explanation": "Condoms act as a barrier that helps prevent pregnancy and reduces the risk of sexually transmitted infections, including HIV."
         },
         {
-          "question": "What should you check before using a condom?",
-          "options": ["Color", "Expiration date", "Smell", "Brand popularity"],
-          "answer": "Expiration date",
-          "explanation": "Always check the expiration date. An expired condom is more likely to break or fail."
+          "question": "What does STI stand for?",
+          "options": [
+            "Standard Treatment Index",
+            "Safe Testing Information",
+            "Sexually Transmitted Infection",
+            "Systematic Treatment Instruction"
+          ],
+          "answer": "Sexually Transmitted Infection",
+          "explanation": "STI stands for Sexually Transmitted Infection, as mentioned by Dra. Maia in the lesson."
         },
         {
-          "question": "Do condoms reduce the risk of STIs?",
-          "options": ["Yes", "No", "Never", "Only sometimes when damaged"],
-          "answer": "Yes",
-          "explanation": "When used correctly and consistently, condoms significantly reduce the risk of transmitting or contracting STIs including HIV."
+          "question": "Are condoms 100% effective?",
+          "options": [
+            "Yes, always",
+            "No, they are not 100% effective",
+            "Yes, if used once",
+            "Only for adults"
+          ],
+          "answer": "No, they are not 100% effective",
+          "explanation": "Dra. Maia clearly states that condoms are not 100% effective, so using them correctly and consistently is important."
         },
         {
-          "question": "Where should used condoms be disposed of?",
-          "options": ["Toilet", "River", "Trash bin", "Sink"],
-          "answer": "Trash bin",
-          "explanation": "Wrap used condoms in tissue and dispose of them in a trash bin. Never flush them as they can clog pipes and harm the environment."
+          "question": "According to Dr. Khalid, when should a new condom be used?",
+          "options": [
+            "Only once a month",
+            "Every time protection is needed during sexual activity",
+            "Only when pregnancy is a concern",
+            "After sexual activity ends"
+          ],
+          "answer": "Every time protection is needed during sexual activity",
+          "explanation": "Dr. Khalid states that a new condom should be used every time protection is needed during sexual activity."
+        },
+        {
+          "question": "What did Lily say after the lesson?",
+          "options": [
+            "She still did not understand condoms",
+            "She now understands why condoms are important and how they help protect reproductive health",
+            "She wanted to learn about a different topic",
+            "She thought condoms were unnecessary"
+          ],
+          "answer": "She now understands why condoms are important and how they help protect reproductive health",
+          "explanation": "At the end of the lesson, Lily says: 'Now I understand why condoms are important and how they help protect reproductive health.'"
+        },
+        {
+          "question": "What does Yvan say he learned from the lesson?",
+          "options": [
+            "That condoms are only for married couples",
+            "That responsible decisions involve accurate information, consent, and respect",
+            "That condoms are 100% effective",
+            "That only adults need to learn about condoms"
+          ],
+          "answer": "That responsible decisions involve accurate information, consent, and respect",
+          "explanation": "Yvan says: 'I also learned that responsible decisions involve accurate information, consent, and respect for ourselves and others.'"
         }
       ],
       "intermediate": [
         {
-          "question": "When should an external condom be put on?",
-          "options": ["After sex", "Before sexual contact", "After ejaculation", "The next day"],
-          "answer": "Before sexual contact",
-          "explanation": "A condom should be put on before any sexual contact. Pre-ejaculatory fluid can also transmit STIs and cause pregnancy."
+          "question": "According to the lesson, what are the first two steps of using an external condom correctly?",
+          "options": [
+            "Roll it on, then check the date",
+            "Check the expiration date and sealed package, then open carefully without teeth or sharp objects",
+            "Open the package with scissors, then check the date",
+            "Pinch the tip, then check the date"
+          ],
+          "answer": "Check the expiration date and sealed package, then open carefully without teeth or sharp objects",
+          "explanation": "Dr. Khalid's first step is to check the expiration date and ensure the package is sealed and undamaged. The second step is to open carefully without teeth or sharp objects."
         },
         {
-          "question": "How should a condom package be opened?",
-          "options": ["With scissors", "With teeth", "Carefully by hand", "With a knife"],
-          "answer": "Carefully by hand",
-          "explanation": "Always open a condom package carefully by hand using the tear notch. Scissors, teeth, or knives can puncture the condom."
+          "question": "Why should you pinch the tip of the condom when putting it on?",
+          "options": [
+            "To make it fit tighter",
+            "To make it look better",
+            "To remove trapped air and leave space for semen",
+            "To make it easier to roll down"
+          ],
+          "answer": "To remove trapped air and leave space for semen",
+          "explanation": "Dr. Khalid explains that pinching the tip removes trapped air and leaves space for semen — an important step to prevent breakage."
         },
         {
-          "question": "What should you do with an expired condom?",
-          "options": ["Use it anyway", "Wash it", "Throw it away", "Repair it"],
-          "answer": "Throw it away",
-          "explanation": "Expired condoms degrade over time — the latex weakens and the lubricant breaks down, making it more likely to break."
+          "question": "Which type of lubricant is safe to use with latex condoms according to Dr. Khalid?",
+          "options": [
+            "Oil-based lubricant",
+            "Cooking oil",
+            "Water-based or silicone-based lubricant",
+            "Petroleum jelly"
+          ],
+          "answer": "Water-based or silicone-based lubricant",
+          "explanation": "Dr. Khalid specifically states to use water-based or silicone-based lubricant. Oil-based products can damage latex condoms."
         },
         {
-          "question": "Why should you pinch the condom tip before rolling it on?",
-          "options": ["To remove trapped air and leave space", "To make it colorful", "To make it reusable", "To make it bigger"],
-          "answer": "To remove trapped air and leave space",
-          "explanation": "Pinching the tip removes air and leaves a small reservoir at the end to collect semen. Trapped air can cause the condom to break."
+          "question": "What should you do with a condom after use?",
+          "options": [
+            "Wash and reuse it",
+            "Flush it down the toilet",
+            "Hold the base while withdrawing, remove carefully, and dispose in the trash",
+            "Leave it on until the next day"
+          ],
+          "answer": "Hold the base while withdrawing, remove carefully, and dispose in the trash",
+          "explanation": "Dr. Khalid instructs to hold the condom at the base while withdrawing, remove it carefully, and dispose of it in the trash."
         },
         {
-          "question": "Which lubricant is safe to use with latex condoms?",
-          "options": ["Cooking oil", "Baby oil", "Water-based lubricant", "Petroleum jelly"],
-          "answer": "Water-based lubricant",
-          "explanation": "Only water-based lubricants are safe with latex condoms. Oil-based lubricants degrade latex and cause condoms to break."
+          "question": "Why should you never use two condoms at the same time?",
+          "options": [
+            "It is too expensive",
+            "Friction between them can cause them to break",
+            "It takes too long to put on",
+            "Two condoms are always better than one"
+          ],
+          "answer": "Friction between them can cause them to break",
+          "explanation": "Dr. Khalid reminds us: never use two condoms together because friction can cause them to break."
         },
         {
-          "question": "Can you wear two external condoms at once for extra protection?",
-          "options": ["Yes, always", "No", "Yes, for extra protection", "Only at night"],
-          "answer": "No",
-          "explanation": "Wearing two condoms creates friction that can cause both to tear. One correctly used condom is the safest option."
+          "question": "When must an external condom be put on according to Dr. Khalid?",
+          "options": [
+            "After ejaculation",
+            "At any point during activity",
+            "Before sexual contact begins",
+            "Only when requested by a partner"
+          ],
+          "answer": "Before sexual contact begins",
+          "explanation": "Dr. Khalid states that an external condom must be put on before sexual contact begins and used throughout the activity."
         },
         {
-          "question": "What should you do with a used condom after sex?",
-          "options": ["Reuse it", "Flush it down the toilet", "Throw it in the trash", "Wash it"],
-          "answer": "Throw it in the trash",
-          "explanation": "Wrap the used condom in tissue and dispose of it in the trash. Never flush condoms."
+          "question": "According to Dr. Khalid, what advantages do condoms have?",
+          "options": [
+            "They are prescription-only and expensive",
+            "They are widely available, generally affordable, and do not contain contraceptive hormones",
+            "They are 100% effective against all risks",
+            "They are only available at hospitals"
+          ],
+          "answer": "They are widely available, generally affordable, and do not contain contraceptive hormones",
+          "explanation": "Dr. Khalid explains that condoms are widely available, generally affordable, and do not contain contraceptive hormones."
         },
         {
-          "question": "How many times can one condom be used?",
-          "options": ["Once", "Twice", "Three times", "Many times"],
-          "answer": "Once",
-          "explanation": "Each condom is designed for single use only. Reusing a condom weakens the material and increases breakage risk."
+          "question": "What does Dra. Maia say about adolescents and waiting?",
+          "options": [
+            "Adolescents must be sexually active to learn about condoms",
+            "Choosing to wait until they are ready is a valid decision",
+            "Waiting is not discussed in the lesson",
+            "Only adults can wait"
+          ],
+          "answer": "Choosing to wait until they are ready is a valid decision",
+          "explanation": "Dra. Maia says: 'Adolescents should also understand that choosing to wait until they are ready is a valid decision.'"
         },
         {
-          "question": "What does consent mean in the context of sexual activity?",
-          "options": ["Pressure", "Agreement given freely", "Force", "Obedience"],
-          "answer": "Agreement given freely",
-          "explanation": "Consent means a clear, enthusiastic, and freely given agreement to engage in sexual activity. It can be withdrawn at any time."
+          "question": "According to the lesson, how does learning about condoms help adolescents?",
+          "options": [
+            "It encourages early sexual activity",
+            "It helps them understand reproductive health and make informed decisions as they grow older",
+            "It only helps adults",
+            "It replaces the need for professional health advice"
+          ],
+          "answer": "It helps them understand reproductive health and make informed decisions as they grow older",
+          "explanation": "Dra. Maia explains that learning about condoms helps adolescents understand reproductive health and make informed decisions as they grow older."
         },
         {
-          "question": "Who is the most reliable source for reproductive health questions?",
-          "options": ["Rumors", "Anonymous online comments", "Qualified health professionals", "Unverified social media posts"],
-          "answer": "Qualified health professionals",
-          "explanation": "Qualified health professionals provide accurate, evidence-based information. Always verify health information with a trusted medical source."
+          "question": "What does Dra. Maia say at the end of the lesson?",
+          "options": [
+            "Condoms are unnecessary for adolescents",
+            "Learning about reproductive health is an important step toward making informed decisions",
+            "Only doctors need to know about condoms",
+            "Condoms are the only form of protection needed"
+          ],
+          "answer": "Learning about reproductive health is an important step toward making informed decisions",
+          "explanation": "Dra. Maia closes the lesson by saying: 'Learning about reproductive health is an important step toward making informed decisions.'"
         }
       ],
       "difficult": [
         {
-          "question": "What should you do if a condom breaks during sex?",
-          "options": ["Ignore it", "Seek prompt medical advice", "Reuse a new condom immediately", "Wait for symptoms"],
-          "answer": "Seek prompt medical advice",
-          "explanation": "If a condom breaks, seek medical advice promptly. Emergency contraception is most effective within 72 hours. HIV PEP must start within 72 hours if HIV exposure is a concern."
+          "question": "What should someone do immediately if a condom breaks or slips off during sexual activity?",
+          "options": [
+            "Ignore it and wait to see what happens",
+            "Seek advice from a qualified health professional as soon as possible",
+            "Reuse a new condom without addressing it",
+            "Take any available medication"
+          ],
+          "answer": "Seek advice from a qualified health professional as soon as possible",
+          "explanation": "Dra. Maia advises: 'Seek advice from a qualified health professional as soon as possible' if a condom breaks or slips off."
         },
         {
-          "question": "What should you do if a condom slips off during sex?",
-          "options": ["Ignore it", "Continue without any protection", "Address the situation and seek health advice promptly", "Wash and reuse it"],
-          "answer": "Address the situation and seek health advice promptly",
-          "explanation": "A slipped condom is a contraceptive failure. Stop, address the situation, and seek health advice including emergency contraception and STI testing if appropriate."
+          "question": "What is PEP, and when must it be started according to Dra. Maia?",
+          "options": [
+            "Post-Ejaculation Pill, within 24 hours",
+            "Pre-Exposure Prophylaxis, within 48 hours",
+            "Post-Exposure Prophylaxis for HIV, within 72 hours",
+            "Pregnancy Emergency Pill, within one week"
+          ],
+          "answer": "Post-Exposure Prophylaxis for HIV, within 72 hours",
+          "explanation": "Dra. Maia explains: 'If there may have been exposure to HIV, seek urgent medical advice about post-exposure prophylaxis, or PEP, which must be started within 72 hours.'"
         },
         {
-          "question": "Are condoms 100% effective at preventing pregnancy and STIs?",
-          "options": ["Yes", "No", "Always, if used correctly", "Only for teenagers"],
-          "answer": "No",
-          "explanation": "No contraceptive method is 100% effective. With perfect use, condoms are 97-98% effective at preventing pregnancy."
+          "question": "What is the correct order of the first four steps of putting on an external condom?",
+          "options": [
+            "Open package → check date → roll down → pinch tip",
+            "Check date and package → open carefully → place on tip with rolled edge out → pinch tip",
+            "Pinch tip → check date → open → roll down",
+            "Open → pinch → roll down → check date"
+          ],
+          "answer": "Check date and package → open carefully → place on tip with rolled edge out → pinch tip",
+          "explanation": "Dr. Khalid's steps are: (1) check expiration date and package seal, (2) open carefully, (3) place on tip with rolled edge outward, (4) pinch tip to remove air."
         },
         {
-          "question": "Does trusting a partner completely eliminate the risk of STIs?",
-          "options": ["Yes", "No", "Always", "Only for adults"],
-          "answer": "No",
-          "explanation": "Trust does not eliminate STI risk. Many people are unaware they carry an STI because many infections are asymptomatic."
+          "question": "According to the lesson, what three values does Yvan mention as essential for responsible decisions about sexual activity?",
+          "options": [
+            "Popularity, money, and age",
+            "Accurate information, consent, and respect",
+            "Trust, love, and comfort",
+            "Experience, age, and health"
+          ],
+          "answer": "Accurate information, consent, and respect",
+          "explanation": "Yvan concludes: 'responsible decisions involve accurate information, consent, and respect for ourselves and others.'"
         },
         {
-          "question": "Where should teenagers go for reliable information about sexual health?",
-          "options": ["Rumors from peers", "Random social media posts", "Qualified health professionals", "Gossip"],
-          "answer": "Qualified health professionals",
-          "explanation": "Qualified health professionals provide accurate, age-appropriate, and evidence-based sexual health information."
+          "question": "What does Dra. Maia say about the effectiveness of condoms?",
+          "options": [
+            "Condoms eliminate all risks completely",
+            "Condoms are completely ineffective",
+            "Condoms reduce risks but do not eliminate them completely",
+            "Condoms are only effective for pregnancy prevention"
+          ],
+          "answer": "Condoms reduce risks but do not eliminate them completely",
+          "explanation": "Dr. Khalid reiterates: 'condoms reduce risks but do not eliminate them completely. Always seek accurate information from trusted health professionals.'"
         },
         {
-          "question": "Within how many hours must HIV PEP be started after possible HIV exposure?",
-          "options": ["Within 24 weeks", "Within 72 hours", "After one month", "After one year"],
-          "answer": "Within 72 hours",
-          "explanation": "HIV PEP must be started as soon as possible and no later than 72 hours after potential exposure. It must then be taken daily for 28 days."
+          "question": "Why does Dra. Maia say it is important for adolescents to learn about condoms?",
+          "options": [
+            "To encourage early sexual activity",
+            "To help them recognize the importance of protecting health, respecting boundaries, and avoiding misinformation",
+            "Because condoms are required by law for all adolescents",
+            "So they can teach adults about condoms"
+          ],
+          "answer": "To help them recognize the importance of protecting health, respecting boundaries, and avoiding misinformation",
+          "explanation": "Dra. Maia says learning about condoms helps adolescents 'recognize the importance of protecting their health, respecting personal boundaries, and avoiding misinformation.'"
         },
         {
-          "question": "What can oil-based products do to latex condoms?",
-          "options": ["Strengthen them", "Change their color", "Weaken and break them down", "Make them reusable"],
-          "answer": "Weaken and break them down",
-          "explanation": "Oil-based products degrade latex within minutes, dramatically increasing the risk of the condom breaking during use."
+          "question": "What does Dr. Khalid say about oil-based products and latex condoms?",
+          "options": [
+            "Oil-based products make latex condoms stronger",
+            "Oil-based products can damage latex condoms",
+            "Oil-based products have no effect on latex condoms",
+            "Oil-based products improve condom effectiveness"
+          ],
+          "answer": "Oil-based products can damage latex condoms",
+          "explanation": "Dr. Khalid warns: 'Oil-based products can damage latex condoms,' which is why only water-based or silicone-based lubricants should be used."
         },
         {
-          "question": "What should you do if you are pressured into sex without a condom?",
-          "options": ["Agree immediately to avoid conflict", "Ignore your feelings", "Set boundaries clearly and say no if you wish", "Follow what your partner wants"],
-          "answer": "Set boundaries clearly and say no if you wish",
-          "explanation": "You always have the right to say no or to insist on protection. Sexual coercion is a form of abuse and your boundaries must be respected."
+          "question": "What does Dra. Maia say about no one being pressured into sexual activity?",
+          "options": [
+            "Pressure from a partner is acceptable",
+            "No one should be pressured into sexual activity — consent, respect, and personal boundaries are essential",
+            "Only adults need to worry about pressure",
+            "Pressure is part of a normal relationship"
+          ],
+          "answer": "No one should be pressured into sexual activity — consent, respect, and personal boundaries are essential",
+          "explanation": "Dra. Maia states: 'No one should be pressured into sexual activity. Consent, respect, and personal boundaries are essential.'"
         },
         {
-          "question": "Why might someone choose to combine condoms with another contraceptive method?",
-          "options": ["To provide additional pregnancy protection beyond what a condom alone offers", "To cure existing STIs", "To reuse condoms safely", "To guarantee absolutely zero risk"],
-          "answer": "To provide additional pregnancy protection beyond what a condom alone offers",
-          "explanation": "Using condoms with another method provides dual protection — the second method acts as a safety net if the condom fails."
+          "question": "What does Dr. Khalid say at the very end of the lesson?",
+          "options": [
+            "Condoms are the only health topic adolescents need to learn",
+            "Your health and safety matter — never be afraid to ask questions or seek guidance from a qualified health professional",
+            "Adolescents should avoid all discussions about reproductive health",
+            "Only doctors can understand condoms"
+          ],
+          "answer": "Your health and safety matter — never be afraid to ask questions or seek guidance from a qualified health professional",
+          "explanation": "Dr. Khalid closes with: 'Remember, your health and safety matter. Never be afraid to ask questions or seek guidance from a qualified health professional.'"
         },
         {
-          "question": "Can a person have an STI without showing any symptoms?",
-          "options": ["No — all STIs cause visible symptoms", "Yes — many STIs are asymptomatic", "Never", "Only in children"],
-          "answer": "Yes — many STIs are asymptomatic",
-          "explanation": "Many STIs including HIV, chlamydia, and gonorrhea can be present for months or years without any visible symptoms. Regular testing is essential."
+          "question": "What does condom use as a barrier specifically prevent according to Dra. Maia?",
+          "options": [
+            "It prevents all viruses and bacteria from existing",
+            "It prevents sperm from entering the vagina, reducing pregnancy chance, and reduces STI risk including HIV",
+            "It only prevents pregnancy, not STIs",
+            "It only prevents HIV, not pregnancy"
+          ],
+          "answer": "It prevents sperm from entering the vagina, reducing pregnancy chance, and reduces STI risk including HIV",
+          "explanation": "Dra. Maia explains: 'Condoms act as a barrier that helps prevent sperm from entering the vagina, reducing the chance of pregnancy. They also help reduce the risk of sexually transmitted infections, including HIV.'"
         }
       ],
       "questions": [
@@ -198,7 +348,7 @@
           "question": "What is a condom?",
           "options": ["Medicine", "Protective barrier", "Vitamin", "Bandage"],
           "answer": "Protective barrier",
-          "explanation": "A condom is a protective barrier used during sex to prevent pregnancy and reduce the risk of STIs."
+          "explanation": "A condom is a thin protective covering used during sexual activity."
         }
       ]
     },
@@ -211,7 +361,7 @@
       "story_image": "classroom",
       "beginner": [
         {
-          "question": "Chapter 2 is coming soon. Which answer is correct?",
+          "question": "Chapter 2 is coming soon. Select the correct answer.",
           "options": ["A", "B — This one", "C", "D"],
           "answer": "B — This one",
           "explanation": "Chapter 2 content is being prepared. Check back soon!"
