@@ -136,7 +136,8 @@ BADGES = {
 
 ACT_MAP = {1: ("Chapter 1", "Condom",              "#2ecc71", [1]),
            2: ("Chapter 2", "Birth Control Pills",  "#3498db", [2]),
-           3: ("Chapter 3", "Implants",             "#9b59b6", [3])}
+           3: ("Chapter 3", "Implants",             "#9b59b6", [3]),
+           4: ("Chapter 4", "Fertility Awareness",  "#e67e22", [4])}
 
 # ── JSON helpers ──────────────────────────────────────────────────────────────
 def load_json(path):
@@ -838,8 +839,8 @@ class LevelSelectScreen(tk.Frame):
                  bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1,4))
-        tk.Label(inner, text=f"⭐  {total_stars} / 9  stars collected",
+                          for i in range(1,5))
+        tk.Label(inner, text=f"⭐  {total_stars} / 12  stars collected",
                  font=_retro(9),
                  bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
 
@@ -1668,7 +1669,7 @@ class ResultScreen(tk.Frame):
             ("beginner",     1 in completed),
             ("intermediate", all(x in completed for x in [1, 2])),
             ("expert",       all(x in completed for x in [1, 2, 3])),
-            ("deciwise",     all(x in completed for x in range(1, 4))),
+            ("deciwise",     all(x in completed for x in range(1, 5))),
             ("perfect_run",  pct == 1.0),
             ("speedster",    app.fast_answers >= 5),
         ]

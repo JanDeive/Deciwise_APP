@@ -1055,6 +1055,358 @@
           "explanation": "A contraceptive implant is a small, thin, flexible rod placed under the skin of the upper arm by a trained healthcare professional."
         }
       ]
+    },
+    {
+      "id": 4,
+      "title": "Chapter 4: Fertility Awareness",
+      "difficulty": "Easy",
+      "difficulty_color": "#e67e22",
+      "story": "Welcome to Chapter 4: Fertility Awareness!\n\nLily and Yvan wonder how bodies work and when pregnancy is more likely to happen. Dra. Maia and Dr. Khalid explain fertility awareness — what it means, why it matters, who can use it, how it works, and its important limitations.\n\n(Watch the full video story before answering!)\n\nNow choose your difficulty and take the quiz!",
+      "story_image": "seminar",
+      "beginner": [
+        {
+          "question": "According to Dra. Maia, what is fertility awareness?",
+          "options": [
+            "Taking pills to prevent pregnancy",
+            "The practice of understanding and tracking the menstrual cycle to identify days when pregnancy is more likely",
+            "A method that protects against STIs",
+            "A type of surgery to prevent pregnancy"
+          ],
+          "answer": "The practice of understanding and tracking the menstrual cycle to identify days when pregnancy is more likely",
+          "explanation": "Dra. Maia explains: 'Fertility awareness is the practice of understanding and tracking the body's menstrual cycle to identify the days when pregnancy is more likely to occur.'"
+        },
+        {
+          "question": "When does the menstrual cycle begin according to Dra. Maia?",
+          "options": [
+            "On the last day of menstrual bleeding",
+            "On the first day of menstrual bleeding",
+            "On the day of ovulation",
+            "Two weeks before menstruation"
+          ],
+          "answer": "On the first day of menstrual bleeding",
+          "explanation": "Dra. Maia explains: 'The menstrual cycle begins on the first day of menstrual bleeding.'"
+        },
+        {
+          "question": "What is ovulation?",
+          "options": [
+            "The beginning of menstrual bleeding",
+            "When an ovary releases an egg",
+            "When sperm enters the body",
+            "The end of the menstrual cycle"
+          ],
+          "answer": "When an ovary releases an egg",
+          "explanation": "Dra. Maia explains that 'an ovary may release an egg, a process called ovulation.'"
+        },
+        {
+          "question": "Does fertility awareness protect against sexually transmitted infections (STIs)?",
+          "options": [
+            "Yes, it protects against all STIs",
+            "Yes, but only HIV",
+            "No, it does not protect against STIs",
+            "Only if combined with tracking"
+          ],
+          "answer": "No, it does not protect against STIs",
+          "explanation": "Dra. Maia clearly states: 'fertility awareness does not protect against sexually transmitted infections, or STIs.'"
+        },
+        {
+          "question": "What does Dr. Khalid say helps reduce the risk of STIs?",
+          "options": [
+            "Fertility tracking apps",
+            "Calendar methods",
+            "Condoms",
+            "Basal body temperature monitoring"
+          ],
+          "answer": "Condoms",
+          "explanation": "Dr. Khalid says: 'Condoms help reduce the risk of many STIs and also help prevent pregnancy when used correctly and consistently.'"
+        },
+        {
+          "question": "What does Lily say fertility awareness is about beyond pregnancy?",
+          "options": [
+            "Only about preventing pregnancy",
+            "Understanding and taking care of our bodies",
+            "Tracking weather and seasons",
+            "Counting calendar days only"
+          ],
+          "answer": "Understanding and taking care of our bodies",
+          "explanation": "Lily says: 'fertility awareness is not just about pregnancy. It's also about understanding and taking care of our bodies!'"
+        },
+        {
+          "question": "What does Dr. Khalid say knowledge is an important part of?",
+          "options": [
+            "Avoiding all health topics",
+            "Responsible decision-making",
+            "Taking medicines without advice",
+            "Ignoring menstrual changes"
+          ],
+          "answer": "Responsible decision-making",
+          "explanation": "Dr. Khalid says in the closing: 'Remember, knowledge is an important part of responsible decision-making.'"
+        },
+        {
+          "question": "What does Lily say no one should feel when asking about reproductive health?",
+          "options": [
+            "Excited",
+            "Pressured",
+            "Embarrassed",
+            "Confused"
+          ],
+          "answer": "Embarrassed",
+          "explanation": "Lily says: 'we should never feel embarrassed to ask questions about our reproductive health!'"
+        },
+        {
+          "question": "What does Dra. Maia say accurate information helps us do?",
+          "options": [
+            "Avoid all health professionals",
+            "Make informed, responsible, and healthy decisions",
+            "Track only the calendar method",
+            "Rely on rumors about reproductive health"
+          ],
+          "answer": "Make informed, responsible, and healthy decisions",
+          "explanation": "Dra. Maia says: 'Accurate information helps us make informed, responsible, and healthy decisions.'"
+        },
+        {
+          "question": "What does Dra. Maia advise in the closing scene?",
+          "options": [
+            "Avoid asking questions about health",
+            "Take care of your health, ask questions, and seek guidance from trusted health professionals",
+            "Use only one method of tracking",
+            "Rely on friends for reproductive health advice"
+          ],
+          "answer": "Take care of your health, ask questions, and seek guidance from trusted health professionals",
+          "explanation": "Dra. Maia closes with: 'Take care of your health, ask questions, and seek guidance from trusted health professionals.'"
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "According to Dr. Khalid, how long can sperm survive inside the reproductive tract?",
+          "options": [
+            "Up to 12 hours",
+            "Up to 24 hours",
+            "Up to about five days",
+            "Up to two weeks"
+          ],
+          "answer": "Up to about five days",
+          "explanation": "Dr. Khalid explains: 'Sperm can survive inside the reproductive tract for up to about five days.'"
+        },
+        {
+          "question": "For how long after ovulation can an egg usually be fertilized?",
+          "options": [
+            "Up to 5 days",
+            "Up to 72 hours",
+            "Around 12 to 24 hours",
+            "Up to one week"
+          ],
+          "answer": "Around 12 to 24 hours",
+          "explanation": "Dr. Khalid states: 'an egg can usually be fertilized for around 12 to 24 hours after ovulation.'"
+        },
+        {
+          "question": "Why does Dr. Khalid say ovulation is difficult to predict precisely for adolescents?",
+          "options": [
+            "Because adolescents do not have menstrual cycles",
+            "Because ovulation can change from cycle to cycle, especially during adolescence",
+            "Because tracking devices are not available for adolescents",
+            "Because ovulation always happens on day 14"
+          ],
+          "answer": "Because ovulation can change from cycle to cycle, especially during adolescence",
+          "explanation": "Dr. Khalid says: 'ovulation can change from cycle to cycle, especially during adolescence, so it is difficult to predict the fertile days precisely.'"
+        },
+        {
+          "question": "What does menstrual cycle tracking involve?",
+          "options": [
+            "Recording the last day of each period only",
+            "Recording the first day of each period and the length of each cycle",
+            "Counting only the days of bleeding",
+            "Measuring hormone levels in the blood"
+          ],
+          "answer": "Recording the first day of each period and the length of each cycle",
+          "explanation": "Dra. Maia explains menstrual cycle tracking as 'recording the first day of each period and the length of each cycle.'"
+        },
+        {
+          "question": "What is cervical mucus observation?",
+          "options": [
+            "Taking temperature measurements every morning",
+            "Using a calendar to estimate fertile days",
+            "Noticing changes in vaginal discharge that may occur during the menstrual cycle",
+            "Counting the days since the last period"
+          ],
+          "answer": "Noticing changes in vaginal discharge that may occur during the menstrual cycle",
+          "explanation": "Dra. Maia describes cervical mucus observation as 'noticing changes in vaginal discharge that may occur during the menstrual cycle.'"
+        },
+        {
+          "question": "What is basal body temperature tracking?",
+          "options": [
+            "Measuring temperature after exercise each evening",
+            "Measuring body temperature at rest every morning to help identify patterns associated with ovulation",
+            "Recording the highest temperature of the day",
+            "Tracking temperature changes during menstruation only"
+          ],
+          "answer": "Measuring body temperature at rest every morning to help identify patterns associated with ovulation",
+          "explanation": "Dra. Maia explains basal body temperature tracking as 'measuring body temperature at rest every morning to help identify patterns associated with ovulation.'"
+        },
+        {
+          "question": "What are calendar-based methods according to Dra. Maia?",
+          "options": [
+            "Using hormone tests to pinpoint ovulation",
+            "Using recorded menstrual cycles to estimate when fertile days may occur",
+            "Counting backwards from the last period only",
+            "Using a calendar to track weight changes"
+          ],
+          "answer": "Using recorded menstrual cycles to estimate when fertile days may occur",
+          "explanation": "Dra. Maia describes calendar-based methods as 'using recorded menstrual cycles to estimate when fertile days may occur.'"
+        },
+        {
+          "question": "What three things does Dr. Khalid say affect the menstrual cycle?",
+          "options": [
+            "Diet, exercise, and sleep",
+            "Stress, illness, and natural hormonal changes",
+            "Weather, age, and environment",
+            "Medication, sleep, and diet"
+          ],
+          "answer": "Stress, illness, and natural hormonal changes",
+          "explanation": "Dr. Khalid explains that 'stress, illness, and natural hormonal changes can affect the menstrual cycle.'"
+        },
+        {
+          "question": "What does Dr. Khalid say tracking fertility awareness requires?",
+          "options": [
+            "A mobile app and professional certification",
+            "Consistency and accurate observations",
+            "Daily hormone testing",
+            "A partner's cooperation only"
+          ],
+          "answer": "Consistency and accurate observations",
+          "explanation": "Dr. Khalid states in Scene 6: 'Tracking requires consistency and accurate observations.'"
+        },
+        {
+          "question": "What does Dra. Maia say tracking menstrual cycles may help someone notice?",
+          "options": [
+            "Their overall fitness levels",
+            "Unusual changes and know when to seek advice from a qualified health professional",
+            "When to start taking vitamins",
+            "Their daily mood patterns"
+          ],
+          "answer": "Unusual changes and know when to seek advice from a qualified health professional",
+          "explanation": "Dra. Maia says: 'Tracking menstrual cycles may help someone notice unusual changes and know when to seek advice from a qualified health professional.'"
+        }
+      ],
+      "difficult": [
+        {
+          "question": "What four methods of practicing fertility awareness does Dra. Maia describe in Scene 5?",
+          "options": [
+            "Pills, injections, patches, and rings",
+            "Menstrual cycle tracking, cervical mucus observation, basal body temperature tracking, and calendar-based methods",
+            "Blood tests, urine tests, ultrasound, and temperature",
+            "Daily pills, weekly patches, monthly injections, and yearly implants"
+          ],
+          "answer": "Menstrual cycle tracking, cervical mucus observation, basal body temperature tracking, and calendar-based methods",
+          "explanation": "Dra. Maia lists four methods: menstrual cycle tracking, cervical mucus observation, basal body temperature tracking, and calendar-based methods."
+        },
+        {
+          "question": "Why does Dr. Khalid say a calendar cannot guarantee the exact day of ovulation?",
+          "options": [
+            "Because calendars are not accurate enough",
+            "Because ovulation always happens on day 14 of the cycle",
+            "Because calendar estimates cannot guarantee the exact day — stress, illness, and hormonal changes affect the cycle",
+            "Because only blood tests can confirm ovulation"
+          ],
+          "answer": "Because calendar estimates cannot guarantee the exact day — stress, illness, and hormonal changes affect the cycle",
+          "explanation": "Dr. Khalid explains: 'Calendar estimates cannot guarantee the exact day of ovulation. Stress, illness, and natural hormonal changes can affect the menstrual cycle.'"
+        },
+        {
+          "question": "What does Dr. Khalid say fertility awareness as a method of pregnancy prevention requires?",
+          "options": [
+            "Only one person's effort",
+            "Careful tracking, correct knowledge, and consistent cooperation between partners",
+            "Medical supervision at all times",
+            "Daily hormone medication"
+          ],
+          "answer": "Careful tracking, correct knowledge, and consistent cooperation between partners",
+          "explanation": "Dra. Maia states: 'As a method of pregnancy prevention, it requires careful tracking, correct knowledge, and consistent cooperation between partners.'"
+        },
+        {
+          "question": "What does Dr. Khalid advise adolescents who want to prevent pregnancy to do instead of relying on fertility awareness alone?",
+          "options": [
+            "Use only the calendar method",
+            "Track basal body temperature alone",
+            "Consider more reliable contraceptive methods with guidance from a qualified health professional",
+            "Rely on friends' advice about contraception"
+          ],
+          "answer": "Consider more reliable contraceptive methods with guidance from a qualified health professional",
+          "explanation": "Dr. Khalid says: 'Adolescents who want to prevent pregnancy should consider more reliable contraceptive methods with guidance from a qualified health professional.'"
+        },
+        {
+          "question": "What two things does Yvan say he learned about in the closing summary?",
+          "options": [
+            "Condoms and birth control pills",
+            "Ovulation, fertile days, and different ways to track menstrual patterns",
+            "The menstrual cycle and implants only",
+            "Basal temperature and hormone injections"
+          ],
+          "answer": "Ovulation, fertile days, and different ways to track menstrual patterns",
+          "explanation": "Yvan says in the closing: 'We also learned about ovulation, fertile days, and different ways to track menstrual patterns.'"
+        },
+        {
+          "question": "What does Lily say fertility awareness helped her learn in the closing?",
+          "options": [
+            "How to take birth control pills correctly",
+            "Fertility awareness helps us understand our bodies and the menstrual cycle",
+            "How to insert a contraceptive implant",
+            "How condoms protect against STIs"
+          ],
+          "answer": "Fertility awareness helps us understand our bodies and the menstrual cycle",
+          "explanation": "Lily says in the closing: 'Today, we learned that fertility awareness helps us understand our bodies and the menstrual cycle.'"
+        },
+        {
+          "question": "Why does Dr. Khalid say adolescents can start learning about fertility awareness?",
+          "options": [
+            "Because they need to start using it immediately",
+            "As part of age-appropriate reproductive health education",
+            "Because it replaces all other contraceptive methods",
+            "Only when they become sexually active"
+          ],
+          "answer": "As part of age-appropriate reproductive health education",
+          "explanation": "Dr. Khalid explains: 'Adolescents can start learning about it as part of age-appropriate reproductive health education.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about ovulation in Scene 6's important reminders?",
+          "options": [
+            "Ovulation always happens on day 14",
+            "Ovulation does not always happen on the same day each month",
+            "Ovulation can be predicted with 100% accuracy",
+            "Ovulation only happens once a year"
+          ],
+          "answer": "Ovulation does not always happen on the same day each month",
+          "explanation": "Dr. Khalid states in the reminders: 'Ovulation does not always happen on the same day each month.'"
+        },
+        {
+          "question": "What three things does Dra. Maia say fertility awareness helps adolescents with?",
+          "options": [
+            "Sleep, diet, and exercise",
+            "Understand their bodies, recognize menstrual patterns, and learn about reproductive health",
+            "Choose contraceptives, use implants, and avoid STIs",
+            "Track temperature, count calories, and monitor weight"
+          ],
+          "answer": "Understand their bodies, recognize menstrual patterns, and learn about reproductive health",
+          "explanation": "Dra. Maia says: 'Fertility awareness helps adolescents understand their bodies, recognize menstrual patterns, and learn about reproductive health.'"
+        },
+        {
+          "question": "According to Dr. Khalid in Scene 1, what does learning about fertility involve?",
+          "options": [
+            "Only tracking the calendar",
+            "Learning about ovulation, the menstrual cycle, and the body's natural signs of fertility",
+            "Taking hormonal tests monthly",
+            "Consulting a doctor every week"
+          ],
+          "answer": "Learning about ovulation, the menstrual cycle, and the body's natural signs of fertility",
+          "explanation": "Dr. Khalid says: 'It involves learning about ovulation, the menstrual cycle, and the body's natural signs of fertility. This knowledge can help people make informed decisions about reproductive health.'"
+        }
+      ],
+      "questions": [
+        {
+          "question": "What is fertility awareness?",
+          "options": ["Taking pills daily", "Understanding and tracking the menstrual cycle to identify fertile days", "A type of surgery", "A monthly injection"],
+          "answer": "Understanding and tracking the menstrual cycle to identify fertile days",
+          "explanation": "Fertility awareness is the practice of understanding and tracking the menstrual cycle to identify days when pregnancy is more likely."
+        }
+      ]
     }
   ]
 }
