@@ -354,39 +354,354 @@
     },
     {
       "id": 2,
-      "title": "Chapter 2: Coming Soon",
+      "title": "Chapter 2: Birth Control Pills",
       "difficulty": "Easy",
       "difficulty_color": "#3498db",
-      "story": "Chapter 2 is coming soon!\n\nThe video story and questions are still being prepared.\n\nCheck back later for the next chapter of the DeciWise quiz journey.",
-      "story_image": "classroom",
+      "story": "Welcome to Chapter 2: Birth Control Pills!\n\nLily and Yvan are talking when a bottle of medicine and a calendar appear on screen. Dra. Maia and Dr. Khalid are here to explain what birth control pills are, how they work, why they are used, and who can use them.\n\n(Watch the full video story before answering!)\n\nNow choose your difficulty and take the quiz!",
+      "story_image": "health_center",
       "beginner": [
         {
-          "question": "Chapter 2 is coming soon. Select the correct answer.",
-          "options": ["A", "B — This one", "C", "D"],
-          "answer": "B — This one",
-          "explanation": "Chapter 2 content is being prepared. Check back soon!"
+          "question": "According to Dra. Maia, what are birth control pills?",
+          "options": [
+            "Vitamins that boost energy",
+            "Medicines containing hormones that help prevent pregnancy",
+            "Antibiotics that treat infections",
+            "Supplements that regulate sleep"
+          ],
+          "answer": "Medicines containing hormones that help prevent pregnancy",
+          "explanation": "Dra. Maia explains: 'Birth control pills are medicines containing hormones that help prevent pregnancy.'"
         },
-        {"question": "Placeholder 2", "options": ["A", "B", "C — This one", "D"], "answer": "C — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 3", "options": ["A — This one", "B", "C", "D"], "answer": "A — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 4", "options": ["A", "B", "C", "D — This one"], "answer": "D — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 5", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+        {
+          "question": "What is another name for birth control pills mentioned in the lesson?",
+          "options": [
+            "Hormone tablets",
+            "Fertility pills",
+            "Oral contraceptives",
+            "Daily vitamins"
+          ],
+          "answer": "Oral contraceptives",
+          "explanation": "Dra. Maia says birth control pills 'are taken by mouth and are commonly called oral contraceptives.'"
+        },
+        {
+          "question": "What are the two main types of birth control pills according to Dr. Khalid?",
+          "options": [
+            "Daily and weekly pills",
+            "Combined pills and progestin-only pills",
+            "Estrogen pills and calcium pills",
+            "Fast-acting and slow-acting pills"
+          ],
+          "answer": "Combined pills and progestin-only pills",
+          "explanation": "Dr. Khalid explains: 'There are two main types. Combined pills contain two hormones: estrogen and progestin. Progestin-only pills contain just one hormone, progestin.'"
+        },
+        {
+          "question": "What hormones do combined birth control pills contain?",
+          "options": [
+            "Progestin and insulin",
+            "Estrogen and progestin",
+            "Estrogen and adrenaline",
+            "Progestin and testosterone"
+          ],
+          "answer": "Estrogen and progestin",
+          "explanation": "Dr. Khalid states that combined pills contain two hormones: estrogen and progestin."
+        },
+        {
+          "question": "What is the main purpose of birth control pills according to Dra. Maia?",
+          "options": [
+            "To cure sexually transmitted infections",
+            "To prevent pregnancy",
+            "To increase fertility",
+            "To treat colds and flu"
+          ],
+          "answer": "To prevent pregnancy",
+          "explanation": "Dra. Maia says: 'Their main purpose is to prevent pregnancy.'"
+        },
+        {
+          "question": "Do birth control pills protect against sexually transmitted infections (STIs)?",
+          "options": [
+            "Yes, they protect against all STIs",
+            "Yes, but only some STIs",
+            "No, they do not protect against STIs",
+            "Only if taken every day"
+          ],
+          "answer": "No, they do not protect against STIs",
+          "explanation": "Dr. Khalid clearly states: 'No. Birth control pills do not protect against STIs.'"
+        },
+        {
+          "question": "What does Dr. Khalid say reduces the risk of STIs and can also help prevent pregnancy?",
+          "options": [
+            "Birth control pills",
+            "Vitamins",
+            "Condoms",
+            "Antibiotics"
+          ],
+          "answer": "Condoms",
+          "explanation": "Dr. Khalid says: 'Condoms help reduce the risk of many STIs and can also help prevent pregnancy.'"
+        },
+        {
+          "question": "What does Lily say at the end of the lesson?",
+          "options": [
+            "She still does not understand birth control pills",
+            "Now she understands what birth control pills are and how they help prevent pregnancy",
+            "She thinks birth control pills are unnecessary",
+            "She wants to learn about a different topic"
+          ],
+          "answer": "Now she understands what birth control pills are and how they help prevent pregnancy",
+          "explanation": "Lily says: 'Now I understand what birth control pills are and how they help prevent pregnancy!'"
+        },
+        {
+          "question": "What does Yvan say he learned from the lesson?",
+          "options": [
+            "That birth control pills protect against STIs",
+            "That using them correctly and getting reliable medical advice are important",
+            "That birth control pills are only for adults",
+            "That all birth control pills are the same"
+          ],
+          "answer": "That using them correctly and getting reliable medical advice are important",
+          "explanation": "Yvan says: 'I learned that using them correctly and getting reliable medical advice are important.'"
+        },
+        {
+          "question": "How are birth control pills taken?",
+          "options": [
+            "By injection",
+            "By mouth",
+            "Through the skin",
+            "Through the nose"
+          ],
+          "answer": "By mouth",
+          "explanation": "Dra. Maia explains that birth control pills 'are taken by mouth.'"
+        }
       ],
       "intermediate": [
-        {"question": "Placeholder 1", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 2", "options": ["A", "B", "C — This one", "D"], "answer": "C — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 3", "options": ["A — This one", "B", "C", "D"], "answer": "A — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 4", "options": ["A", "B", "C", "D — This one"], "answer": "D — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 5", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+        {
+          "question": "According to Dr. Khalid, how do birth control pills mainly prevent pregnancy?",
+          "options": [
+            "By destroying sperm cells in the body",
+            "By stopping the ovaries from releasing an egg",
+            "By preventing the uterus from forming",
+            "By changing blood hormone levels permanently"
+          ],
+          "answer": "By stopping the ovaries from releasing an egg",
+          "explanation": "Dr. Khalid explains: 'Birth control pills mainly work by stopping the ovaries from releasing an egg. This process is called ovulation.'"
+        },
+        {
+          "question": "What is the process called when the ovaries release an egg?",
+          "options": [
+            "Fertilization",
+            "Menstruation",
+            "Ovulation",
+            "Conception"
+          ],
+          "answer": "Ovulation",
+          "explanation": "Dr. Khalid identifies this as 'ovulation' — the process birth control pills mainly prevent."
+        },
+        {
+          "question": "What secondary way do some birth control pills work according to Dra. Maia?",
+          "options": [
+            "They dissolve sperm before it enters the body",
+            "They thicken the mucus around the cervix making it harder for sperm to reach an egg",
+            "They prevent the uterus from accepting a fertilized egg permanently",
+            "They stop menstruation completely"
+          ],
+          "answer": "They thicken the mucus around the cervix making it harder for sperm to reach an egg",
+          "explanation": "Dra. Maia explains: 'Some pills also thicken the mucus around the cervix, making it harder for sperm to reach an egg.'"
+        },
+        {
+          "question": "According to Dra. Maia, besides preventing pregnancy, what else can birth control pills help with?",
+          "options": [
+            "Preventing STIs and colds",
+            "Making menstrual periods more regular, reducing cramps, and managing certain health conditions",
+            "Increasing energy and strength",
+            "Curing bacterial infections"
+          ],
+          "answer": "Making menstrual periods more regular, reducing cramps, and managing certain health conditions",
+          "explanation": "Dra. Maia says pills 'may also help make menstrual periods more regular, reduce menstrual cramps, and manage certain health conditions.'"
+        },
+        {
+          "question": "When should someone start taking birth control pills according to Dr. Khalid?",
+          "options": [
+            "Always at the start of a new month",
+            "The starting time depends on the type of pill and the person's situation",
+            "Always on a Monday morning",
+            "Only when a period begins"
+          ],
+          "answer": "The starting time depends on the type of pill and the person's situation",
+          "explanation": "Dr. Khalid says: 'The starting time depends on the type of pill and the person's situation.'"
+        },
+        {
+          "question": "How often are most birth control pills taken?",
+          "options": [
+            "Once a week",
+            "Once a month",
+            "Every day",
+            "Every two days"
+          ],
+          "answer": "Every day",
+          "explanation": "Dr. Khalid states: 'Most birth control pills are taken every day, following the instructions provided with the specific product.'"
+        },
+        {
+          "question": "What should someone do if they forget to take a birth control pill?",
+          "options": [
+            "Take two pills the next day without checking anything",
+            "Stop taking the pills permanently",
+            "Check the package instructions or consult a pharmacist or healthcare professional",
+            "Ignore it as missing one pill has no effect"
+          ],
+          "answer": "Check the package instructions or consult a pharmacist or healthcare professional",
+          "explanation": "Dra. Maia advises: 'Check the package instructions or consult a pharmacist or healthcare professional. Additional protection may be needed to prevent pregnancy.'"
+        },
+        {
+          "question": "What are some possible side effects of birth control pills mentioned by Dr. Khalid?",
+          "options": [
+            "Hair growth and weight gain only",
+            "Nausea or changes in menstrual bleeding",
+            "Fever and joint pain",
+            "Vision problems and memory loss"
+          ],
+          "answer": "Nausea or changes in menstrual bleeding",
+          "explanation": "Dr. Khalid mentions: 'Some people may experience side effects, such as nausea or changes in menstrual bleeding.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about the effectiveness of birth control pills when used correctly?",
+          "options": [
+            "They are completely ineffective",
+            "They are 100% effective always",
+            "They are highly effective but not 100% effective",
+            "They only work for adults over 18"
+          ],
+          "answer": "They are highly effective but not 100% effective",
+          "explanation": "Dra. Maia states: 'When taken correctly, birth control pills are highly effective at preventing pregnancy, but they are not 100% effective.'"
+        },
+        {
+          "question": "Who should help determine whether birth control pills are suitable for an adolescent?",
+          "options": [
+            "Friends who have used them",
+            "Social media influencers",
+            "A qualified healthcare professional",
+            "Parents alone without medical consultation"
+          ],
+          "answer": "A qualified healthcare professional",
+          "explanation": "Dr. Khalid says: 'a qualified healthcare professional should help determine whether they are suitable. A person's health history and individual needs must be considered.'"
+        }
       ],
       "difficult": [
-        {"question": "Placeholder 1", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 2", "options": ["A", "B", "C — This one", "D"], "answer": "C — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 3", "options": ["A — This one", "B", "C", "D"], "answer": "A — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 4", "options": ["A", "B", "C", "D — This one"], "answer": "D — This one", "explanation": "Coming soon."},
-        {"question": "Placeholder 5", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+        {
+          "question": "What is the key difference between combined pills and progestin-only pills?",
+          "options": [
+            "Combined pills are taken weekly; progestin-only pills are taken daily",
+            "Combined pills contain estrogen and progestin; progestin-only pills contain only progestin",
+            "Combined pills prevent STIs; progestin-only pills prevent pregnancy",
+            "Combined pills are for adults; progestin-only pills are for adolescents"
+          ],
+          "answer": "Combined pills contain estrogen and progestin; progestin-only pills contain only progestin",
+          "explanation": "Dr. Khalid explains: 'Combined pills contain two hormones: estrogen and progestin. Progestin-only pills contain just one hormone, progestin.'"
+        },
+        {
+          "question": "Why does Dra. Maia say different types of pills work in slightly different ways?",
+          "options": [
+            "Because they are made in different countries",
+            "Because it is important to understand which type is being used",
+            "Because all pills have the same effect regardless of type",
+            "Because progestin-only pills do not prevent pregnancy"
+          ],
+          "answer": "Because it is important to understand which type is being used",
+          "explanation": "Dra. Maia says: 'Different types of pills work in slightly different ways, so it's important to understand which type is being used.'"
+        },
+        {
+          "question": "What two mechanisms does the lesson describe for how birth control pills prevent pregnancy?",
+          "options": [
+            "Destroying eggs and blocking the fallopian tubes",
+            "Stopping ovulation and thickening cervical mucus to prevent sperm from reaching an egg",
+            "Changing hormone levels permanently and preventing menstruation",
+            "Eliminating sperm cells and preventing fertilization after conception"
+          ],
+          "answer": "Stopping ovulation and thickening cervical mucus to prevent sperm from reaching an egg",
+          "explanation": "Dr. Khalid explains ovulation suppression and Dra. Maia adds that some pills also thicken cervical mucus to make it harder for sperm to reach an egg."
+        },
+        {
+          "question": "What does Dra. Maia say no one should feel regarding birth control pills?",
+          "options": [
+            "Curious about them",
+            "Pressured to use birth control pills",
+            "Informed about contraceptive options",
+            "Free to ask questions about them"
+          ],
+          "answer": "Pressured to use birth control pills",
+          "explanation": "Dra. Maia says: 'no one should feel pressured to use birth control pills. Learning about contraceptive options helps people make informed decisions about their health.'"
+        },
+        {
+          "question": "What does Dra. Maia say may be needed if someone forgets to take a birth control pill?",
+          "options": [
+            "A double dose the next day",
+            "Stopping the pill entirely",
+            "Additional protection to prevent pregnancy",
+            "An immediate visit to the hospital"
+          ],
+          "answer": "Additional protection to prevent pregnancy",
+          "explanation": "Dra. Maia advises that after a missed pill, 'Additional protection may be needed to prevent pregnancy.'"
+        },
+        {
+          "question": "According to the lesson, what four important reminders are given about birth control pills?",
+          "options": [
+            "Take daily, cure STIs, no side effects, available everywhere",
+            "Prevent pregnancy when used correctly; follow instructions; side effects are possible; do not protect against STIs",
+            "100% effective; no consultation needed; protect against STIs; take weekly",
+            "Only for adults; taken monthly; no hormones; always combined with condoms"
+          ],
+          "answer": "Prevent pregnancy when used correctly; follow instructions; side effects are possible; do not protect against STIs",
+          "explanation": "The four reminders from Scene 6 are: (1) pills help prevent pregnancy when used correctly, (2) follow instructions and consult professionals, (3) side effects like nausea are possible, (4) pills do not protect against STIs."
+        },
+        {
+          "question": "What does the narrator say in the closing of Chapter 2?",
+          "options": [
+            "Birth control pills are the best form of contraception",
+            "Keep learning, stay informed, and make responsible decisions about your health",
+            "Only healthcare professionals need to understand reproductive health",
+            "Adolescents should avoid all forms of contraception"
+          ],
+          "answer": "Keep learning, stay informed, and make responsible decisions about your health",
+          "explanation": "The narrator closes with: 'Keep learning, stay informed, and make responsible decisions about your health!'"
+        },
+        {
+          "question": "What does Dra. Maia say knowledge helps us do?",
+          "options": [
+            "Avoid all health risks completely",
+            "Make informed and responsible decisions",
+            "Replace the need for healthcare professionals",
+            "Understand only adult health topics"
+          ],
+          "answer": "Make informed and responsible decisions",
+          "explanation": "Dra. Maia says: 'Knowledge helps us make informed and responsible decisions.'"
+        },
+        {
+          "question": "What does Dr. Khalid say a healthcare professional can help explain regarding side effects?",
+          "options": [
+            "How to avoid all side effects permanently",
+            "The possible risks and benefits of birth control pills",
+            "Which brand of pills is cheapest",
+            "How to use two types of pills together"
+          ],
+          "answer": "The possible risks and benefits of birth control pills",
+          "explanation": "Dr. Khalid says: 'A healthcare professional can help explain the possible risks and benefits.'"
+        },
+        {
+          "question": "What does Dr. Khalid say at the very end of the lesson?",
+          "options": [
+            "Birth control pills are the safest choice for everyone",
+            "Never be afraid to ask questions and seek accurate information about reproductive health",
+            "Adolescents should not worry about reproductive health",
+            "Only adults should seek medical advice about contraception"
+          ],
+          "answer": "Never be afraid to ask questions and seek accurate information about reproductive health",
+          "explanation": "Dr. Khalid closes with: 'Never be afraid to ask questions and seek accurate information about reproductive health.'"
+        }
       ],
       "questions": [
-        {"question": "Placeholder", "options": ["A", "B — This one", "C", "D"], "answer": "B — This one", "explanation": "Coming soon."}
+        {
+          "question": "What are birth control pills?",
+          "options": ["Vitamins", "Medicines containing hormones that help prevent pregnancy", "Antibiotics", "Supplements"],
+          "answer": "Medicines containing hormones that help prevent pregnancy",
+          "explanation": "Birth control pills are medicines containing hormones that help prevent pregnancy."
+        }
       ]
     }
   ]
