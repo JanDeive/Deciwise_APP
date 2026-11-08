@@ -1407,6 +1407,358 @@
           "explanation": "Fertility awareness is the practice of understanding and tracking the menstrual cycle to identify days when pregnancy is more likely."
         }
       ]
+    },
+    {
+      "id": 5,
+      "title": "Chapter 5: Decision-Making",
+      "difficulty": "Easy",
+      "difficulty_color": "#e74c3c",
+      "story": "Welcome to Chapter 5: Decision-Making!\n\nLily and Yvan see a poster about adolescent health and family planning. Dra. Maia and Dr. Khalid teach them about decision-making — what it means, why it matters, the do's and don'ts, STIs, HIV, AIDS, and what to do if symptoms appear.\n\n(Watch the full video story before answering!)\n\nNow choose your difficulty and take the quiz!",
+      "story_image": "counselor",
+      "beginner": [
+        {
+          "question": "According to Dra. Maia, what is decision-making?",
+          "options": [
+            "Choosing what your friends want you to do",
+            "The process of identifying a problem, considering options, understanding consequences, and choosing the most responsible action",
+            "Following instructions from others without thinking",
+            "Making fast choices to avoid delays"
+          ],
+          "answer": "The process of identifying a problem, considering options, understanding consequences, and choosing the most responsible action",
+          "explanation": "Dra. Maia defines decision-making as 'the process of identifying a problem, considering your options, understanding the possible consequences, and choosing the most responsible action.'"
+        },
+        {
+          "question": "What does the narrator say decisions can affect?",
+          "options": [
+            "Only school grades",
+            "Our health, relationships, and well-being",
+            "Only physical health",
+            "Only our friendships"
+          ],
+          "answer": "Our health, relationships, and well-being",
+          "explanation": "The narrator says: 'Some decisions may seem small, while others can have a major impact on our health, relationships, and well-being.'"
+        },
+        {
+          "question": "What does Dra. Maia say you have the right to do?",
+          "options": [
+            "Follow peer pressure without question",
+            "Say no, ask questions, set boundaries, and seek reliable health information",
+            "Make decisions only with your partner",
+            "Avoid all health professionals"
+          ],
+          "answer": "Say no, ask questions, set boundaries, and seek reliable health information",
+          "explanation": "Dra. Maia says: 'You have the right to say no, ask questions, set boundaries, and seek reliable health information.'"
+        },
+        {
+          "question": "What is HIV?",
+          "options": [
+            "A type of bacteria treated with antibiotics",
+            "A virus that attacks the body's immune system",
+            "A vitamin deficiency disease",
+            "A type of cancer"
+          ],
+          "answer": "A virus that attacks the body's immune system",
+          "explanation": "Dr. Khalid explains: 'HIV is a virus that attacks the body's immune system.'"
+        },
+        {
+          "question": "Is AIDS the same as HIV?",
+          "options": [
+            "Yes, they are exactly the same",
+            "No, HIV is the virus and AIDS is the most advanced stage of HIV infection",
+            "Yes, AIDS causes HIV",
+            "No, AIDS is less serious than HIV"
+          ],
+          "answer": "No, HIV is the virus and AIDS is the most advanced stage of HIV infection",
+          "explanation": "Dr. Khalid explains: 'No. HIV is the virus, while AIDS is the most advanced stage of HIV infection when the immune system has been severely damaged.'"
+        },
+        {
+          "question": "What does Lily say responsible decision-making is about?",
+          "options": [
+            "Speed, efficiency, and popularity",
+            "Safety, respect, and being informed",
+            "Following rules set by others",
+            "Avoiding all difficult situations"
+          ],
+          "answer": "Safety, respect, and being informed",
+          "explanation": "Lily says: 'So, responsible decision-making is about safety, respect, and being informed.'"
+        },
+        {
+          "question": "What is the closing message said by all four characters together?",
+          "options": [
+            "Stay safe and ask questions always!",
+            "Make informed decisions today for a healthier tomorrow!",
+            "Think before you act and protect yourself!",
+            "Learn, grow, and be responsible!"
+          ],
+          "answer": "Make informed decisions today for a healthier tomorrow!",
+          "explanation": "All characters say together: 'Make informed decisions today for a healthier tomorrow!'"
+        },
+        {
+          "question": "What does Yvan say in the closing scene?",
+          "options": [
+            "Decision-making is only about family planning",
+            "We learned to respect boundaries, avoid pressure, understand reproductive health risks, and seek medical care when needed",
+            "We should always follow what our friends decide",
+            "Decision-making only applies to adults"
+          ],
+          "answer": "We learned to respect boundaries, avoid pressure, understand reproductive health risks, and seek medical care when needed",
+          "explanation": "Yvan says: 'We also learned to respect boundaries, avoid pressure, understand reproductive health risks, and seek medical care when needed.'"
+        },
+        {
+          "question": "What does Dra. Maia say everyone deserves regarding healthcare?",
+          "options": [
+            "Free healthcare only",
+            "Respectful healthcare",
+            "Healthcare from family members only",
+            "Healthcare only when very sick"
+          ],
+          "answer": "Respectful healthcare",
+          "explanation": "Dra. Maia says: 'Everyone deserves respectful healthcare.'"
+        },
+        {
+          "question": "What does Yvan say about visiting a health center?",
+          "options": [
+            "It is something to be ashamed of",
+            "It is a responsible decision, not something to be ashamed of",
+            "It should only be done when very ill",
+            "It is only for adults"
+          ],
+          "answer": "It is a responsible decision, not something to be ashamed of",
+          "explanation": "Yvan says: 'So, visiting a health center is a responsible decision, not something to be ashamed of.'"
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "What four words appear on screen in the conclusion scene?",
+          "options": [
+            "STOP – LOOK – LISTEN – ACT",
+            "THINK – LEARN – CHOOSE – ACT",
+            "PLAN – DECIDE – DO – REVIEW",
+            "ASK – LEARN – CHOOSE – RESPECT"
+          ],
+          "answer": "THINK – LEARN – CHOOSE – ACT",
+          "explanation": "The visual in Scene 8 shows the words: 'THINK – LEARN – CHOOSE – ACT.'"
+        },
+        {
+          "question": "What does Dr. Khalid say good decision-making helps adolescents do in family planning?",
+          "options": [
+            "Follow what their peers do",
+            "Protect their health, respect their boundaries, and prepare for their future",
+            "Avoid all health professionals",
+            "Make choices without considering consequences"
+          ],
+          "answer": "Protect their health, respect their boundaries, and prepare for their future",
+          "explanation": "Dr. Khalid says: 'good decision-making helps adolescents protect their health, respect their boundaries, and prepare for their future.'"
+        },
+        {
+          "question": "What does Dr. Khalid say understanding helps with beyond relationships?",
+          "options": [
+            "Only school performance",
+            "Contraception, STIs, the importance of medical checkups, and responsibilities of sexual activity and parenthood",
+            "Financial planning and career choices",
+            "Social media use and technology"
+          ],
+          "answer": "Contraception, STIs, the importance of medical checkups, and responsibilities of sexual activity and parenthood",
+          "explanation": "Dr. Khalid explains it helps understand 'contraception, sexually transmitted infections, the importance of medical checkups, and the responsibilities that come with sexual activity and parenthood.'"
+        },
+        {
+          "question": "What are STIs according to Dra. Maia?",
+          "options": [
+            "Infections spread only through blood",
+            "Infections that can spread through sexual contact",
+            "Infections caused by poor diet",
+            "Infections spread only through the air"
+          ],
+          "answer": "Infections that can spread through sexual contact",
+          "explanation": "Dra. Maia explains: 'STIs are infections that can spread through sexual contact.'"
+        },
+        {
+          "question": "What are four examples of STIs mentioned in the script?",
+          "options": [
+            "Flu, cold, fever, and malaria",
+            "Chlamydia, gonorrhea, syphilis, and genital herpes",
+            "Diabetes, hypertension, asthma, and cancer",
+            "HIV, AIDS, tuberculosis, and malaria"
+          ],
+          "answer": "Chlamydia, gonorrhea, syphilis, and genital herpes",
+          "explanation": "Dra. Maia lists examples: 'chlamydia, gonorrhea, syphilis, genital herpes, and HPV.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about STIs that have no symptoms?",
+          "options": [
+            "They are not a health risk",
+            "Many STIs have no noticeable symptoms — testing is important even when someone feels healthy if there may have been exposure",
+            "People without symptoms cannot transmit STIs",
+            "STIs always cause visible symptoms"
+          ],
+          "answer": "Many STIs have no noticeable symptoms — testing is important even when someone feels healthy if there may have been exposure",
+          "explanation": "Dr. Khalid states: 'many STIs have no noticeable symptoms. Testing is important even when someone feels healthy if there may have been exposure.'"
+        },
+        {
+          "question": "How can HIV be transmitted according to Dr. Khalid?",
+          "options": [
+            "Through casual contact like handshakes and hugging",
+            "Through condomless sexual contact, sharing contaminated needles, or from parent to child during pregnancy, birth, or breastfeeding",
+            "Through breathing the same air",
+            "Through sharing food or drinks"
+          ],
+          "answer": "Through condomless sexual contact, sharing contaminated needles, or from parent to child during pregnancy, birth, or breastfeeding",
+          "explanation": "Dr. Khalid explains HIV can be transmitted 'through certain body fluids, including during condomless sexual contact, sharing contaminated needles, or from parent to child during pregnancy, birth, or breastfeeding.'"
+        },
+        {
+          "question": "What does Dr. Khalid say is the only way to know your HIV status?",
+          "options": [
+            "Looking for visible symptoms",
+            "Asking your partner",
+            "Getting tested",
+            "Waiting six months after possible exposure"
+          ],
+          "answer": "Getting tested",
+          "explanation": "Dr. Khalid states: 'The only way to know your HIV status is to get tested.'"
+        },
+        {
+          "question": "What should someone do if they answered YES to having concerning symptoms?",
+          "options": [
+            "Try to diagnose themselves online",
+            "Panic and avoid telling anyone",
+            "Visit a health center and consult a qualified healthcare professional",
+            "Wait and see if symptoms go away on their own"
+          ],
+          "answer": "Visit a health center and consult a qualified healthcare professional",
+          "explanation": "Dra. Maia advises: 'Visit a health center or hospital and consult a qualified healthcare professional. They can recommend the right tests and treatment.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about PEP in Scene 7?",
+          "options": [
+            "PEP can be taken any time after HIV exposure",
+            "If a possible HIV exposure occurred within the last 72 hours, seek urgent medical care immediately to ask about PEP",
+            "PEP is only available at large hospitals",
+            "PEP must be taken for one year to be effective"
+          ],
+          "answer": "If a possible HIV exposure occurred within the last 72 hours, seek urgent medical care immediately to ask about PEP",
+          "explanation": "Dr. Khalid says: 'If a possible HIV exposure occurred within the last 72 hours, seek urgent medical care immediately to ask about post-exposure prophylaxis, or PEP. It works best when started as soon as possible.'"
+        }
+      ],
+      "difficult": [
+        {
+          "question": "What are the six DO'S of responsible decision-making listed by Dra. Maia in Scene 4?",
+          "options": [
+            "Follow friends, avoid professionals, skip checkups, ignore pressure, use any contraception, and share information",
+            "Think before deciding, respect consent and boundaries, seek reliable health information, attend health checkups, discuss family planning openly, and protect your health",
+            "Take pills daily, use condoms always, visit hospitals monthly, avoid relationships, seek parental advice, and avoid STIs",
+            "Plan ahead, consult friends, avoid risks, seek advice, attend classes, and stay healthy"
+          ],
+          "answer": "Think before deciding, respect consent and boundaries, seek reliable health information, attend health checkups, discuss family planning openly, and protect your health",
+          "explanation": "Dra. Maia's six DO'S are: think before deciding, respect consent/boundaries, seek reliable health info, attend health checkups, discuss family planning openly (for married couples), and protect your health."
+        },
+        {
+          "question": "What does the first DON'T say about sexual activity and pressure?",
+          "options": [
+            "Don't engage in sexual activity with anyone you don't know",
+            "Don't engage in sexual activity because of pressure — you can always say no",
+            "Don't engage in sexual activity before marriage under any circumstances",
+            "Don't engage in sexual activity without a doctor's approval"
+          ],
+          "answer": "Don't engage in sexual activity because of pressure — you can always say no",
+          "explanation": "The first DON'T states: 'Don't engage in sexual activity because of pressure. You can always say no.'"
+        },
+        {
+          "question": "What does the DON'T about unprotected sex state?",
+          "options": [
+            "Don't have sex at all until marriage",
+            "Don't have unprotected sex without understanding the risks — condoms help reduce STI and pregnancy risk when used correctly",
+            "Don't use condoms as they reduce pleasure",
+            "Don't rely on any contraceptive method"
+          ],
+          "answer": "Don't have unprotected sex without understanding the risks — condoms help reduce STI and pregnancy risk when used correctly",
+          "explanation": "The DON'T states: 'Don't have unprotected sex without understanding the risks. Condoms help reduce the risk of STIs and unintended pregnancy when used correctly.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about making assumptions based on appearance or marital status?",
+          "options": [
+            "It is acceptable to make assumptions about health based on appearance",
+            "Don't make assumptions about someone's health based on appearance, marital status, or sexual orientation",
+            "Married people cannot have STIs",
+            "Healthy-looking people are free of STIs"
+          ],
+          "answer": "Don't make assumptions about someone's health based on appearance, marital status, or sexual orientation",
+          "explanation": "Dr. Khalid's DON'T states: 'Don't make assumptions about someone's health based on appearance, marital status, or sexual orientation.'"
+        },
+        {
+          "question": "What possible early symptoms of HIV does Dra. Maia mention?",
+          "options": [
+            "Joint pain, vision loss, and hearing problems",
+            "Fever, sore throat, skin rash, fatigue, swollen lymph nodes, and muscle aches",
+            "Significant weight loss, persistent fever, and extreme fatigue only",
+            "Nausea, vomiting, and stomach cramps"
+          ],
+          "answer": "Fever, sore throat, skin rash, fatigue, swollen lymph nodes, and muscle aches",
+          "explanation": "Dra. Maia lists early HIV symptoms: 'Fever, Sore throat, Skin rash, Fatigue, Swollen lymph nodes, Muscle aches' — often occurring within a few weeks of infection."
+        },
+        {
+          "question": "What possible signs of advanced HIV infection does Dra. Maia mention?",
+          "options": [
+            "Fever, sore throat, and muscle aches only",
+            "Significant unexplained weight loss, persistent fever or night sweats, long-lasting diarrhea, extreme fatigue, recurrent infections, and white patches in the mouth",
+            "Joint pain, vision problems, and hearing loss",
+            "Nausea, headache, and skin rash only"
+          ],
+          "answer": "Significant unexplained weight loss, persistent fever or night sweats, long-lasting diarrhea, extreme fatigue, recurrent infections, and white patches in the mouth",
+          "explanation": "Dra. Maia lists advanced HIV signs including weight loss, persistent fever/night sweats, long-lasting diarrhea, extreme fatigue, recurrent infections, and white patches in the mouth."
+        },
+        {
+          "question": "What does Dr. Khalid say about people with HIV who receive effective treatment?",
+          "options": [
+            "They will always develop AIDS",
+            "They should avoid all physical activity",
+            "Many people with HIV never develop AIDS and can live long, healthy lives",
+            "They need to be isolated from others"
+          ],
+          "answer": "Many people with HIV never develop AIDS and can live long, healthy lives",
+          "explanation": "Dr. Khalid states: 'With effective HIV treatment, many people with HIV never develop AIDS and can live long, healthy lives.'"
+        },
+        {
+          "question": "What does Dr. Khalid say about health perspective on premarital sex?",
+          "options": [
+            "Premarital sex is always medically dangerous",
+            "The risks depend on the circumstances, not simply whether a person is married",
+            "Married people face no health risks from sexual activity",
+            "Only unmarried people can get STIs"
+          ],
+          "answer": "The risks depend on the circumstances, not simply whether a person is married",
+          "explanation": "Dr. Khalid explains: 'From a health perspective, however, the risks depend on the circumstances, not simply whether a person is married.'"
+        },
+        {
+          "question": "What does Dra. Maia say about antibiotics for STIs in Scene 7?",
+          "options": [
+            "Take any available antibiotics immediately",
+            "Never take antibiotics without proper medical guidance",
+            "Antibiotics cure all STIs including HIV",
+            "Antibiotics should be bought from a pharmacy without a prescription"
+          ],
+          "answer": "Never take antibiotics without proper medical guidance",
+          "explanation": "Dra. Maia advises: 'Never take antibiotics without proper medical guidance.'"
+        },
+        {
+          "question": "What does Dra. Maia say in the conclusion about your rights?",
+          "options": [
+            "You have the right to choose any contraceptive method without advice",
+            "You have the right to make informed decisions about your body and your future",
+            "You have the right to avoid all medical consultations",
+            "You only have rights once you become an adult"
+          ],
+          "answer": "You have the right to make informed decisions about your body and your future",
+          "explanation": "Dra. Maia says: 'Remember: you have the right to make informed decisions about your body and your future.'"
+        }
+      ],
+      "questions": [
+        {
+          "question": "What is decision-making?",
+          "options": ["Following friends", "Identifying a problem, considering options, understanding consequences, and choosing the most responsible action", "Making fast choices", "Avoiding all risks"],
+          "answer": "Identifying a problem, considering options, understanding consequences, and choosing the most responsible action",
+          "explanation": "Decision-making is the process of identifying a problem, considering options, understanding consequences, and choosing the most responsible action."
+        }
+      ]
     }
   ]
 }
