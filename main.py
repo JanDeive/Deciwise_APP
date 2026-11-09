@@ -976,16 +976,17 @@ class LevelSelectScreen(tk.Frame):
         self.app.show("story")
 
 # ── Video Player ──────────────────────────────────────────────────────────────
-class _VideoPlayer(tk.Frame):
+class _VideoPlayer:
     """
     Plays a video file (any format OpenCV can decode, including .mov) inside
     a Tkinter Canvas. No audio — video frames only.
     Controls: Play/Pause button + progress bar.
+    Call .frame to get the tk widget to pack/grid.
+    Call .stop() before destroying the parent.
     """
     _FPS_DEFAULT = 30
 
-    def __init__(self, parent, path, width=430, height=260, **kw):
-        super().__init__(parent, bg="#000000", **kw)
+    def __init__(self, parent, path, width=430, height=260):
         self._path    = path
         self._w       = width
         self._h       = height
@@ -996,26 +997,33 @@ class _VideoPlayer(tk.Frame):
         self._total   = 0
         self._fps     = self._FPS_DEFAULT
 
+        # Root frame — pack this
+        self.frame = tk.Frame(parent, bg="#000000")
+
         try:
             import cv2 as _cv2
-            self._cv2 = _cv2
-        except ImportError:
+            from PIL import Image as _Image, ImageTk as _ImageTk
+            self._cv2      = _cv2
+            self._Image    = _Image
+            self._ImageTk  = _ImageTk
+        except ImportError as e:
             self._cv2 = None
-            tk.Label(self, text="⚠ cv2 not installed — video unavailable",
+            tk.Label(self.frame,
+                     text=f"⚠ Video unavailable ({e})",
                      bg="#000000", fg="#ff6b6b",
                      font=_retro(10)).pack(pady=20)
             return
 
         # Canvas for frames
-        self._canvas = tk.Canvas(self, width=width, height=height,
+        self._canvas = tk.Canvas(self.frame, width=width, height=height,
                                   bg="#000000", highlightthickness=0)
         self._canvas.pack()
 
         # Controls bar
-        ctrl = tk.Frame(self, bg=C["banner"])
+        ctrl = tk.Frame(self.frame, bg=C["banner"])
         ctrl.pack(fill="x")
 
-        self._play_btn = tk.Label(ctrl, text="▶  Play",
+        self._play_btn = tk.Label(ctrl, text="⏸  Pause",
                                    font=_retro(10, "bold"),
                                    bg=C["banner"], fg=C["accent"],
                                    cursor="hand2", padx=10, pady=4)
@@ -1037,42 +1045,41 @@ class _VideoPlayer(tk.Frame):
 
         self._open()
 
+    def pack(self, **kw):
+        self.frame.pack(**kw)
+
     def _open(self):
         if self._cv2 is None:
             return
         self._cap = self._cv2.VideoCapture(self._path)
         if not self._cap.isOpened():
-            tk.Label(self, text=f"⚠ Cannot open video",
+            tk.Label(self.frame, text="⚠ Cannot open video",
                      bg="#000000", fg="#ff6b6b",
                      font=_retro(10)).pack(pady=10)
             return
         self._fps   = self._cap.get(self._cv2.CAP_PROP_FPS) or self._FPS_DEFAULT
         self._total = int(self._cap.get(self._cv2.CAP_PROP_FRAME_COUNT))
-        self._show_frame()   # show first frame as thumbnail
-        self._play()         # auto-play
+        self._show_frame()
+        self._play()   # auto-play
 
     def _show_frame(self):
-        """Read and display the next frame. Returns True if successful."""
         if self._cap is None or self._cv2 is None:
             return False
         ret, frame = self._cap.read()
         if not ret:
             return False
-        # Resize to canvas
         frame = self._cv2.resize(frame, (self._w, self._h))
-        # BGR → RGB
         frame = self._cv2.cvtColor(frame, self._cv2.COLOR_BGR2RGB)
-        from PIL import Image, ImageTk
-        img = Image.fromarray(frame)
-        self._photo = ImageTk.PhotoImage(img)
+        img = self._Image.fromarray(frame)
+        self._photo = self._ImageTk.PhotoImage(img)
         self._canvas.create_image(0, 0, anchor="nw", image=self._photo)
-        # Update progress
+        # Progress bar
         pos = int(self._cap.get(self._cv2.CAP_PROP_POS_FRAMES))
         if self._total > 0:
             ratio = pos / self._total
             bw = self._prog_bg.winfo_width() or (self._w - 120)
             self._prog_bg.coords(self._prog_fill, 0, 0, int(bw * ratio), 6)
-        # Update time label
+        # Time label
         fps = self._fps or self._FPS_DEFAULT
         cur_s = int(pos / fps)
         tot_s = int(self._total / fps)
@@ -1085,10 +1092,10 @@ class _VideoPlayer(tk.Frame):
             return
         ok = self._show_frame()
         if ok:
-            delay = max(1, int(1000 / self._fps))
-            self._after_id = self.after(delay, self._tick)
+            delay = max(1, int(1000 / (self._fps or self._FPS_DEFAULT)))
+            self._after_id = self.frame.after(delay, self._tick)
         else:
-            # Video ended — loop back
+            # Ended — show last frame, reset to start
             self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, 0)
             self._playing = False
             self._play_btn.configure(text="▶  Play")
@@ -1102,7 +1109,7 @@ class _VideoPlayer(tk.Frame):
         self._playing = False
         self._play_btn.configure(text="▶  Play")
         if self._after_id:
-            try: self.after_cancel(self._after_id)
+            try: self.frame.after_cancel(self._after_id)
             except Exception: pass
 
     def _toggle(self):
@@ -1113,22 +1120,19 @@ class _VideoPlayer(tk.Frame):
             self._play()
 
     def _seek(self, event):
-        """Click on progress bar to seek."""
         if self._cap is None or self._total == 0:
             return
         bw = self._prog_bg.winfo_width()
         if bw <= 0:
             return
         ratio = max(0.0, min(1.0, event.x / bw))
-        frame_no = int(ratio * self._total)
-        self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, frame_no)
+        self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, int(ratio * self._total))
         self._show_frame()
 
     def stop(self):
-        """Stop playback and release resources."""
         self._playing = False
         if self._after_id:
-            try: self.after_cancel(self._after_id)
+            try: self.frame.after_cancel(self._after_id)
             except Exception: pass
         if self._cap:
             try: self._cap.release()
