@@ -1051,16 +1051,32 @@ class _VideoPlayer:
     def _open(self):
         if self._cv2 is None:
             return
-        self._cap = self._cv2.VideoCapture(self._path)
+        # Normalize path separators for Windows
+        path = str(self._path).replace("/", "\\")
+        self._cap = self._cv2.VideoCapture(path)
         if not self._cap.isOpened():
-            tk.Label(self.frame, text="⚠ Cannot open video",
-                     bg="#000000", fg="#ff6b6b",
-                     font=_retro(10)).pack(pady=10)
+            self._cap = None
+            self._show_error("Cannot open video file.\nCheck the file path and format.")
             return
+        # Test-read one frame to confirm it actually works
+        ret, _ = self._cap.read()
+        if not ret:
+            self._cap.release()
+            self._cap = None
+            self._show_error("Video file opened but no frames found.\n(.mov may need codec support)")
+            return
+        # Rewind to start
+        self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, 0)
         self._fps   = self._cap.get(self._cv2.CAP_PROP_FPS) or self._FPS_DEFAULT
         self._total = int(self._cap.get(self._cv2.CAP_PROP_FRAME_COUNT))
         self._show_frame()
         self._play()   # auto-play
+
+    def _show_error(self, msg):
+        tk.Label(self.frame, text=f"⚠ {msg}",
+                 bg="#000000", fg="#ff6b6b",
+                 font=_retro(9), wraplength=WINDOW_W-20,
+                 justify="center").pack(pady=20)
 
     def _show_frame(self):
         if self._cap is None or self._cv2 is None:
@@ -1088,15 +1104,16 @@ class _VideoPlayer:
         return True
 
     def _tick(self):
-        if not self._playing:
+        if not self._playing or self._cap is None:
             return
         ok = self._show_frame()
         if ok:
             delay = max(1, int(1000 / (self._fps or self._FPS_DEFAULT)))
             self._after_id = self.frame.after(delay, self._tick)
         else:
-            # Ended — show last frame, reset to start
+            # Ended — reset to start, stop
             self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, 0)
+            self._show_frame()   # show first frame as poster
             self._playing = False
             self._play_btn.configure(text="▶  Play")
 
@@ -1114,6 +1131,8 @@ class _VideoPlayer:
 
     def _toggle(self):
         SFX.play("click")
+        if self._cap is None:
+            return
         if self._playing:
             self._pause()
         else:
