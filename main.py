@@ -975,6 +975,167 @@ class LevelSelectScreen(tk.Frame):
         self.app.current_level = lvl
         self.app.show("story")
 
+# ── Video Player ──────────────────────────────────────────────────────────────
+class _VideoPlayer(tk.Frame):
+    """
+    Plays a video file (any format OpenCV can decode, including .mov) inside
+    a Tkinter Canvas. No audio — video frames only.
+    Controls: Play/Pause button + progress bar.
+    """
+    _FPS_DEFAULT = 30
+
+    def __init__(self, parent, path, width=430, height=260, **kw):
+        super().__init__(parent, bg="#000000", **kw)
+        self._path    = path
+        self._w       = width
+        self._h       = height
+        self._playing = False
+        self._after_id= None
+        self._cap     = None
+        self._photo   = None
+        self._total   = 0
+        self._fps     = self._FPS_DEFAULT
+
+        try:
+            import cv2 as _cv2
+            self._cv2 = _cv2
+        except ImportError:
+            self._cv2 = None
+            tk.Label(self, text="⚠ cv2 not installed — video unavailable",
+                     bg="#000000", fg="#ff6b6b",
+                     font=_retro(10)).pack(pady=20)
+            return
+
+        # Canvas for frames
+        self._canvas = tk.Canvas(self, width=width, height=height,
+                                  bg="#000000", highlightthickness=0)
+        self._canvas.pack()
+
+        # Controls bar
+        ctrl = tk.Frame(self, bg=C["banner"])
+        ctrl.pack(fill="x")
+
+        self._play_btn = tk.Label(ctrl, text="▶  Play",
+                                   font=_retro(10, "bold"),
+                                   bg=C["banner"], fg=C["accent"],
+                                   cursor="hand2", padx=10, pady=4)
+        self._play_btn.pack(side="left")
+        self._play_btn.bind("<Button-1>", lambda e: self._toggle())
+
+        self._time_lbl = tk.Label(ctrl, text="0:00 / 0:00",
+                                   font=_retro(8),
+                                   bg=C["banner"], fg=C["grey"], padx=8)
+        self._time_lbl.pack(side="right")
+
+        # Progress bar (clickable)
+        self._prog_bg = tk.Canvas(ctrl, height=6, bg=C["locked"],
+                                   highlightthickness=0)
+        self._prog_bg.pack(side="left", fill="x", expand=True, padx=6, pady=8)
+        self._prog_fill = self._prog_bg.create_rectangle(
+            0, 0, 0, 6, fill=C["accent"], outline="")
+        self._prog_bg.bind("<Button-1>", self._seek)
+
+        self._open()
+
+    def _open(self):
+        if self._cv2 is None:
+            return
+        self._cap = self._cv2.VideoCapture(self._path)
+        if not self._cap.isOpened():
+            tk.Label(self, text=f"⚠ Cannot open video",
+                     bg="#000000", fg="#ff6b6b",
+                     font=_retro(10)).pack(pady=10)
+            return
+        self._fps   = self._cap.get(self._cv2.CAP_PROP_FPS) or self._FPS_DEFAULT
+        self._total = int(self._cap.get(self._cv2.CAP_PROP_FRAME_COUNT))
+        self._show_frame()   # show first frame as thumbnail
+        self._play()         # auto-play
+
+    def _show_frame(self):
+        """Read and display the next frame. Returns True if successful."""
+        if self._cap is None or self._cv2 is None:
+            return False
+        ret, frame = self._cap.read()
+        if not ret:
+            return False
+        # Resize to canvas
+        frame = self._cv2.resize(frame, (self._w, self._h))
+        # BGR → RGB
+        frame = self._cv2.cvtColor(frame, self._cv2.COLOR_BGR2RGB)
+        from PIL import Image, ImageTk
+        img = Image.fromarray(frame)
+        self._photo = ImageTk.PhotoImage(img)
+        self._canvas.create_image(0, 0, anchor="nw", image=self._photo)
+        # Update progress
+        pos = int(self._cap.get(self._cv2.CAP_PROP_POS_FRAMES))
+        if self._total > 0:
+            ratio = pos / self._total
+            bw = self._prog_bg.winfo_width() or (self._w - 120)
+            self._prog_bg.coords(self._prog_fill, 0, 0, int(bw * ratio), 6)
+        # Update time label
+        fps = self._fps or self._FPS_DEFAULT
+        cur_s = int(pos / fps)
+        tot_s = int(self._total / fps)
+        self._time_lbl.configure(
+            text=f"{cur_s//60}:{cur_s%60:02d} / {tot_s//60}:{tot_s%60:02d}")
+        return True
+
+    def _tick(self):
+        if not self._playing:
+            return
+        ok = self._show_frame()
+        if ok:
+            delay = max(1, int(1000 / self._fps))
+            self._after_id = self.after(delay, self._tick)
+        else:
+            # Video ended — loop back
+            self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, 0)
+            self._playing = False
+            self._play_btn.configure(text="▶  Play")
+
+    def _play(self):
+        self._playing = True
+        self._play_btn.configure(text="⏸  Pause")
+        self._tick()
+
+    def _pause(self):
+        self._playing = False
+        self._play_btn.configure(text="▶  Play")
+        if self._after_id:
+            try: self.after_cancel(self._after_id)
+            except Exception: pass
+
+    def _toggle(self):
+        SFX.play("click")
+        if self._playing:
+            self._pause()
+        else:
+            self._play()
+
+    def _seek(self, event):
+        """Click on progress bar to seek."""
+        if self._cap is None or self._total == 0:
+            return
+        bw = self._prog_bg.winfo_width()
+        if bw <= 0:
+            return
+        ratio = max(0.0, min(1.0, event.x / bw))
+        frame_no = int(ratio * self._total)
+        self._cap.set(self._cv2.CAP_PROP_POS_FRAMES, frame_no)
+        self._show_frame()
+
+    def stop(self):
+        """Stop playback and release resources."""
+        self._playing = False
+        if self._after_id:
+            try: self.after_cancel(self._after_id)
+            except Exception: pass
+        if self._cap:
+            try: self._cap.release()
+            except Exception: pass
+            self._cap = None
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Story (animated typewriter)
 # ══════════════════════════════════════════════════════════════════════════════
@@ -988,6 +1149,7 @@ class StoryScreen(tk.Frame):
         self.app        = app
         self._aids      = []
         self._done      = False
+        self._video     = None   # VideoPlayer instance
         self._build()
 
     def _build(self):
@@ -1024,6 +1186,15 @@ class StoryScreen(tk.Frame):
         skcv.bind("<Button-1>", lambda e: self._skip())
         skcv.bind("<Enter>",  lambda e: skcv.itemconfig("bg",fill=C["accent3"]))
         skcv.bind("<Leave>",  lambda e: skcv.itemconfig("bg",fill=C["locked"]))
+
+        # ── Video player (if chapter has a video file) ────────────────────
+        video_rel = lvl.get("video_file", "")
+        if video_rel:
+            video_abs = os.path.join(os.path.dirname(__file__), video_rel)
+            if os.path.exists(video_abs):
+                self._video = _VideoPlayer(self, video_abs,
+                                           width=WINDOW_W, height=260)
+                self._video.pack(fill="x")
 
         # Scroll body
         sf = ScrollFrame(self, bg=C["bg"])
@@ -1162,6 +1333,8 @@ class StoryScreen(tk.Frame):
     def _pick_difficulty(self, difficulty):
         """Called when user picks a difficulty — store it and start quiz."""
         [self.after_cancel(a) for a in self._aids]
+        if self._video:
+            self._video.stop()
         SFX.play("start")
         self.app.chosen_difficulty = difficulty
         self.app.start_level()
@@ -1169,6 +1342,8 @@ class StoryScreen(tk.Frame):
     def _skip(self):
         [self.after_cancel(a) for a in self._aids]
         self._aids.clear()
+        if self._video:
+            self._video.stop()
         lvl = self._lvl
         self._banner.configure(bg=C["banner"])
         self._t1.configure(bg=C["banner"], fg=C["white"])
@@ -1187,6 +1362,8 @@ class StoryScreen(tk.Frame):
 
     def _back(self):
         [self.after_cancel(a) for a in self._aids]
+        if self._video:
+            self._video.stop()
         SFX.play("back")
         self.app.show("level_select")
 
