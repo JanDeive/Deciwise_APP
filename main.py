@@ -154,7 +154,15 @@ def _darken(h, f=0.75):
 
 def _lerp(a, b, t):
     t = max(0.0, min(1.0, t))
-    a,b = a.lstrip("#"), b.lstrip("#")
+    # Expand 3-digit hex shorthand to 6-digit
+    for c in (a, b):
+        pass
+    def _expand(h):
+        h = h.lstrip("#")
+        if len(h) == 3:
+            h = h[0]*2 + h[1]*2 + h[2]*2
+        return h
+    a, b = _expand(a), _expand(b)
     ar,ag,ab_ = int(a[0:2],16),int(a[2:4],16),int(a[4:6],16)
     br,bg_,bb = int(b[0:2],16),int(b[2:4],16),int(b[4:6],16)
     return "#{:02x}{:02x}{:02x}".format(
@@ -1890,8 +1898,8 @@ class KahootScreen(tk.Frame):
                 col_bot = _darken(col, 0.65)
                 _grad(cv, 2, 2, w-2, 88, col_top, col_bot, steps=20)
                 # Highlight edges
-                cv.create_line(2, 2, w-2, 2, fill=_lerp(col,"#fff",0.4), width=2)
-                cv.create_line(2, 2, 2, 88,  fill=_lerp(col,"#fff",0.3), width=2)
+                cv.create_line(2, 2, w-2, 2, fill=_lerp(col,"#ffffff",0.4), width=2)
+                cv.create_line(2, 2, 2, 88,  fill=_lerp(col,"#ffffff",0.3), width=2)
                 # Drop shadow
                 cv.create_line(w-2, 2, w-2, 88, fill=_darken(col,0.4), width=2)
                 cv.create_line(2, 88, w-2, 88,  fill=_darken(col,0.4), width=2)
@@ -1959,8 +1967,8 @@ class KahootScreen(tk.Frame):
         col_top = _lerp(c, "#ffffff", 0.20)
         col_bot = _darken(c, 0.65)
         _grad(cv, 2, 2, w-2, 88, col_top, col_bot, steps=20)
-        cv.create_line(2, 2, w-2, 2, fill=_lerp(c,"#fff",0.4), width=2)
-        cv.create_line(2, 2, 2, 88,  fill=_lerp(c,"#fff",0.3), width=2)
+        cv.create_line(2, 2, w-2, 2, fill=_lerp(c,"#ffffff",0.4), width=2)
+        cv.create_line(2, 2, 2, 88,  fill=_lerp(c,"#ffffff",0.3), width=2)
         cv.create_line(w-2, 2, w-2, 88, fill=_darken(c,0.4), width=2)
         cv.create_line(2, 88, w-2, 88,  fill=_darken(c,0.4), width=2)
         cv.create_text(20, 20, text=icon, font=_retro(16,"bold"), fill="#ffffff")
@@ -2051,11 +2059,11 @@ class KahootScreen(tk.Frame):
             cv.delete("all")
             _grad(cv, 2, 2, w-2, 88,
                   _lerp(col,"#ffffff",0.18), _darken(col,0.65), steps=20)
-            cv.create_text(20, 20, text=icon, font=_retro(16,"bold"), fill="#fff")
+            cv.create_text(20, 20, text=icon, font=_retro(16,"bold"), fill="#ffffff")
             cv.create_text(w//2, 55, text=opt, font=_retro(10,"bold"),
-                            fill="#fff", width=w-16, anchor="center")
+                            fill="#ffffff", width=w-16, anchor="center")
             if opt == correct:
-                cv.create_text(w-14, 14, text="✓", font=_retro(14,"bold"), fill="#fff")
+                cv.create_text(w-14, 14, text="✓", font=_retro(14,"bold"), fill="#ffffff")
             cv.unbind("<Button-1>")
             cv.unbind("<Enter>")
             cv.unbind("<Leave>")
@@ -2167,8 +2175,8 @@ class MythFactScreen(tk.Frame):
                 col_bot = _darken(col, 0.60)
                 _grad(cv, 3, 3, w-3, h-3, col_top, col_bot, steps=24)
                 # Bright edges
-                cv.create_line(3, 3, w-3, 3, fill=_lerp(col,"#fff",0.5), width=2)
-                cv.create_line(3, 3, 3, h-3, fill=_lerp(col,"#fff",0.4), width=2)
+                cv.create_line(3, 3, w-3, 3, fill=_lerp(col,"#ffffff",0.5), width=2)
+                cv.create_line(3, 3, 3, h-3, fill=_lerp(col,"#ffffff",0.4), width=2)
                 cv.create_line(w-3, 3, w-3, h-3, fill=_darken(col,0.4), width=2)
                 cv.create_line(3, h-3, w-3, h-3, fill=_darken(col,0.4), width=2)
                 # Emoji + label
@@ -2212,9 +2220,9 @@ class MythFactScreen(tk.Frame):
         w = cv.winfo_width() or 180
         h = cv.winfo_height() or 160
         _grad(cv, 3, 3, w-3, h-3,
-              _lerp(col2,"#fff",0.22), _darken(col2,0.60), steps=24)
-        cv.create_line(3, 3, w-3, 3, fill=_lerp(col2,"#fff",0.5), width=2)
-        cv.create_line(3, 3, 3, h-3, fill=_lerp(col2,"#fff",0.4), width=2)
+              _lerp(col2,"#ffffff",0.22), _darken(col2,0.60), steps=24)
+        cv.create_line(3, 3, w-3, 3, fill=_lerp(col2,"#ffffff",0.5), width=2)
+        cv.create_line(3, 3, 3, h-3, fill=_lerp(col2,"#ffffff",0.4), width=2)
         cv.create_line(w-3, 3, w-3, h-3, fill=_darken(col2,0.4), width=2)
         cv.create_line(3, h-3, w-3, h-3, fill=_darken(col2,0.4), width=2)
         emoji = "❌" if label == "MYTH" else "✅"
@@ -2287,9 +2295,9 @@ class MythFactScreen(tk.Frame):
             h = cv.winfo_height() or 160
             cv.delete("all")
             _grad(cv, 3, 3, w-3, h-3,
-                  _lerp(final_col,"#fff",0.18), _darken(final_col,0.65), steps=20)
-            cv.create_line(3, 3, w-3, 3, fill=_lerp(final_col,"#fff",0.4), width=2)
-            cv.create_line(3, 3, 3, h-3, fill=_lerp(final_col,"#fff",0.3), width=2)
+                  _lerp(final_col,"#ffffff",0.18), _darken(final_col,0.65), steps=20)
+            cv.create_line(3, 3, w-3, 3, fill=_lerp(final_col,"#ffffff",0.4), width=2)
+            cv.create_line(3, 3, 3, h-3, fill=_lerp(final_col,"#ffffff",0.3), width=2)
             emoji = "❌" if lbl == "MYTH" else "✅"
             cv.create_text(w//2, h//2 - 20, text=emoji,
                             font=("Segoe UI Emoji", 28))
