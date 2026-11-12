@@ -5,8 +5,71 @@
       "title": "Introduction to Family Planning",
       "difficulty": "Easy",
       "difficulty_color": "#2ecc71",
-      "story": "Welcome to Chapter 1, Level 1: Introduction to Family Planning!\n\nIn this level you will learn the basics of family planning — what it means, why it matters, and how it helps individuals and families make informed decisions.\n\n(Video story coming soon)\n\nChoose your difficulty and take the quiz!",
+      "quiz_type": "kahoot",
+      "story": "Welcome to Chapter 1, Level 1: Introduction to Family Planning!\n\nIn this level you will learn the basics of family planning — what it means, why it matters, and how it helps individuals and families make informed decisions.\n\n(Video story coming soon)\n\nGet ready for a Kahoot-style quiz!",
       "story_image": "couple",
+      "kahoot": [
+        {
+          "question": "What is family planning?",
+          "options": ["Planning a vacation", "Deciding when and how many children to have", "Planning family finances only", "Arranging family events"],
+          "answer": "Deciding when and how many children to have",
+          "explanation": "Family planning means making informed choices about if, when, and how many children to have using contraception and other methods."
+        },
+        {
+          "question": "Who should be involved in family planning decisions?",
+          "options": ["Only the woman", "Only the man", "Both partners together", "Only the doctor"],
+          "answer": "Both partners together",
+          "explanation": "Family planning is a shared responsibility. Both partners should communicate and decide together."
+        },
+        {
+          "question": "What is the primary purpose of contraception?",
+          "options": ["To cure infections", "To increase fertility", "To prevent unwanted pregnancy", "To regulate hormones only"],
+          "answer": "To prevent unwanted pregnancy",
+          "explanation": "Contraception is used to prevent unintended pregnancy, giving couples control over when they start or grow their family."
+        },
+        {
+          "question": "Which is a natural method of family planning?",
+          "options": ["Birth control pills", "IUD", "Hormonal injection", "Calendar/Rhythm method"],
+          "answer": "Calendar/Rhythm method",
+          "explanation": "The calendar or rhythm method is a natural family planning method based on tracking the menstrual cycle."
+        },
+        {
+          "question": "What vitamin is important before and during pregnancy?",
+          "options": ["Vitamin C", "Vitamin D", "Vitamin K", "Folic Acid"],
+          "answer": "Folic Acid",
+          "explanation": "Folic acid helps prevent neural tube defects and should be taken before and during early pregnancy."
+        },
+        {
+          "question": "What does WHO recommend for minimum birth spacing?",
+          "options": ["6 months", "1 year", "At least 2 years", "5 years"],
+          "answer": "At least 2 years",
+          "explanation": "The WHO recommends waiting at least 24 months after a live birth before the next pregnancy."
+        },
+        {
+          "question": "Which contraceptive also protects against STIs?",
+          "options": ["Birth control pill", "IUD", "Condom", "Hormonal implant"],
+          "answer": "Condom",
+          "explanation": "Condoms are the only contraceptive that helps protect against both pregnancy and sexually transmitted infections."
+        },
+        {
+          "question": "What does prenatal care mean?",
+          "options": ["Care after delivery", "Care for newborns", "Medical care during pregnancy", "Care for elderly parents"],
+          "answer": "Medical care during pregnancy",
+          "explanation": "Prenatal care is the healthcare a woman receives during pregnancy to monitor her health and the baby's development."
+        },
+        {
+          "question": "How effective are condoms when used correctly?",
+          "options": ["About 60%", "About 75%", "About 85%", "97-98%"],
+          "answer": "97-98%",
+          "explanation": "When used correctly and consistently, condoms are 97-98% effective at preventing pregnancy."
+        },
+        {
+          "question": "What is LAM (Lactational Amenorrhea Method)?",
+          "options": ["A monthly injection", "A daily pill after birth", "Using exclusive breastfeeding as contraception", "A surgical method"],
+          "answer": "Using exclusive breastfeeding as contraception",
+          "explanation": "LAM relies on exclusive breastfeeding to suppress ovulation. It works only if the baby is under 6 months, breastfeeding is exclusive, and menstruation has not returned."
+        }
+      ],
       "beginner": [
         {
           "question": "What is family planning?",
@@ -147,8 +210,61 @@
       "title": "Responsible Parenthood",
       "difficulty": "Easy",
       "difficulty_color": "#27ae60",
-      "story": "Welcome to Chapter 1, Level 2: Responsible Parenthood!\n\nIn this level you will learn what responsible parenthood means — the roles, responsibilities, and values that make a caring and prepared parent.\n\n(Video story coming soon)\n\nChoose your difficulty and take the quiz!",
+      "quiz_type": "myth_fact",
+      "story": "Welcome to Chapter 1, Level 2: Responsible Parenthood!\n\nIn this level you will test your knowledge about responsible parenthood — separating myths from facts!\n\n(Video story coming soon)\n\nFor each statement, choose MYTH or FACT!",
       "story_image": "health_center",
+      "myth_fact": [
+        {
+          "question": "Family planning is only the woman's responsibility.",
+          "answer": "MYTH",
+          "explanation": "MYTH! Family planning is a shared responsibility. Both partners should communicate and make decisions together."
+        },
+        {
+          "question": "Birth control pills can cause permanent infertility.",
+          "answer": "MYTH",
+          "explanation": "MYTH! Fertility usually returns within 1-3 months of stopping the pill. The pill does not cause permanent infertility."
+        },
+        {
+          "question": "Condoms help reduce the risk of sexually transmitted infections.",
+          "answer": "FACT",
+          "explanation": "FACT! Condoms are the only contraceptive method that reduces the risk of both STIs and unintended pregnancy."
+        },
+        {
+          "question": "You cannot get pregnant the first time you have sex.",
+          "answer": "MYTH",
+          "explanation": "MYTH! Pregnancy is absolutely possible the first time. If ovulation has occurred, conception can happen regardless of prior experience."
+        },
+        {
+          "question": "Responsible parenthood requires physical, emotional, and financial readiness.",
+          "answer": "FACT",
+          "explanation": "FACT! Being a responsible parent requires being physically healthy, emotionally stable, and financially prepared to meet a child's needs."
+        },
+        {
+          "question": "The rhythm/calendar method is 100% effective at preventing pregnancy.",
+          "answer": "MYTH",
+          "explanation": "MYTH! The calendar method is only 76-88% effective with typical use. Irregular cycles reduce its reliability further."
+        },
+        {
+          "question": "Both parents share equal responsibility in raising a child.",
+          "answer": "FACT",
+          "explanation": "FACT! Responsible parenthood involves both parents equally sharing in the care, support, and upbringing of their children."
+        },
+        {
+          "question": "Short birth spacing (less than 18 months) has no health impact.",
+          "answer": "MYTH",
+          "explanation": "MYTH! Short birth intervals increase risks including preterm birth, low birth weight, and maternal anemia."
+        },
+        {
+          "question": "Learning about reproductive health helps adolescents make informed decisions.",
+          "answer": "FACT",
+          "explanation": "FACT! Knowledge about reproductive health empowers adolescents to make responsible decisions about their health and future."
+        },
+        {
+          "question": "A child's early years are critical for physical, cognitive, and emotional development.",
+          "answer": "FACT",
+          "explanation": "FACT! The early years (0-6) are the most important for brain development, emotional bonding, and forming the foundation for lifelong learning."
+        }
+      ],
       "beginner": [
         {
           "question": "What is responsible parenthood?",

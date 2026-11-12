@@ -106,7 +106,8 @@ QUIZ_MODE_KEY = "questions"
 
 # Timer seconds per difficulty
 TIMER = {"Easy": 30, "Medium": 22, "Hard": 16,
-         "Beginner": 30, "Intermediate": 22, "Difficult": 16}
+         "Beginner": 30, "Intermediate": 22, "Difficult": 16,
+         "Kahoot": 20}
 XP_CORRECT   = 10
 XP_BONUS_FAST = 5   # answered in first half of timer
 XP_PERFECT   = 20   # bonus for 100% level
@@ -334,6 +335,8 @@ class App(tk.Tk):
             "level_select": LevelSelectScreen,
             "story":        StoryScreen,
             "quiz":         QuizScreen,
+            "kahoot":       KahootScreen,
+            "myth_fact":    MythFactScreen,
             "result":       ResultScreen,
             "gameover":     GameOverScreen,
             "leaderboard":  LeaderboardScreen,
@@ -343,13 +346,19 @@ class App(tk.Tk):
         self._frame.pack(fill="both", expand=True)
 
     def start_level(self):
-        """Reset per-level quiz state and go to quiz."""
+        """Reset per-level quiz state and route to correct quiz type."""
         self.quiz_index   = 0
         self.quiz_score   = 0
         self.quiz_answers = []
         self.lives        = MAX_LIVES
         self.fast_answers = 0
-        self.show("quiz")
+        qt = self.current_level.get("quiz_type", "standard")
+        if qt == "kahoot":
+            self.show("kahoot")
+        elif qt == "myth_fact":
+            self.show("myth_fact")
+        else:
+            self.show("quiz")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Splash / Name Entry
@@ -1255,30 +1264,55 @@ class StoryScreen(tk.Frame):
                                   bg=C["bg"], fg=C["bg"])
         self._xp_lbl.pack(pady=(0,8))
 
-        # ── Difficulty picker (revealed after story) ──────────────────────
+        # ── Difficulty picker or Begin button (revealed after story) ────────
         self._diff_frame = tk.Frame(inn, bg=C["bg"])
         self._diff_frame.pack(pady=(0,6))
 
-        diff_label = tk.Label(self._diff_frame,
-                              text="── CHOOSE DIFFICULTY ──",
-                              font=_retro(10, "bold"),
-                              bg=C["bg"], fg=C["bg"])
-        diff_label.pack(pady=(0,8))
-        self._diff_label = diff_label
+        quiz_type = lvl.get("quiz_type", "standard")
 
-        diff_btns = tk.Frame(self._diff_frame, bg=C["bg"])
-        diff_btns.pack()
+        if quiz_type == "kahoot":
+            diff_label = tk.Label(self._diff_frame,
+                                  text="🎮  KAHOOT STYLE  —  20s per question",
+                                  font=_retro(10, "bold"),
+                                  bg=C["bg"], fg=C["bg"])
+            diff_label.pack(pady=(0,8))
+            self._diff_label = diff_label
+            Btn(self._diff_frame, "  START KAHOOT  ▶  ",
+                lambda: self._pick_difficulty("Kahoot"),
+                bg="#e74c3c", fg=C["white"], w=260, fs=13,
+                pad_bg=C["bg"]).pack(pady=(0,4))
 
-        DIFFS = [
-            ("Beginner",     C["easy"],   "30s each"),
-            ("Intermediate", C["medium"], "22s each"),
-            ("Difficult",    C["hard"],   "16s each"),
-        ]
-        for dname, dcol, dtimer in DIFFS:
-            Btn(diff_btns, dname,
-                lambda d=dname: self._pick_difficulty(d),
-                bg=dcol, fg=C["bg"], w=120, fs=10,
-                pad_bg=C["bg"]).pack(side="left", padx=4)
+        elif quiz_type == "myth_fact":
+            diff_label = tk.Label(self._diff_frame,
+                                  text="🧠  MYTH OR FACT  —  Choose wisely!",
+                                  font=_retro(10, "bold"),
+                                  bg=C["bg"], fg=C["bg"])
+            diff_label.pack(pady=(0,8))
+            self._diff_label = diff_label
+            Btn(self._diff_frame, "  START QUIZ  ▶  ",
+                lambda: self._pick_difficulty("Beginner"),
+                bg="#8e44ad", fg=C["white"], w=260, fs=13,
+                pad_bg=C["bg"]).pack(pady=(0,4))
+
+        else:
+            diff_label = tk.Label(self._diff_frame,
+                                  text="── CHOOSE DIFFICULTY ──",
+                                  font=_retro(10, "bold"),
+                                  bg=C["bg"], fg=C["bg"])
+            diff_label.pack(pady=(0,8))
+            self._diff_label = diff_label
+            diff_btns = tk.Frame(self._diff_frame, bg=C["bg"])
+            diff_btns.pack()
+            DIFFS = [
+                ("Beginner",     C["easy"],   "30s each"),
+                ("Intermediate", C["medium"], "22s each"),
+                ("Difficult",    C["hard"],   "16s each"),
+            ]
+            for dname, dcol, dtimer in DIFFS:
+                Btn(diff_btns, dname,
+                    lambda d=dname: self._pick_difficulty(d),
+                    bg=dcol, fg=C["bg"], w=120, fs=10,
+                    pad_bg=C["bg"]).pack(side="left", padx=4)
 
         # Back button (always visible)
         self._back_f = Btn(inn, "← Back", self._back,
@@ -1745,6 +1779,556 @@ class QuizScreen(tk.Frame):
         self.app.show("gameover")
 
 # ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Kahoot Quiz  (colorful 4-tile layout, 20s timer, no difficulty pick)
+# ══════════════════════════════════════════════════════════════════════════════
+class KahootScreen(tk.Frame):
+    """Kahoot-style quiz: 4 big colored tiles, fast 20s timer, speed bonus."""
+
+    # Kahoot-ish colors: red, blue, yellow, green
+    _TILE_COLORS = ["#e74c3c", "#3498db", "#f1c416", "#2ecc71"]
+    _TILE_ICONS  = ["▲", "■", "●", "◆"]
+
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app     = app
+        self._locked = False
+        self._paused = False
+        self._t_left = TIMER.get("Kahoot", 20)
+        self._t_total= self._t_left
+        self._t_aid  = None
+        self._q_start= time.time()
+        self._build()
+        self._tick()
+
+    def _build(self):
+        app  = self.app
+        lvl  = app.current_level
+        idx  = app.quiz_index
+        qs   = lvl.get("kahoot", lvl.get("questions", []))
+        q    = qs[idx]
+        total= len(qs)
+        self._current_q = q
+
+        # ── Top bar ───────────────────────────────────────────────────────
+        top = tk.Frame(self, bg="#1a1a2e")
+        top.pack(fill="x")
+        tk.Frame(top, bg="#e74c3c", height=3).pack(fill="x")
+        bar = tk.Frame(top, bg="#1a1a2e", pady=8)
+        bar.pack(fill="x")
+
+        # Lives
+        lf = tk.Frame(bar, bg="#1a1a2e")
+        lf.pack(side="left", padx=10)
+        for i in range(MAX_LIVES):
+            tk.Label(lf, text="❤" if i < app.lives else "🖤",
+                     font=("Segoe UI Emoji", 13), bg="#1a1a2e",
+                     fg="#e74c3c" if i < app.lives else "#444").pack(side="left")
+
+        tk.Label(bar, text=f"Q {idx+1} / {total}",
+                 font=_retro(11, "bold"),
+                 bg="#1a1a2e", fg="#ffffff").pack(side="left", padx=8)
+
+        tk.Label(bar, text=f"⚡ {app.total_xp_session}",
+                 font=_retro(9, "bold"),
+                 bg="#1a1a2e", fg="#f1c416").pack(side="left", padx=4)
+
+        self._timer_lbl = tk.Label(bar, text=f"⏱ {self._t_left}",
+                                    font=_retro(14, "bold"),
+                                    bg="#1a1a2e", fg="#2ecc71")
+        self._timer_lbl.pack(side="right", padx=12)
+
+        # Progress bar
+        pb_bg = tk.Frame(self, bg="#2c2c3e", height=6)
+        pb_bg.pack(fill="x")
+        self._pb = tk.Frame(pb_bg, bg="#e74c3c", height=6,
+                             width=int(WINDOW_W*(idx+1)/total))
+        self._pb.place(x=0, y=0)
+
+        # ── Question card ─────────────────────────────────────────────────
+        qcard = tk.Frame(self, bg="#16213e", pady=20, padx=20)
+        qcard.pack(fill="x", pady=0)
+        tk.Label(qcard, text=q["question"],
+                 font=_retro(13, "bold"),
+                 bg="#16213e", fg="#ffffff",
+                 wraplength=380, justify="center").pack()
+
+        # Timer ring canvas (circular progress)
+        self._timer_cv = tk.Canvas(self, width=60, height=60,
+                                    bg=C["bg"], highlightthickness=0)
+        self._timer_cv.pack(pady=6)
+        self._draw_timer_ring()
+
+        # ── 4 Tile grid ───────────────────────────────────────────────────
+        import random as _r
+        opts = list(q["options"])
+        _r.shuffle(opts)
+
+        self._opts = {}
+        grid = tk.Frame(self, bg=C["bg"])
+        grid.pack(fill="both", expand=True, padx=10, pady=(0,10))
+        grid.columnconfigure(0, weight=1)
+        grid.columnconfigure(1, weight=1)
+
+        for i, opt in enumerate(opts):
+            col_i  = self._TILE_COLORS[i % 4]
+            icon_i = self._TILE_ICONS[i % 4]
+            row_i, col_grid = divmod(i, 2)
+
+            tile_cv = tk.Canvas(grid, height=90, bg=C["bg"],
+                                 highlightthickness=0)
+            tile_cv.grid(row=row_i, column=col_grid,
+                         padx=5, pady=5, sticky="nsew")
+
+            fnt_icon = _retro(16, "bold")
+            fnt_text = _retro(10, "bold")
+
+            def draw_tile(cv=tile_cv, text=opt, col=col_i, icon=icon_i):
+                cv.delete("all")
+                w = cv.winfo_width() or (WINDOW_W//2 - 20)
+                # Gradient tile
+                col_top = _lerp(col, "#ffffff", 0.20)
+                col_bot = _darken(col, 0.65)
+                _grad(cv, 2, 2, w-2, 88, col_top, col_bot, steps=20)
+                # Highlight edges
+                cv.create_line(2, 2, w-2, 2, fill=_lerp(col,"#fff",0.4), width=2)
+                cv.create_line(2, 2, 2, 88,  fill=_lerp(col,"#fff",0.3), width=2)
+                # Drop shadow
+                cv.create_line(w-2, 2, w-2, 88, fill=_darken(col,0.4), width=2)
+                cv.create_line(2, 88, w-2, 88,  fill=_darken(col,0.4), width=2)
+                # Icon top-left
+                cv.create_text(20, 20, text=icon, font=fnt_icon,
+                                fill="#ffffff")
+                # Answer text centered
+                cv.create_text(w//2, 55, text=text, font=fnt_text,
+                                fill="#ffffff", width=w-16, anchor="center")
+
+            draw_tile()
+            tile_cv.bind("<Configure>", lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i: (
+                draw_tile(c, t, cl, ic)
+            ))
+            tile_cv.bind("<Button-1>", lambda e, o=opt: self._pick(o))
+            tile_cv.bind("<Enter>",    lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i: (
+                self._hover_tile(c, t, cl, ic, True)
+            ))
+            tile_cv.bind("<Leave>",    lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i: (
+                self._hover_tile(c, t, cl, ic, False)
+            ))
+            self._opts[opt] = (tile_cv, draw_tile)
+
+        # Explanation label (hidden)
+        self._expl_f = tk.Frame(self, bg="#16213e", padx=16, pady=10)
+        self._expl_l = tk.Label(self._expl_f, text="",
+                                 font=_retro(10),
+                                 bg="#16213e", fg="#ffffff",
+                                 wraplength=370, justify="center")
+        self._expl_l.pack()
+
+        # XP label (hidden)
+        self._xp_f = tk.Frame(self, bg=C["bg"])
+        self._xp_l = tk.Label(self._xp_f, text="",
+                               font=_retro(12, "bold"),
+                               bg=C["bg"], fg="#f1c416")
+        self._xp_l.pack()
+
+        # Next button (hidden)
+        self._next_f = tk.Frame(self, bg=C["bg"], pady=6)
+        lbl = "NEXT  ➜" if idx+1 < total else "SEE RESULTS  ✔"
+        Btn(self._next_f, lbl, self._next,
+            bg="#e74c3c", fg="#ffffff", w=240, fs=13,
+            pad_bg=C["bg"]).pack()
+
+    def _draw_timer_ring(self):
+        cv = self._timer_cv
+        cv.delete("all")
+        ratio = self._t_left / (self._t_total or 1)
+        col = C["timer_ok"] if ratio > 0.5 else C["timer_warn"] if ratio > 0.25 else C["timer_bad"]
+        # Background ring
+        cv.create_oval(5, 5, 55, 55, outline="#333", width=5, fill=C["bg"])
+        # Progress arc
+        extent = int(-360 * ratio)
+        cv.create_arc(5, 5, 55, 55, start=90, extent=extent,
+                       outline=col, width=5, style="arc")
+        # Number
+        cv.create_text(30, 30, text=str(self._t_left),
+                        font=_retro(12, "bold"), fill=col)
+
+    def _hover_tile(self, cv, text, col, icon, hovering):
+        cv.delete("all")
+        w = cv.winfo_width() or (WINDOW_W//2 - 20)
+        c = _lerp(col, "#ffffff", 0.30) if hovering else col
+        col_top = _lerp(c, "#ffffff", 0.20)
+        col_bot = _darken(c, 0.65)
+        _grad(cv, 2, 2, w-2, 88, col_top, col_bot, steps=20)
+        cv.create_line(2, 2, w-2, 2, fill=_lerp(c,"#fff",0.4), width=2)
+        cv.create_line(2, 2, 2, 88,  fill=_lerp(c,"#fff",0.3), width=2)
+        cv.create_line(w-2, 2, w-2, 88, fill=_darken(c,0.4), width=2)
+        cv.create_line(2, 88, w-2, 88,  fill=_darken(c,0.4), width=2)
+        cv.create_text(20, 20, text=icon, font=_retro(16,"bold"), fill="#ffffff")
+        cv.create_text(w//2, 55, text=text, font=_retro(10,"bold"),
+                        fill="#ffffff", width=w-16, anchor="center")
+
+    def _tick(self):
+        if self._locked or self._paused:
+            self._t_aid = self.after(200, self._tick)
+            return
+        if self._t_left <= 0:
+            self._time_up()
+            return
+        self._t_left -= 1
+        tc = C["timer_ok"] if self._t_left/self._t_total > 0.5 else \
+             C["timer_warn"] if self._t_left/self._t_total > 0.25 else C["timer_bad"]
+        self._timer_lbl.configure(text=f"⏱ {self._t_left}", fg=tc)
+        self._draw_timer_ring()
+        if self._t_left <= 5:
+            SFX.play("tick")
+        self._t_aid = self.after(1000, self._tick)
+
+    def _time_up(self):
+        if self._locked: return
+        self._locked = True
+        SFX.play("wrong")
+        self.app.lives -= 1
+        self._reveal_answer(None)
+        self._expl_l.configure(text=f"⏱ Time's up!  {self._current_q.get('explanation','')}")
+        self._expl_f.pack(fill="x", pady=(4,4))
+        self._xp_l.configure(text="No XP — Time's up!", fg=C["wrong"])
+        self._xp_f.pack(pady=(2,4))
+        if self.app.lives <= 0:
+            self.after(1400, lambda: self.app.show("gameover"))
+        else:
+            self._next_f.pack(pady=(2,8))
+
+    def _pick(self, option):
+        if self._locked or self._paused: return
+        self._locked = True
+        elapsed  = time.time() - self._q_start
+        is_fast  = elapsed < (self._t_total / 2)
+        correct  = self._current_q["answer"]
+        is_right = (option == correct)
+
+        xp_gained = 0
+        if is_right:
+            xp_gained += XP_CORRECT
+            if is_fast:
+                xp_gained += XP_BONUS_FAST
+                self.app.fast_answers += 1
+            self.app.quiz_score += 1
+        else:
+            self.app.lives -= 1
+
+        self.app.total_xp_session += xp_gained
+        SFX.play("correct" if is_right else "wrong")
+        self.app.quiz_answers.append({
+            "question": self._current_q["question"],
+            "chosen": option, "correct": correct,
+            "is_right": is_right, "xp": xp_gained,
+            "explanation": self._current_q.get("explanation","")
+        })
+
+        self._reveal_answer(option)
+        icon = "✅" if is_right else "❌"
+        self._expl_l.configure(text=f"{icon}  {self._current_q.get('explanation','')}")
+        self._expl_f.pack(fill="x", pady=(4,4))
+        bonus = f"  +{XP_BONUS_FAST} speed!" if is_fast and is_right else ""
+        self._xp_l.configure(
+            text=f"⚡ +{xp_gained} XP{bonus}" if xp_gained > 0
+            else f"❤ {self.app.lives}/{MAX_LIVES} lives",
+            fg="#f1c416" if xp_gained > 0 else C["lives"])
+        self._xp_f.pack(pady=(2,4))
+        if not is_right and self.app.lives <= 0:
+            self.after(1500, lambda: self.app.show("gameover"))
+        else:
+            self._next_f.pack(pady=(2,8))
+
+    def _reveal_answer(self, chosen):
+        correct = self._current_q["answer"]
+        for opt, (cv, draw_fn) in self._opts.items():
+            if opt == correct:    col = C["correct"]
+            elif opt == chosen:   col = C["wrong"]
+            else:                 col = "#444444"
+            w = cv.winfo_width() or (WINDOW_W//2 - 20)
+            icon = self._TILE_ICONS[list(self._opts.keys()).index(opt) % 4]
+            cv.delete("all")
+            _grad(cv, 2, 2, w-2, 88,
+                  _lerp(col,"#ffffff",0.18), _darken(col,0.65), steps=20)
+            cv.create_text(20, 20, text=icon, font=_retro(16,"bold"), fill="#fff")
+            cv.create_text(w//2, 55, text=opt, font=_retro(10,"bold"),
+                            fill="#fff", width=w-16, anchor="center")
+            if opt == correct:
+                cv.create_text(w-14, 14, text="✓", font=_retro(14,"bold"), fill="#fff")
+            cv.unbind("<Button-1>")
+            cv.unbind("<Enter>")
+            cv.unbind("<Leave>")
+
+    def _next(self):
+        if self._t_aid: self.after_cancel(self._t_aid)
+        SFX.play("click")
+        self.app.quiz_index += 1
+        total = len(self.app.current_level.get("kahoot",
+                    self.app.current_level.get("questions", [])))
+        if self.app.quiz_index >= total:
+            self.app.show("result")
+        else:
+            self.app.show("kahoot")
+
+    def _toggle_pause(self): pass   # no pause in Kahoot mode
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Myth or Fact Quiz  (2 big buttons: MYTH / FACT)
+# ══════════════════════════════════════════════════════════════════════════════
+class MythFactScreen(tk.Frame):
+    """Myth-or-Fact quiz: each question shows only MYTH and FACT buttons."""
+
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app     = app
+        self._locked = False
+        self._t_left = 25
+        self._t_total= 25
+        self._t_aid  = None
+        self._q_start= time.time()
+        self._build()
+        self._tick()
+
+    def _build(self):
+        app  = self.app
+        lvl  = app.current_level
+        idx  = app.quiz_index
+        qs   = lvl.get("myth_fact", lvl.get("questions", []))
+        q    = qs[idx]
+        total= len(qs)
+        self._current_q = q
+
+        # ── Top bar ───────────────────────────────────────────────────────
+        top = tk.Frame(self, bg="#1a0a2e")
+        top.pack(fill="x")
+        tk.Frame(top, bg="#8e44ad", height=3).pack(fill="x")
+        bar = tk.Frame(top, bg="#1a0a2e", pady=8)
+        bar.pack(fill="x")
+
+        lf = tk.Frame(bar, bg="#1a0a2e")
+        lf.pack(side="left", padx=10)
+        for i in range(MAX_LIVES):
+            tk.Label(lf, text="❤" if i < app.lives else "🖤",
+                     font=("Segoe UI Emoji", 13), bg="#1a0a2e",
+                     fg="#e74c3c" if i < app.lives else "#444").pack(side="left")
+
+        tk.Label(bar, text=f"🧠  {idx+1} / {total}",
+                 font=_retro(11, "bold"),
+                 bg="#1a0a2e", fg="#ffffff").pack(side="left", padx=8)
+
+        tk.Label(bar, text=f"⚡ {app.total_xp_session}",
+                 font=_retro(9, "bold"),
+                 bg="#1a0a2e", fg="#d966ff").pack(side="left", padx=4)
+
+        self._timer_lbl = tk.Label(bar, text=f"⏱ {self._t_left}",
+                                    font=_retro(14, "bold"),
+                                    bg="#1a0a2e", fg="#d966ff")
+        self._timer_lbl.pack(side="right", padx=12)
+
+        # Progress bar
+        pb_bg = tk.Frame(self, bg="#2c1a3e", height=6)
+        pb_bg.pack(fill="x")
+        self._pb = tk.Frame(pb_bg, bg="#8e44ad", height=6,
+                             width=int(WINDOW_W*(idx+1)/total))
+        self._pb.place(x=0, y=0)
+
+        # ── Statement card ────────────────────────────────────────────────
+        qcard = tk.Frame(self, bg="#0d0d1a", pady=24, padx=20)
+        qcard.pack(fill="x")
+        tk.Label(qcard, text="📋  Is this a MYTH or a FACT?",
+                 font=_retro(10, "bold"),
+                 bg="#0d0d1a", fg="#8e44ad").pack(pady=(0,8))
+        tk.Label(qcard, text=q["question"],
+                 font=_retro(12, "bold"),
+                 bg="#0d0d1a", fg="#ffffff",
+                 wraplength=380, justify="center").pack()
+
+        # ── MYTH / FACT buttons ────────────────────────────────────────────
+        btn_row = tk.Frame(self, bg=C["bg"])
+        btn_row.pack(expand=True, fill="both", padx=16, pady=20)
+        btn_row.columnconfigure(0, weight=1)
+        btn_row.columnconfigure(1, weight=1)
+        btn_row.rowconfigure(0, weight=1)
+
+        for col_i, (label, color) in enumerate([("MYTH", "#e74c3c"),
+                                                  ("FACT", "#2ecc71")]):
+            cv = tk.Canvas(btn_row, bg=C["bg"], highlightthickness=0)
+            cv.grid(row=0, column=col_i, padx=8, pady=8, sticky="nsew")
+            fnt_big  = _retro(22, "bold")
+            fnt_sub  = _retro(9)
+
+            def draw_btn(cv=cv, lbl=label, col=color):
+                cv.delete("all")
+                w = cv.winfo_width() or 180
+                h = cv.winfo_height() or 160
+                col_top = _lerp(col, "#ffffff", 0.22)
+                col_bot = _darken(col, 0.60)
+                _grad(cv, 3, 3, w-3, h-3, col_top, col_bot, steps=24)
+                # Bright edges
+                cv.create_line(3, 3, w-3, 3, fill=_lerp(col,"#fff",0.5), width=2)
+                cv.create_line(3, 3, 3, h-3, fill=_lerp(col,"#fff",0.4), width=2)
+                cv.create_line(w-3, 3, w-3, h-3, fill=_darken(col,0.4), width=2)
+                cv.create_line(3, h-3, w-3, h-3, fill=_darken(col,0.4), width=2)
+                # Emoji + label
+                emoji = "❌" if lbl == "MYTH" else "✅"
+                cv.create_text(w//2, h//2 - 20, text=emoji,
+                                font=("Segoe UI Emoji", 28))
+                cv.create_text(w//2, h//2 + 22, text=lbl,
+                                font=fnt_big, fill="#ffffff")
+
+            draw_btn()
+            cv.bind("<Configure>", lambda e, c=cv, l=label, col=color: draw_btn(c, l, col))
+            cv.bind("<Button-1>",  lambda e, ans=label: self._pick(ans))
+            cv.bind("<Enter>",     lambda e, c=cv, l=label, col=color: (
+                c.delete("all") or self._draw_hover(c, l, col, True)
+            ))
+            cv.bind("<Leave>",     lambda e, c=cv, l=label, col=color: draw_btn(c, l, col))
+            setattr(self, f"_btn_{label.lower()}", (cv, draw_btn))
+
+        # Explanation & next (hidden)
+        self._expl_f = tk.Frame(self, bg="#0d0d1a", padx=16, pady=10)
+        self._expl_l = tk.Label(self._expl_f, text="",
+                                 font=_retro(10),
+                                 bg="#0d0d1a", fg="#ffffff",
+                                 wraplength=370, justify="center")
+        self._expl_l.pack()
+
+        self._xp_f = tk.Frame(self, bg=C["bg"])
+        self._xp_l = tk.Label(self._xp_f, text="",
+                               font=_retro(12, "bold"),
+                               bg=C["bg"], fg="#d966ff")
+        self._xp_l.pack()
+
+        self._next_f = tk.Frame(self, bg=C["bg"], pady=6)
+        lbl_n = "NEXT  ➜" if idx+1 < total else "SEE RESULTS  ✔"
+        Btn(self._next_f, lbl_n, self._next,
+            bg="#8e44ad", fg="#ffffff", w=240, fs=13,
+            pad_bg=C["bg"]).pack()
+
+    def _draw_hover(self, cv, label, col, hover):
+        col2 = _lerp(col, "#ffffff", 0.30) if hover else col
+        w = cv.winfo_width() or 180
+        h = cv.winfo_height() or 160
+        _grad(cv, 3, 3, w-3, h-3,
+              _lerp(col2,"#fff",0.22), _darken(col2,0.60), steps=24)
+        cv.create_line(3, 3, w-3, 3, fill=_lerp(col2,"#fff",0.5), width=2)
+        cv.create_line(3, 3, 3, h-3, fill=_lerp(col2,"#fff",0.4), width=2)
+        cv.create_line(w-3, 3, w-3, h-3, fill=_darken(col2,0.4), width=2)
+        cv.create_line(3, h-3, w-3, h-3, fill=_darken(col2,0.4), width=2)
+        emoji = "❌" if label == "MYTH" else "✅"
+        cv.create_text(w//2, h//2 - 20, text=emoji,
+                        font=("Segoe UI Emoji", 28))
+        cv.create_text(w//2, h//2 + 22, text=label,
+                        font=_retro(22,"bold"), fill="#ffffff")
+
+    def _tick(self):
+        if self._locked:
+            self._t_aid = self.after(200, self._tick)
+            return
+        if self._t_left <= 0:
+            self._time_up(); return
+        self._t_left -= 1
+        tc = C["timer_ok"] if self._t_left/self._t_total > 0.5 else \
+             C["timer_warn"] if self._t_left/self._t_total > 0.25 else C["timer_bad"]
+        self._timer_lbl.configure(text=f"⏱ {self._t_left}", fg=tc)
+        if self._t_left <= 5: SFX.play("tick")
+        self._t_aid = self.after(1000, self._tick)
+
+    def _time_up(self):
+        if self._locked: return
+        self._locked = True
+        SFX.play("wrong")
+        self.app.lives -= 1
+        self._expl_l.configure(
+            text=f"⏱ Time's up!  {self._current_q.get('explanation','')}")
+        self._expl_f.pack(fill="x", pady=(4,4))
+        self._xp_l.configure(text="No XP — Time's up!", fg=C["wrong"])
+        self._xp_f.pack(pady=(2,4))
+        if self.app.lives <= 0:
+            self.after(1400, lambda: self.app.show("gameover"))
+        else:
+            self._next_f.pack(pady=(2,8))
+
+    def _pick(self, answer):
+        if self._locked: return
+        self._locked = True
+        elapsed  = time.time() - self._q_start
+        is_fast  = elapsed < (self._t_total / 2)
+        correct  = self._current_q["answer"]   # "MYTH" or "FACT"
+        is_right = (answer == correct)
+
+        xp_gained = 0
+        if is_right:
+            xp_gained += XP_CORRECT
+            if is_fast:
+                xp_gained += XP_BONUS_FAST
+                self.app.fast_answers += 1
+            self.app.quiz_score += 1
+        else:
+            self.app.lives -= 1
+
+        self.app.total_xp_session += xp_gained
+        SFX.play("correct" if is_right else "wrong")
+        self.app.quiz_answers.append({
+            "question": self._current_q["question"],
+            "chosen": answer, "correct": correct,
+            "is_right": is_right, "xp": xp_gained,
+            "explanation": self._current_q.get("explanation","")
+        })
+
+        # Flash the buttons
+        for lbl, col in [("MYTH","#e74c3c"), ("FACT","#2ecc71")]:
+            cv, _ = getattr(self, f"_btn_{lbl.lower()}")
+            final_col = C["correct"] if lbl == correct else \
+                        (C["wrong"] if lbl == answer else "#444444")
+            w = cv.winfo_width() or 180
+            h = cv.winfo_height() or 160
+            cv.delete("all")
+            _grad(cv, 3, 3, w-3, h-3,
+                  _lerp(final_col,"#fff",0.18), _darken(final_col,0.65), steps=20)
+            cv.create_line(3, 3, w-3, 3, fill=_lerp(final_col,"#fff",0.4), width=2)
+            cv.create_line(3, 3, 3, h-3, fill=_lerp(final_col,"#fff",0.3), width=2)
+            emoji = "❌" if lbl == "MYTH" else "✅"
+            cv.create_text(w//2, h//2 - 20, text=emoji,
+                            font=("Segoe UI Emoji", 28))
+            cv.create_text(w//2, h//2 + 22, text=lbl,
+                            font=_retro(22,"bold"), fill="#ffffff")
+            if lbl == correct:
+                cv.create_text(w//2, h-18, text="◀ CORRECT",
+                                font=_retro(8,"bold"), fill="#ffffff")
+            cv.unbind("<Button-1>")
+            cv.unbind("<Enter>")
+            cv.unbind("<Leave>")
+
+        icon = "✅" if is_right else "❌"
+        self._expl_l.configure(
+            text=f"{icon}  {self._current_q.get('explanation','')}")
+        self._expl_f.pack(fill="x", pady=(4,4))
+        self._xp_l.configure(
+            text=f"⚡ +{xp_gained} XP" if xp_gained > 0
+            else f"❤ {self.app.lives}/{MAX_LIVES} lives",
+            fg="#d966ff" if xp_gained > 0 else C["lives"])
+        self._xp_f.pack(pady=(2,4))
+        if not is_right and self.app.lives <= 0:
+            self.after(1500, lambda: self.app.show("gameover"))
+        else:
+            self._next_f.pack(pady=(2,8))
+
+    def _next(self):
+        if self._t_aid: self.after_cancel(self._t_aid)
+        SFX.play("click")
+        self.app.quiz_index += 1
+        total = len(self.app.current_level.get("myth_fact",
+                    self.app.current_level.get("questions", [])))
+        if self.app.quiz_index >= total:
+            self.app.show("result")
+        else:
+            self.app.show("myth_fact")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Game Over
 # ══════════════════════════════════════════════════════════════════════════════
 class GameOverScreen(tk.Frame):
@@ -1830,8 +2414,14 @@ class ResultScreen(tk.Frame):
         app   = self.app
         lvl   = app.current_level
         lid   = lvl["id"]
-        diff  = app.chosen_difficulty.lower()
-        total = len(lvl.get(diff, lvl.get("questions", [1])))
+        qt    = lvl.get("quiz_type", "standard")
+        if qt == "kahoot":
+            total = len(lvl.get("kahoot", lvl.get("questions", [1])))
+        elif qt == "myth_fact":
+            total = len(lvl.get("myth_fact", lvl.get("questions", [1])))
+        else:
+            diff  = app.chosen_difficulty.lower()
+            total = len(lvl.get(diff, lvl.get("questions", [1])))
         score = app.quiz_score
         pct   = score / total
         stars = 3 if pct==1.0 else (2 if pct>=0.6 else 1)
@@ -1902,8 +2492,14 @@ class ResultScreen(tk.Frame):
     def _build(self):
         app     = self.app
         lvl     = app.current_level
-        diff    = app.chosen_difficulty.lower()
-        total   = len(lvl.get(diff, lvl.get("questions", [1])))
+        qt      = lvl.get("quiz_type", "standard")
+        if qt == "kahoot":
+            total = len(lvl.get("kahoot", lvl.get("questions", [1])))
+        elif qt == "myth_fact":
+            total = len(lvl.get("myth_fact", lvl.get("questions", [1])))
+        else:
+            diff  = app.chosen_difficulty.lower()
+            total = len(lvl.get(diff, lvl.get("questions", [1])))
         score   = app.quiz_score
         pct     = score / total
         stars   = self._stars
