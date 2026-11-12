@@ -134,7 +134,7 @@ BADGES = {
     "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all chapters"},
 }
 
-ACT_MAP = {}
+ACT_MAP = {1: ("Chapter 1", "Family Planning", "#2ecc71", [1, 2])}
 
 # ── JSON helpers ──────────────────────────────────────────────────────────────
 def load_json(path):
@@ -836,8 +836,8 @@ class LevelSelectScreen(tk.Frame):
                  bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1,1))
-        tk.Label(inner, text=f"⭐  {total_stars} / 0  stars collected",
+                          for i in range(1,3))
+        tk.Label(inner, text=f"⭐  {total_stars} / 6  stars collected",
                  font=_retro(9),
                  bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
 
@@ -1865,8 +1865,8 @@ class ResultScreen(tk.Frame):
             ("first_step",   lid == 1),
             ("beginner",     1 in completed),
             ("intermediate", all(x in completed for x in [1, 2])),
-            ("expert",       all(x in completed for x in [1, 2, 3])),
-            ("deciwise",     all(x in completed for x in range(1, 6))),
+            ("expert",       all(x in completed for x in [1, 2])),
+            ("deciwise",     all(x in completed for x in range(1, 3))),
             ("perfect_run",  pct == 1.0),
             ("speedster",    app.fast_answers >= 5),
         ]

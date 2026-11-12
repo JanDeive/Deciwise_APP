@@ -1,3 +1,333 @@
 {
-  "levels": []
+  "levels": [
+    {
+      "id": 1,
+      "title": "Introduction to Family Planning",
+      "difficulty": "Easy",
+      "difficulty_color": "#2ecc71",
+      "story": "Welcome to Chapter 1, Level 1: Introduction to Family Planning!\n\nIn this level you will learn the basics of family planning — what it means, why it matters, and how it helps individuals and families make informed decisions.\n\n(Video story coming soon)\n\nChoose your difficulty and take the quiz!",
+      "story_image": "couple",
+      "beginner": [
+        {
+          "question": "What is family planning?",
+          "options": [
+            "Planning a family vacation",
+            "Making informed decisions about if, when, and how many children to have",
+            "Planning family finances only",
+            "Arranging family events"
+          ],
+          "answer": "Making informed decisions about if, when, and how many children to have",
+          "explanation": "Family planning means making informed choices about if, when, and how many children to have using contraception and other methods."
+        },
+        {
+          "question": "Who should be involved in family planning decisions?",
+          "options": ["Only the woman", "Only the man", "Both partners together", "Only the doctor"],
+          "answer": "Both partners together",
+          "explanation": "Family planning is a shared responsibility. Both partners should communicate and decide together."
+        },
+        {
+          "question": "What is the primary purpose of contraception?",
+          "options": ["To cure infections", "To prevent unwanted pregnancy", "To increase fertility", "To regulate hormones only"],
+          "answer": "To prevent unwanted pregnancy",
+          "explanation": "Contraception is used to prevent unintended pregnancy, giving couples control over when they start or grow their family."
+        },
+        {
+          "question": "Which of the following is a natural method of family planning?",
+          "options": ["Birth control pills", "Condoms", "Calendar/Rhythm method", "IUD"],
+          "answer": "Calendar/Rhythm method",
+          "explanation": "The calendar or rhythm method is a natural family planning method based on tracking the menstrual cycle."
+        },
+        {
+          "question": "Why is family planning important?",
+          "options": [
+            "It is only important for married couples",
+            "It helps people make informed, responsible decisions about reproductive health",
+            "It is only about preventing pregnancy",
+            "It is only for women"
+          ],
+          "answer": "It helps people make informed, responsible decisions about reproductive health",
+          "explanation": "Family planning helps individuals and couples make responsible decisions about their reproductive health and future."
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "What does birth spacing mean?",
+          "options": [
+            "The time between birthdays",
+            "The recommended time to wait between pregnancies",
+            "The number of children in a family",
+            "The time between marriage and first child"
+          ],
+          "answer": "The recommended time to wait between pregnancies",
+          "explanation": "Birth spacing refers to the time between pregnancies. The WHO recommends at least 2 years between births for better maternal and infant health."
+        },
+        {
+          "question": "What is the recommended minimum birth spacing according to the WHO?",
+          "options": ["6 months", "1 year", "At least 2 years", "5 years"],
+          "answer": "At least 2 years",
+          "explanation": "The WHO recommends waiting at least 24 months after a live birth before the next pregnancy."
+        },
+        {
+          "question": "Which of these is a barrier method of contraception?",
+          "options": ["Birth control pill", "Condom", "Hormonal injection", "IUD"],
+          "answer": "Condom",
+          "explanation": "A condom is a barrier method — it physically prevents sperm from reaching the egg."
+        },
+        {
+          "question": "What vitamin is most important for women planning to get pregnant?",
+          "options": ["Vitamin C", "Vitamin D", "Folic Acid", "Vitamin K"],
+          "answer": "Folic Acid",
+          "explanation": "Folic acid helps prevent neural tube defects in the baby and should be taken before and during early pregnancy."
+        },
+        {
+          "question": "What does prenatal care mean?",
+          "options": ["Care given after delivery", "Care given to newborns", "Medical care during pregnancy", "Care given to elderly parents"],
+          "answer": "Medical care during pregnancy",
+          "explanation": "Prenatal care is the healthcare a woman receives during pregnancy to monitor her health and the baby's development."
+        }
+      ],
+      "difficult": [
+        {
+          "question": "Which contraceptive method provides dual protection against both pregnancy and STIs?",
+          "options": ["Birth control pill", "IUD", "Condom", "Hormonal implant"],
+          "answer": "Condom",
+          "explanation": "Condoms are the only contraceptive method that helps protect against both unintended pregnancy and sexually transmitted infections."
+        },
+        {
+          "question": "What is the Lactational Amenorrhea Method (LAM)?",
+          "options": [
+            "A hormonal injection given after birth",
+            "Using exclusive breastfeeding as a natural contraceptive method",
+            "A surgical method of contraception",
+            "A daily pill taken after childbirth"
+          ],
+          "answer": "Using exclusive breastfeeding as a natural contraceptive method",
+          "explanation": "LAM relies on exclusive breastfeeding to suppress ovulation. It is effective only if the baby is under 6 months, breastfeeding is exclusive, and menstruation has not returned."
+        },
+        {
+          "question": "What percentage effective are condoms when used correctly and consistently?",
+          "options": ["About 60%", "About 75%", "97-98%", "100%"],
+          "answer": "97-98%",
+          "explanation": "When used correctly and consistently, condoms are 97-98% effective at preventing pregnancy."
+        },
+        {
+          "question": "What is the main risk of short birth spacing (less than 18 months)?",
+          "options": [
+            "No risk — short spacing is recommended",
+            "Increased risk of preterm birth, low birth weight, and maternal health problems",
+            "Only financial difficulty",
+            "Increased risk of twins"
+          ],
+          "answer": "Increased risk of preterm birth, low birth weight, and maternal health problems",
+          "explanation": "Short birth intervals increase risks including preterm birth, low birth weight, and maternal anemia."
+        },
+        {
+          "question": "What should a postnatal patient do if their partner is against family planning?",
+          "options": [
+            "Give up on family planning",
+            "Make decisions alone without telling the partner",
+            "Seek couples counseling and explain the health benefits of birth spacing",
+            "Only follow the partner's wishes"
+          ],
+          "answer": "Seek couples counseling and explain the health benefits of birth spacing",
+          "explanation": "A health worker should invite both partners for counseling and explain the medical and family benefits of planned birth spacing."
+        }
+      ],
+      "questions": [
+        {
+          "question": "What is family planning?",
+          "options": ["Planning a vacation", "Making informed decisions about if, when, and how many children to have", "Planning finances", "Arranging events"],
+          "answer": "Making informed decisions about if, when, and how many children to have",
+          "explanation": "Family planning means making informed choices about if, when, and how many children to have."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Responsible Parenthood",
+      "difficulty": "Easy",
+      "difficulty_color": "#27ae60",
+      "story": "Welcome to Chapter 1, Level 2: Responsible Parenthood!\n\nIn this level you will learn what responsible parenthood means — the roles, responsibilities, and values that make a caring and prepared parent.\n\n(Video story coming soon)\n\nChoose your difficulty and take the quiz!",
+      "story_image": "health_center",
+      "beginner": [
+        {
+          "question": "What is responsible parenthood?",
+          "options": [
+            "Having as many children as possible",
+            "Raising children with love, care, and preparation",
+            "Letting children raise themselves",
+            "Only providing financial support"
+          ],
+          "answer": "Raising children with love, care, and preparation",
+          "explanation": "Responsible parenthood means raising children with love, care, and thoughtful preparation for their physical, emotional, and social well-being."
+        },
+        {
+          "question": "What is one key responsibility of parents toward their children?",
+          "options": [
+            "Ignoring children's emotional needs",
+            "Providing love, education, healthcare, and a safe environment",
+            "Leaving all decisions to the child",
+            "Only providing food and shelter"
+          ],
+          "answer": "Providing love, education, healthcare, and a safe environment",
+          "explanation": "Parents are responsible for providing love, education, healthcare, and a safe environment for their children's growth."
+        },
+        {
+          "question": "Why is it important to plan the number of children you have?",
+          "options": [
+            "It is not important",
+            "To ensure you can provide adequately for each child's needs",
+            "To follow government rules only",
+            "To have as few children as possible"
+          ],
+          "answer": "To ensure you can provide adequately for each child's needs",
+          "explanation": "Planning the number of children helps parents ensure they can adequately meet each child's physical, emotional, and educational needs."
+        },
+        {
+          "question": "What role do both parents play in raising a child?",
+          "options": [
+            "Only the mother raises the child",
+            "Only the father provides for the child",
+            "Both parents share responsibilities in raising the child",
+            "Grandparents take over all responsibilities"
+          ],
+          "answer": "Both parents share responsibilities in raising the child",
+          "explanation": "Responsible parenthood involves both parents sharing equally in the care, support, and upbringing of their children."
+        },
+        {
+          "question": "What does it mean to prepare financially for parenthood?",
+          "options": [
+            "Having unlimited money",
+            "Planning ahead to meet the costs of healthcare, education, and daily needs",
+            "Only saving money for birthdays",
+            "Borrowing money from family"
+          ],
+          "answer": "Planning ahead to meet the costs of healthcare, education, and daily needs",
+          "explanation": "Financial preparation for parenthood means planning to cover healthcare, education, food, clothing, and other daily needs of a child."
+        }
+      ],
+      "intermediate": [
+        {
+          "question": "What does emotional readiness for parenthood mean?",
+          "options": [
+            "Being happy all the time",
+            "Being mentally and emotionally prepared to care for and nurture a child",
+            "Only being ready financially",
+            "Having no stress in life"
+          ],
+          "answer": "Being mentally and emotionally prepared to care for and nurture a child",
+          "explanation": "Emotional readiness means being mentally stable and prepared to meet a child's emotional needs and handle the challenges of parenting."
+        },
+        {
+          "question": "Why is open communication important between parents?",
+          "options": [
+            "It is not important",
+            "It helps both parents make consistent and informed decisions about raising their child",
+            "Only one parent needs to communicate",
+            "Communication is only needed during arguments"
+          ],
+          "answer": "It helps both parents make consistent and informed decisions about raising their child",
+          "explanation": "Open communication between parents leads to consistent parenting decisions and a stable, supportive environment for the child."
+        },
+        {
+          "question": "What is the importance of a child's early years?",
+          "options": [
+            "They have no special importance",
+            "Early years are critical for physical, cognitive, and emotional development",
+            "Only physical health matters in early years",
+            "Early years are only about play"
+          ],
+          "answer": "Early years are critical for physical, cognitive, and emotional development",
+          "explanation": "A child's early years (0-6) are the most important for brain development, emotional bonding, and forming the foundation for lifelong learning."
+        },
+        {
+          "question": "What does it mean to be a role model as a parent?",
+          "options": [
+            "Being perfect at all times",
+            "Demonstrating values, behaviors, and attitudes you want your child to develop",
+            "Only telling children what to do",
+            "Letting children figure out values on their own"
+          ],
+          "answer": "Demonstrating values, behaviors, and attitudes you want your child to develop",
+          "explanation": "Being a role model means showing children through your own behavior the values, work ethic, kindness, and responsibility you want them to develop."
+        },
+        {
+          "question": "Why should parents seek medical guidance before and during pregnancy?",
+          "options": [
+            "Only when something goes wrong",
+            "To ensure the health and safety of both the mother and the unborn child",
+            "Medical guidance is unnecessary",
+            "Only for high-risk pregnancies"
+          ],
+          "answer": "To ensure the health and safety of both the mother and the unborn child",
+          "explanation": "Regular medical guidance before and during pregnancy helps monitor the health of both mother and baby and prevents complications."
+        }
+      ],
+      "difficult": [
+        {
+          "question": "What is the connection between family planning and responsible parenthood?",
+          "options": [
+            "They are unrelated topics",
+            "Family planning helps parents have children when they are physically, emotionally, and financially ready",
+            "Family planning only prevents having children",
+            "Responsible parenthood means having many children"
+          ],
+          "answer": "Family planning helps parents have children when they are physically, emotionally, and financially ready",
+          "explanation": "Family planning and responsible parenthood are closely linked — planning ensures children are born when parents are ready to provide fully for them."
+        },
+        {
+          "question": "What are the three key areas of readiness for responsible parenthood?",
+          "options": [
+            "Age, education, and location",
+            "Physical, emotional, and financial readiness",
+            "Career, housing, and social status",
+            "Diet, exercise, and sleep"
+          ],
+          "answer": "Physical, emotional, and financial readiness",
+          "explanation": "Responsible parenthood requires physical health, emotional stability, and financial preparedness to meet all of a child's needs."
+        },
+        {
+          "question": "How does responsible parenthood contribute to a healthier society?",
+          "options": [
+            "It has no effect on society",
+            "Children raised responsibly are more likely to become healthy, productive members of society",
+            "Only wealthy families can practice responsible parenthood",
+            "It only benefits the immediate family"
+          ],
+          "answer": "Children raised responsibly are more likely to become healthy, productive members of society",
+          "explanation": "When children are raised with love, stability, and proper resources, they are more likely to thrive and contribute positively to their communities."
+        },
+        {
+          "question": "Why is it important for adolescents to learn about responsible parenthood?",
+          "options": [
+            "It is not relevant to adolescents",
+            "It helps them understand future responsibilities and make informed decisions now",
+            "Only adults need this knowledge",
+            "It only applies to those planning to have children immediately"
+          ],
+          "answer": "It helps them understand future responsibilities and make informed decisions now",
+          "explanation": "Learning about responsible parenthood helps adolescents understand what parenting involves, so they can make informed decisions about their relationships and future."
+        },
+        {
+          "question": "What should a couple do if they disagree about family planning or the number of children to have?",
+          "options": [
+            "The stronger partner decides",
+            "They should discuss openly, respect each other's views, and seek guidance from a health professional if needed",
+            "They should follow cultural traditions only",
+            "The decision should be made by the extended family"
+          ],
+          "answer": "They should discuss openly, respect each other's views, and seek guidance from a health professional if needed",
+          "explanation": "Couples should communicate openly, respect each other's perspectives, and consult a qualified health professional to make informed joint decisions."
+        }
+      ],
+      "questions": [
+        {
+          "question": "What is responsible parenthood?",
+          "options": ["Having many children", "Raising children with love, care, and preparation", "Only financial support", "Ignoring children's needs"],
+          "answer": "Raising children with love, care, and preparation",
+          "explanation": "Responsible parenthood means raising children with love, care, and thoughtful preparation."
+        }
+      ]
+    }
+  ]
 }

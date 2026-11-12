@@ -1,6 +1,6 @@
 {
   "player_name": "",
-  "unlocked_levels": [],
+  "unlocked_levels": [1],
   "completed_levels": [],
   "high_scores": {},
   "total_xp": 0,
