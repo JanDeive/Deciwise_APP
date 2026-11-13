@@ -1318,6 +1318,24 @@ class StoryScreen(tk.Frame):
                 bg="#8e44ad", fg=C["white"], w=260, fs=13,
                 pad_bg=C["bg"]).pack(pady=(0,4))
 
+        elif quiz_type in ("hangman", "jigsaw", "crossword", "image_hint"):
+            icons = {"hangman": "🎯", "jigsaw": "🧩",
+                     "crossword": "📝", "image_hint": "🖼️"}
+            names = {"hangman": "HANGMAN", "jigsaw": "JIGSAW PUZZLE",
+                     "crossword": "CROSSWORD", "image_hint": "IMAGE HINT"}
+            icon = icons.get(quiz_type, "▶")
+            name = names.get(quiz_type, quiz_type.upper())
+            diff_label = tk.Label(self._diff_frame,
+                                  text=f"{icon}  {name}",
+                                  font=_retro(12, "bold"),
+                                  bg=C["bg"], fg=C["bg"])
+            diff_label.pack(pady=(0,8))
+            self._diff_label = diff_label
+            Btn(self._diff_frame, f"  START {name}  ▶  ",
+                lambda: self._pick_difficulty("Beginner"),
+                bg="#3498db", fg=C["white"], w=280, fs=13,
+                pad_bg=C["bg"]).pack(pady=(0,4))
+
         else:
             diff_label = tk.Label(self._diff_frame,
                                   text="── CHOOSE DIFFICULTY ──",
@@ -2352,35 +2370,299 @@ class MythFactScreen(tk.Frame):
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Hangman  (Coming Soon placeholder)
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Hangman
+# ══════════════════════════════════════════════════════════════════════════════
 class HangmanScreen(tk.Frame):
+    _MAX_WRONG = 6   # stages 0-6 (6 = fully hanged)
+    _ALPHABET  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
     def __init__(self, parent, app):
         super().__init__(parent, bg=C["bg"])
         self.app = app
+
+        # Load word list
+        self._words   = app.current_level.get("hangman", [])
+        self._total   = len(self._words)
+        self._widx    = app.quiz_index   # current word index
+        self._wrong   = 0
+        self._guessed = set()
+        self._won     = False
+
         self._build()
 
+    # ── Build UI ──────────────────────────────────────────────────────────────
     def _build(self):
-        lvl = self.app.current_level
-        tk.Frame(self, bg="#3498db", height=3).pack(fill="x")
-        tk.Label(self, text="🎯", font=("Segoe UI Emoji", 64),
-                 bg=C["bg"]).pack(pady=(50, 8))
-        tk.Label(self, text="HANGMAN",
-                 font=_retro(28, "bold"),
-                 bg=C["bg"], fg="#3498db").pack()
-        tk.Label(self, text=f"{lvl['title']}",
-                 font=_retro(12),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
-        tk.Frame(self, bg="#3498db", height=2, width=200).pack(pady=12)
-        tk.Label(self, text="🚧  Coming Soon  🚧",
-                 font=_retro(14, "bold"),
-                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
-        tk.Label(self, text="This mini-game is under construction.\nCheck back soon!",
+        entry = self._words[self._widx]
+        self._word  = entry["word"].upper()
+        self._hint  = entry["hint"]
+        self._wrong = 0
+        self._guessed = set()
+        self._won   = False
+
+        # Clear any previous widgets
+        for w in self.winfo_children():
+            w.destroy()
+
+        # ── Top bar ───────────────────────────────────────────────────────
+        top = tk.Frame(self, bg="#0a1628")
+        top.pack(fill="x")
+        tk.Frame(top, bg="#3498db", height=3).pack(fill="x")
+        bar = tk.Frame(top, bg="#0a1628", pady=7)
+        bar.pack(fill="x")
+        tk.Frame(top, bg="#1a3a5c", height=1).pack(fill="x")
+
+        tk.Label(bar, text="🎯  HANGMAN",
+                 font=_retro(13, "bold"),
+                 bg="#0a1628", fg="#3498db").pack(side="left", padx=10)
+        tk.Label(bar, text=f"Word {self._widx+1} / {self._total}",
                  font=_retro(10),
-                 bg=C["bg"], fg=C["grey"],
-                 justify="center").pack(pady=4)
-        Btn(self, "🏠  Back to Levels",
+                 bg="#0a1628", fg="#aaaaaa").pack(side="left", padx=6)
+        tk.Label(bar, text=f"⚡ {self.app.total_xp_session}",
+                 font=_retro(10, "bold"),
+                 bg="#0a1628", fg=C["xp"]).pack(side="left", padx=4)
+        Btn(bar, "🏠",
             lambda: self.app.show("level_select"),
-            bg=C["card2"], fg=C["white"], w=240, fs=12,
-            pad_bg=C["bg"]).pack(pady=(30, 0))
+            bg="#1a3a5c", fg="#ffffff", w=46, fs=10,
+            pad_bg="#0a1628").pack(side="right", padx=8)
+
+        # Progress bar
+        pb_bg = tk.Frame(self, bg="#1a2a3a", height=5)
+        pb_bg.pack(fill="x")
+        tk.Frame(pb_bg, bg="#3498db", height=5,
+                 width=int(WINDOW_W * (self._widx + 1) / self._total)
+                 ).place(x=0, y=0)
+
+        # ── Gallows canvas ────────────────────────────────────────────────
+        self._gal_cv = tk.Canvas(self, width=WINDOW_W, height=200,
+                                  bg="#0d1b2a", highlightthickness=0)
+        self._gal_cv.pack(fill="x")
+        self._draw_gallows()
+
+        # ── Hint card ─────────────────────────────────────────────────────
+        hint_f = tk.Frame(self, bg="#0f2035", padx=16, pady=8)
+        hint_f.pack(fill="x")
+        tk.Label(hint_f, text="💡  Hint:",
+                 font=_retro(9, "bold"),
+                 bg="#0f2035", fg="#3498db").pack(anchor="w")
+        tk.Label(hint_f, text=self._hint,
+                 font=_retro(10),
+                 bg="#0f2035", fg="#ccddee",
+                 wraplength=380, justify="left").pack(anchor="w")
+
+        # ── Word blanks ───────────────────────────────────────────────────
+        blanks_f = tk.Frame(self, bg=C["bg"], pady=12)
+        blanks_f.pack()
+        self._letter_labels = {}
+        for ch in self._word:
+            col_f = tk.Frame(blanks_f, bg=C["bg"])
+            col_f.pack(side="left", padx=3)
+            lbl = tk.Label(col_f, text=" ",
+                            font=_retro(18, "bold"),
+                            bg=C["bg"], fg="#3498db",
+                            width=2, anchor="center")
+            lbl.pack()
+            tk.Frame(col_f, bg="#3498db", height=2, width=22).pack()
+            self._letter_labels[id(lbl)] = (lbl, ch)
+
+        # ── Wrong guesses display ─────────────────────────────────────────
+        wrong_f = tk.Frame(self, bg=C["bg"])
+        wrong_f.pack()
+        self._wrong_lbl = tk.Label(wrong_f,
+                                    text=f"Wrong guesses: 0 / {self._MAX_WRONG}",
+                                    font=_retro(9),
+                                    bg=C["bg"], fg=C["grey"])
+        self._wrong_lbl.pack()
+        self._wrong_letters_lbl = tk.Label(wrong_f, text="",
+                                            font=_retro(9, "bold"),
+                                            bg=C["bg"], fg=C["wrong"])
+        self._wrong_letters_lbl.pack()
+
+        # ── Keyboard ──────────────────────────────────────────────────────
+        kb_f = tk.Frame(self, bg=C["bg"])
+        kb_f.pack(pady=(8, 4))
+        self._key_btns = {}
+        rows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
+        for row_str in rows:
+            row_f = tk.Frame(kb_f, bg=C["bg"])
+            row_f.pack(pady=2)
+            for letter in row_str:
+                cv = tk.Canvas(row_f, width=34, height=34,
+                                bg=C["bg"], highlightthickness=0)
+                cv.pack(side="left", padx=1)
+                self._draw_key(cv, letter, active=True)
+                cv.bind("<Button-1>", lambda e, l=letter, c=cv: self._guess(l, c))
+                self._key_btns[letter] = cv
+
+        # ── Status label (hidden until end) ───────────────────────────────
+        self._status_f = tk.Frame(self, bg=C["bg"])
+        self._status_f.pack()
+
+    # ── Draw gallows ──────────────────────────────────────────────────────────
+    def _draw_gallows(self):
+        cv  = self._gal_cv
+        cv.delete("all")
+        w, h = WINDOW_W, 200
+        col = "#4a8abf"   # steel blue structure
+
+        # Base
+        cv.create_line(w//2-80, h-10, w//2+80, h-10, fill=col, width=4)
+        # Pole
+        cv.create_line(w//2-40, h-10, w//2-40, 10,  fill=col, width=4)
+        # Top bar
+        cv.create_line(w//2-40, 10,   w//2+40, 10,  fill=col, width=4)
+        # Rope
+        cv.create_line(w//2+40, 10,   w//2+40, 36,  fill="#8899aa", width=2)
+
+        n = self._wrong
+        cx = w//2+40
+
+        # Stage 1 — head
+        if n >= 1:
+            cv.create_oval(cx-16, 36, cx+16, 68, outline="#e0e0e0", width=2)
+        # Stage 2 — body
+        if n >= 2:
+            cv.create_line(cx, 68, cx, 128, fill="#e0e0e0", width=2)
+        # Stage 3 — left arm
+        if n >= 3:
+            cv.create_line(cx, 82, cx-28, 108, fill="#e0e0e0", width=2)
+        # Stage 4 — right arm
+        if n >= 4:
+            cv.create_line(cx, 82, cx+28, 108, fill="#e0e0e0", width=2)
+        # Stage 5 — left leg
+        if n >= 5:
+            cv.create_line(cx, 128, cx-28, 165, fill="#e0e0e0", width=2)
+        # Stage 6 — right leg
+        if n >= 6:
+            cv.create_line(cx, 128, cx+28, 165, fill="#e0e0e0", width=2)
+
+        # Wrong count indicator dots
+        for i in range(self._MAX_WRONG):
+            fill = C["wrong"] if i < n else "#1a2a3a"
+            cv.create_oval(w//2-80 + i*18, h-30,
+                            w//2-62 + i*18, h-12,
+                            fill=fill, outline="")
+
+    # ── Draw keyboard key ─────────────────────────────────────────────────────
+    def _draw_key(self, cv, letter, active=True, correct=False, wrong=False):
+        cv.delete("all")
+        if correct:
+            bg_col, fg_col = C["correct"], C["bg"]
+        elif wrong:
+            bg_col, fg_col = "#333333", "#555555"
+        elif active:
+            bg_col, fg_col = "#1a3a5c", "#ffffff"
+        else:
+            bg_col, fg_col = "#0d1b2a", "#334455"
+
+        col_top = _lerp(bg_col, "#ffffff", 0.18)
+        col_bot = _darken(bg_col, 0.70)
+        _grad(cv, 2, 2, 32, 32, col_top, col_bot, steps=12)
+        cv.create_rectangle(2, 2, 32, 32, outline=_lerp(bg_col,"#ffffff",0.2), fill="")
+        cv.create_text(17, 17, text=letter,
+                        font=_retro(10, "bold"), fill=fg_col)
+
+    # ── Guess a letter ────────────────────────────────────────────────────────
+    def _guess(self, letter, cv):
+        if letter in self._guessed or self._won:
+            return
+        self._guessed.add(letter)
+        SFX.play("click")
+
+        if letter in self._word:
+            # Correct — reveal letter on blanks
+            SFX.play("correct")
+            self._draw_key(cv, letter, correct=True)
+            for lbl_id, (lbl, ch) in self._letter_labels.items():
+                if ch == letter:
+                    lbl.configure(text=letter, fg="#3498db")
+            # Check win
+            if all(ch in self._guessed for ch in self._word):
+                self._on_win()
+        else:
+            # Wrong
+            SFX.play("wrong")
+            self._wrong += 1
+            self._draw_key(cv, letter, wrong=True)
+            self._draw_gallows()
+            self._wrong_lbl.configure(
+                text=f"Wrong guesses: {self._wrong} / {self._MAX_WRONG}")
+            wrong_so_far = " ".join(sorted(
+                l for l in self._guessed if l not in self._word))
+            self._wrong_letters_lbl.configure(text=wrong_so_far)
+            if self._wrong >= self._MAX_WRONG:
+                self._on_lose()
+
+    # ── Win ───────────────────────────────────────────────────────────────────
+    def _on_win(self):
+        self._won = True
+        xp = 15 - self._wrong * 2   # more XP for fewer wrong guesses
+        xp = max(xp, 2)
+        self.app.total_xp_session += xp
+        self.app.quiz_score += 1
+        self.app.quiz_answers.append({
+            "question": f"Hangman: {self._word}",
+            "chosen": self._word, "correct": self._word,
+            "is_right": True, "xp": xp,
+            "explanation": self._hint
+        })
+
+        for w in self._status_f.winfo_children():
+            w.destroy()
+        tk.Label(self._status_f, text="✅  CORRECT!",
+                 font=_retro(16, "bold"),
+                 bg=C["bg"], fg=C["correct"]).pack(pady=(6, 2))
+        tk.Label(self._status_f, text=f"⚡ +{xp} XP",
+                 font=_retro(11, "bold"),
+                 bg=C["bg"], fg=C["xp"]).pack()
+
+        lbl = "NEXT WORD  ➜" if self._widx + 1 < self._total else "SEE RESULTS  ✔"
+        Btn(self._status_f, lbl, self._next,
+            bg="#3498db", fg="#ffffff", w=240, fs=13,
+            pad_bg=C["bg"]).pack(pady=(10, 4))
+
+    # ── Lose ──────────────────────────────────────────────────────────────────
+    def _on_lose(self):
+        self._won = False
+        self.app.lives -= 1
+        self.app.quiz_answers.append({
+            "question": f"Hangman: {self._word}",
+            "chosen": "", "correct": self._word,
+            "is_right": False, "xp": 0,
+            "explanation": self._hint
+        })
+
+        # Reveal full word
+        for lbl_id, (lbl, ch) in self._letter_labels.items():
+            if ch not in self._guessed:
+                lbl.configure(text=ch, fg=C["wrong"])
+
+        for w in self._status_f.winfo_children():
+            w.destroy()
+        tk.Label(self._status_f, text=f"❌  The word was: {self._word}",
+                 font=_retro(13, "bold"),
+                 bg=C["bg"], fg=C["wrong"]).pack(pady=(6, 2))
+        tk.Label(self._status_f, text=f"❤ {self.app.lives}/{MAX_LIVES} lives left",
+                 font=_retro(10),
+                 bg=C["bg"], fg=C["lives"]).pack()
+
+        if self.app.lives <= 0:
+            self.after(1500, lambda: self.app.show("gameover"))
+        else:
+            lbl = "NEXT WORD  ➜" if self._widx + 1 < self._total else "SEE RESULTS  ✔"
+            Btn(self._status_f, lbl, self._next,
+                bg=C["card2"], fg=C["white"], w=240, fs=13,
+                pad_bg=C["bg"]).pack(pady=(10, 4))
+
+    # ── Next word ─────────────────────────────────────────────────────────────
+    def _next(self):
+        SFX.play("click")
+        self.app.quiz_index += 1
+        if self.app.quiz_index >= self._total:
+            self.app.show("result")
+        else:
+            self._widx += 1
+            self._build()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -2576,6 +2858,8 @@ class ResultScreen(tk.Frame):
             total = len(lvl.get("kahoot", lvl.get("questions", [1])))
         elif qt == "myth_fact":
             total = len(lvl.get("myth_fact", lvl.get("questions", [1])))
+        elif qt == "hangman":
+            total = len(lvl.get("hangman", lvl.get("questions", [1])))
         else:
             diff  = app.chosen_difficulty.lower()
             total = len(lvl.get(diff, lvl.get("questions", [1])))
@@ -2654,6 +2938,8 @@ class ResultScreen(tk.Frame):
             total = len(lvl.get("kahoot", lvl.get("questions", [1])))
         elif qt == "myth_fact":
             total = len(lvl.get("myth_fact", lvl.get("questions", [1])))
+        elif qt == "hangman":
+            total = len(lvl.get("hangman", lvl.get("questions", [1])))
         else:
             diff  = app.chosen_difficulty.lower()
             total = len(lvl.get(diff, lvl.get("questions", [1])))
