@@ -2668,35 +2668,239 @@ class HangmanScreen(tk.Frame):
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Jigsaw  (Coming Soon placeholder)
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Jigsaw Puzzle  (birthpill.webp image, 4×3 grid, click-to-place)
+# ══════════════════════════════════════════════════════════════════════════════
 class JigsawScreen(tk.Frame):
+    _COLS   = 4
+    _ROWS   = 3
+    _IMG_W  = 400   # display width of the puzzle area
+    _IMG_H  = 225   # display height (keeps ~16:9 ratio)
+    _PAD    = 2     # gap between pieces
+
     def __init__(self, parent, app):
         super().__init__(parent, bg=C["bg"])
         self.app = app
+        self._selected = None      # index of currently selected piece
+        self._placed   = {}        # slot_idx -> piece_idx (correct when piece_idx == slot_idx)
+        self._solved   = False
+        self._photos   = []        # keep refs to avoid GC
+        self._piece_btns = {}      # piece_idx -> canvas widget (tray)
+        self._slot_cvs   = {}      # slot_idx  -> canvas widget (board)
         self._build()
 
+    # ── Build ─────────────────────────────────────────────────────────────────
     def _build(self):
+        import random as _r
+        from PIL import Image, ImageTk, ImageDraw
+
         lvl = self.app.current_level
-        tk.Frame(self, bg="#e67e22", height=3).pack(fill="x")
-        tk.Label(self, text="🧩", font=("Segoe UI Emoji", 64),
-                 bg=C["bg"]).pack(pady=(50, 8))
-        tk.Label(self, text="JIGSAW PUZZLE",
-                 font=_retro(24, "bold"),
-                 bg=C["bg"], fg="#e67e22").pack()
-        tk.Label(self, text=f"{lvl['title']}",
-                 font=_retro(12),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
-        tk.Frame(self, bg="#e67e22", height=2, width=200).pack(pady=12)
-        tk.Label(self, text="🚧  Coming Soon  🚧",
-                 font=_retro(14, "bold"),
-                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
-        tk.Label(self, text="This mini-game is under construction.\nCheck back soon!",
-                 font=_retro(10),
-                 bg=C["bg"], fg=C["grey"],
-                 justify="center").pack(pady=4)
-        Btn(self, "🏠  Back to Levels",
+
+        # ── Top bar ───────────────────────────────────────────────────────
+        top = tk.Frame(self, bg="#1a0f00")
+        top.pack(fill="x")
+        tk.Frame(top, bg="#e67e22", height=3).pack(fill="x")
+        bar = tk.Frame(top, bg="#1a0f00", pady=7)
+        bar.pack(fill="x")
+        tk.Frame(top, bg="#6e3a00", height=1).pack(fill="x")
+        tk.Label(bar, text="🧩  JIGSAW PUZZLE",
+                 font=_retro(13, "bold"),
+                 bg="#1a0f00", fg="#e67e22").pack(side="left", padx=10)
+        tk.Label(bar, text=lvl["title"],
+                 font=_retro(9),
+                 bg="#1a0f00", fg="#aaaaaa").pack(side="left", padx=4)
+        Btn(bar, "🏠",
             lambda: self.app.show("level_select"),
-            bg=C["card2"], fg=C["white"], w=240, fs=12,
-            pad_bg=C["bg"]).pack(pady=(30, 0))
+            bg="#6e3a00", fg="#ffffff", w=46, fs=10,
+            pad_bg="#1a0f00").pack(side="right", padx=8)
+
+        # ── Load & slice image ─────────────────────────────────────────────
+        img_path = os.path.join(os.path.dirname(__file__), "images", "birthpill.webp")
+        img = Image.open(img_path).convert("RGB")
+        img = img.resize((self._IMG_W, self._IMG_H), Image.LANCZOS)
+
+        pw = self._IMG_W  // self._COLS   # piece width
+        ph = self._IMG_H  // self._ROWS   # piece height
+
+        self._pw = pw
+        self._ph = ph
+
+        pieces_orig = []   # PhotoImage for each piece (correct order)
+        for r in range(self._ROWS):
+            for c in range(self._COLS):
+                box   = (c*pw, r*ph, (c+1)*pw, (r+1)*ph)
+                piece = img.crop(box)
+                # Add a subtle border so pieces are distinguishable
+                draw  = ImageDraw.Draw(piece)
+                draw.rectangle([0,0,pw-1,ph-1], outline="#e67e22", width=2)
+                photo = ImageTk.PhotoImage(piece)
+                self._photos.append(photo)
+                pieces_orig.append(photo)
+
+        # Shuffle piece order for the tray
+        self._n       = self._COLS * self._ROWS
+        self._order   = list(range(self._n))   # piece_idx → original slot
+        _r.shuffle(self._order)
+
+        # ── Puzzle board (target slots) ───────────────────────────────────
+        board_lbl = tk.Label(self, text="🎯  Place pieces here:",
+                              font=_retro(9, "bold"),
+                              bg=C["bg"], fg="#e67e22")
+        board_lbl.pack(pady=(8, 2))
+
+        board_f = tk.Frame(self, bg="#0a0a0a")
+        board_f.pack()
+
+        for slot_idx in range(self._n):
+            r, c = divmod(slot_idx, self._COLS)
+            cv = tk.Canvas(board_f, width=pw, height=ph,
+                            bg="#1a1a1a", highlightthickness=1,
+                            highlightbackground="#333333")
+            cv.grid(row=r, column=c, padx=1, pady=1)
+            # Draw slot number hint
+            cv.create_text(pw//2, ph//2, text=str(slot_idx+1),
+                            font=_retro(8), fill="#333333")
+            cv.bind("<Button-1>", lambda e, s=slot_idx: self._place(s))
+            self._slot_cvs[slot_idx] = cv
+
+        # ── Piece tray (shuffled pieces to pick from) ─────────────────────
+        tray_lbl = tk.Label(self, text="📦  Pick a piece:",
+                             font=_retro(9, "bold"),
+                             bg=C["bg"], fg=C["grey"])
+        tray_lbl.pack(pady=(8, 2))
+
+        tray_f = tk.Frame(self, bg=C["bg"])
+        tray_f.pack()
+
+        tray_cols = self._COLS
+        for tray_i, piece_idx in enumerate(self._order):
+            r, c = divmod(tray_i, tray_cols)
+            cv = tk.Canvas(tray_f, width=pw, height=ph,
+                            bg=C["card"], highlightthickness=1,
+                            highlightbackground=C["accent3"])
+            cv.grid(row=r, column=c, padx=1, pady=1)
+            cv.create_image(0, 0, anchor="nw",
+                             image=pieces_orig[piece_idx])
+            cv.bind("<Button-1>", lambda e, pi=piece_idx, ti=tray_i:
+                    self._select(pi, ti))
+            self._piece_btns[piece_idx] = cv
+
+        self._pieces_orig = pieces_orig
+
+        # Status bar
+        self._status_lbl = tk.Label(self, text="Click a piece, then click its slot on the board.",
+                                     font=_retro(9),
+                                     bg=C["bg"], fg=C["grey"],
+                                     wraplength=380, justify="center")
+        self._status_lbl.pack(pady=(6, 2))
+
+        self._done_f = tk.Frame(self, bg=C["bg"])
+        self._done_f.pack()
+
+    # ── Select a piece from the tray ──────────────────────────────────────────
+    def _select(self, piece_idx, tray_i):
+        if self._solved:
+            return
+        # Deselect previous
+        if self._selected is not None:
+            prev_cv = self._piece_btns.get(self._selected)
+            if prev_cv:
+                prev_cv.configure(highlightbackground=C["accent3"],
+                                   highlightthickness=1)
+        self._selected = piece_idx
+        # Highlight selected
+        cv = self._piece_btns.get(piece_idx)
+        if cv:
+            cv.configure(highlightbackground="#e67e22",
+                          highlightthickness=3)
+        SFX.play("click")
+        self._status_lbl.configure(
+            text=f"Piece selected! Now click its slot on the board.",
+            fg="#e67e22")
+
+    # ── Place selected piece into a slot ──────────────────────────────────────
+    def _place(self, slot_idx):
+        if self._solved or self._selected is None:
+            return
+
+        # Remove any existing piece from this slot
+        if slot_idx in self._placed:
+            old_piece = self._placed[slot_idx]
+            # Restore old piece to tray
+            old_cv = self._piece_btns.get(old_piece)
+            if old_cv:
+                old_cv.delete("all")
+                old_cv.create_image(0, 0, anchor="nw",
+                                     image=self._pieces_orig[old_piece])
+                old_cv.configure(highlightbackground=C["accent3"],
+                                  highlightthickness=1)
+
+        # Place piece on board slot
+        piece_idx = self._selected
+        self._placed[slot_idx] = piece_idx
+
+        slot_cv = self._slot_cvs[slot_idx]
+        slot_cv.delete("all")
+        slot_cv.create_image(0, 0, anchor="nw",
+                              image=self._pieces_orig[piece_idx])
+
+        # Mark as correct / wrong
+        if piece_idx == slot_idx:
+            slot_cv.configure(highlightbackground=C["correct"], highlightthickness=2)
+            SFX.play("correct")
+        else:
+            slot_cv.configure(highlightbackground=C["wrong"], highlightthickness=2)
+            SFX.play("wrong")
+
+        # Hide piece from tray
+        tray_cv = self._piece_btns.get(piece_idx)
+        if tray_cv:
+            tray_cv.delete("all")
+            tray_cv.configure(bg=C["locked"],
+                               highlightbackground=C["locked"])
+
+        # Deselect
+        self._selected = None
+
+        # Check completion
+        correct_count = sum(1 for s, p in self._placed.items() if s == p)
+        total_placed  = len(self._placed)
+        self._status_lbl.configure(
+            text=f"✅ {correct_count} / {self._n} correct  |  {total_placed} placed")
+
+        if correct_count == self._n:
+            self._on_complete()
+
+    # ── All pieces correctly placed ───────────────────────────────────────────
+    def _on_complete(self):
+        self._solved = True
+        SFX.play("win")
+        self.app.quiz_score += 1
+        xp = 20
+        self.app.total_xp_session += xp
+        self.app.quiz_answers.append({
+            "question": "Jigsaw: Birth Control Pills",
+            "chosen":   "Completed", "correct": "Completed",
+            "is_right": True, "xp": xp,
+            "explanation": "You successfully assembled the Birth Control Pills jigsaw!"
+        })
+
+        for w in self._done_f.winfo_children():
+            w.destroy()
+        tk.Label(self._done_f, text="🎉  PUZZLE COMPLETE!",
+                 font=_retro(16, "bold"),
+                 bg=C["bg"], fg="#e67e22").pack(pady=(8, 2))
+        tk.Label(self._done_f, text=f"⚡ +{xp} XP",
+                 font=_retro(12, "bold"),
+                 bg=C["bg"], fg=C["xp"]).pack()
+        Btn(self._done_f, "SEE RESULTS  ✔", self._finish,
+            bg="#e67e22", fg="#ffffff", w=240, fs=13,
+            pad_bg=C["bg"]).pack(pady=(10, 4))
+
+    def _finish(self):
+        SFX.play("click")
+        self.app.quiz_index += 1
+        self.app.show("result")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -2860,6 +3064,8 @@ class ResultScreen(tk.Frame):
             total = len(lvl.get("myth_fact", lvl.get("questions", [1])))
         elif qt == "hangman":
             total = len(lvl.get("hangman", lvl.get("questions", [1])))
+        elif qt in ("jigsaw", "crossword", "image_hint"):
+            total = 1   # single-completion mini-games count as 1
         else:
             diff  = app.chosen_difficulty.lower()
             total = len(lvl.get(diff, lvl.get("questions", [1])))
@@ -2940,6 +3146,8 @@ class ResultScreen(tk.Frame):
             total = len(lvl.get("myth_fact", lvl.get("questions", [1])))
         elif qt == "hangman":
             total = len(lvl.get("hangman", lvl.get("questions", [1])))
+        elif qt in ("jigsaw", "crossword", "image_hint"):
+            total = 1   # single-completion mini-games count as 1
         else:
             diff  = app.chosen_difficulty.lower()
             total = len(lvl.get(diff, lvl.get("questions", [1])))
