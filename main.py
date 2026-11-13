@@ -135,7 +135,11 @@ BADGES = {
     "deciwise":     {"icon": "🎓", "name": "DeciWise Master", "desc": "Complete all chapters"},
 }
 
-ACT_MAP = {1: ("Chapter 1", "Family Planning", "#2ecc71", [1, 2])}
+ACT_MAP = {
+    1: ("Chapter 1", "Family Planning",       "#2ecc71", [1, 2]),
+    2: ("Chapter 2", "Contraceptives",         "#3498db", [3, 4]),
+    3: ("Chapter 3", "Fertility Awareness",    "#9b59b6", [5, 6]),
+}
 
 # ── JSON helpers ──────────────────────────────────────────────────────────────
 def load_json(path):
@@ -345,6 +349,10 @@ class App(tk.Tk):
             "quiz":         QuizScreen,
             "kahoot":       KahootScreen,
             "myth_fact":    MythFactScreen,
+            "hangman":      HangmanScreen,
+            "jigsaw":       JigsawScreen,
+            "crossword":    CrosswordScreen,
+            "image_hint":   ImageHintScreen,
             "result":       ResultScreen,
             "gameover":     GameOverScreen,
             "leaderboard":  LeaderboardScreen,
@@ -365,6 +373,14 @@ class App(tk.Tk):
             self.show("kahoot")
         elif qt == "myth_fact":
             self.show("myth_fact")
+        elif qt == "hangman":
+            self.show("hangman")
+        elif qt == "jigsaw":
+            self.show("jigsaw")
+        elif qt == "crossword":
+            self.show("crossword")
+        elif qt == "image_hint":
+            self.show("image_hint")
         else:
             self.show("quiz")
 
@@ -853,8 +869,8 @@ class LevelSelectScreen(tk.Frame):
                  bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
 
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1,3))
-        tk.Label(inner, text=f"⭐  {total_stars} / 6  stars collected",
+                          for i in range(1,7))
+        tk.Label(inner, text=f"⭐  {total_stars} / 18  stars collected",
                  font=_retro(9),
                  bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
 
@@ -2334,6 +2350,142 @@ class MythFactScreen(tk.Frame):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Hangman  (Coming Soon placeholder)
+# ══════════════════════════════════════════════════════════════════════════════
+class HangmanScreen(tk.Frame):
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app = app
+        self._build()
+
+    def _build(self):
+        lvl = self.app.current_level
+        tk.Frame(self, bg="#3498db", height=3).pack(fill="x")
+        tk.Label(self, text="🎯", font=("Segoe UI Emoji", 64),
+                 bg=C["bg"]).pack(pady=(50, 8))
+        tk.Label(self, text="HANGMAN",
+                 font=_retro(28, "bold"),
+                 bg=C["bg"], fg="#3498db").pack()
+        tk.Label(self, text=f"{lvl['title']}",
+                 font=_retro(12),
+                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
+        tk.Frame(self, bg="#3498db", height=2, width=200).pack(pady=12)
+        tk.Label(self, text="🚧  Coming Soon  🚧",
+                 font=_retro(14, "bold"),
+                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
+        tk.Label(self, text="This mini-game is under construction.\nCheck back soon!",
+                 font=_retro(10),
+                 bg=C["bg"], fg=C["grey"],
+                 justify="center").pack(pady=4)
+        Btn(self, "🏠  Back to Levels",
+            lambda: self.app.show("level_select"),
+            bg=C["card2"], fg=C["white"], w=240, fs=12,
+            pad_bg=C["bg"]).pack(pady=(30, 0))
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Jigsaw  (Coming Soon placeholder)
+# ══════════════════════════════════════════════════════════════════════════════
+class JigsawScreen(tk.Frame):
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app = app
+        self._build()
+
+    def _build(self):
+        lvl = self.app.current_level
+        tk.Frame(self, bg="#e67e22", height=3).pack(fill="x")
+        tk.Label(self, text="🧩", font=("Segoe UI Emoji", 64),
+                 bg=C["bg"]).pack(pady=(50, 8))
+        tk.Label(self, text="JIGSAW PUZZLE",
+                 font=_retro(24, "bold"),
+                 bg=C["bg"], fg="#e67e22").pack()
+        tk.Label(self, text=f"{lvl['title']}",
+                 font=_retro(12),
+                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
+        tk.Frame(self, bg="#e67e22", height=2, width=200).pack(pady=12)
+        tk.Label(self, text="🚧  Coming Soon  🚧",
+                 font=_retro(14, "bold"),
+                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
+        tk.Label(self, text="This mini-game is under construction.\nCheck back soon!",
+                 font=_retro(10),
+                 bg=C["bg"], fg=C["grey"],
+                 justify="center").pack(pady=4)
+        Btn(self, "🏠  Back to Levels",
+            lambda: self.app.show("level_select"),
+            bg=C["card2"], fg=C["white"], w=240, fs=12,
+            pad_bg=C["bg"]).pack(pady=(30, 0))
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Crossword  (Coming Soon placeholder)
+# ══════════════════════════════════════════════════════════════════════════════
+class CrosswordScreen(tk.Frame):
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app = app
+        self._build()
+
+    def _build(self):
+        lvl = self.app.current_level
+        tk.Frame(self, bg="#9b59b6", height=3).pack(fill="x")
+        tk.Label(self, text="📝", font=("Segoe UI Emoji", 64),
+                 bg=C["bg"]).pack(pady=(50, 8))
+        tk.Label(self, text="CROSSWORD PUZZLE",
+                 font=_retro(20, "bold"),
+                 bg=C["bg"], fg="#9b59b6").pack()
+        tk.Label(self, text=f"{lvl['title']}",
+                 font=_retro(12),
+                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
+        tk.Frame(self, bg="#9b59b6", height=2, width=200).pack(pady=12)
+        tk.Label(self, text="🚧  Coming Soon  🚧",
+                 font=_retro(14, "bold"),
+                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
+        tk.Label(self, text="This mini-game is under construction.\nCheck back soon!",
+                 font=_retro(10),
+                 bg=C["bg"], fg=C["grey"],
+                 justify="center").pack(pady=4)
+        Btn(self, "🏠  Back to Levels",
+            lambda: self.app.show("level_select"),
+            bg=C["card2"], fg=C["white"], w=240, fs=12,
+            pad_bg=C["bg"]).pack(pady=(30, 0))
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Image Hint  (Coming Soon placeholder — not built yet)
+# ══════════════════════════════════════════════════════════════════════════════
+class ImageHintScreen(tk.Frame):
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app = app
+        self._build()
+
+    def _build(self):
+        lvl = self.app.current_level
+        tk.Frame(self, bg="#e74c3c", height=3).pack(fill="x")
+        tk.Label(self, text="🖼️", font=("Segoe UI Emoji", 64),
+                 bg=C["bg"]).pack(pady=(50, 8))
+        tk.Label(self, text="IMAGE WITH HINT",
+                 font=_retro(20, "bold"),
+                 bg=C["bg"], fg="#e74c3c").pack()
+        tk.Label(self, text=f"{lvl['title']}",
+                 font=_retro(12),
+                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
+        tk.Frame(self, bg="#e74c3c", height=2, width=200).pack(pady=12)
+        tk.Label(self, text="🚧  Coming Soon  🚧",
+                 font=_retro(14, "bold"),
+                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
+        tk.Label(self, text="This mini-game is under construction.\nImages and hints will be added soon!",
+                 font=_retro(10),
+                 bg=C["bg"], fg=C["grey"],
+                 justify="center").pack(pady=4)
+        Btn(self, "🏠  Back to Levels",
+            lambda: self.app.show("level_select"),
+            bg=C["card2"], fg=C["white"], w=240, fs=12,
+            pad_bg=C["bg"]).pack(pady=(30, 0))
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Game Over
 # ══════════════════════════════════════════════════════════════════════════════
 class GameOverScreen(tk.Frame):
@@ -2459,9 +2611,9 @@ class ResultScreen(tk.Frame):
         checks = [
             ("first_step",   lid == 1),
             ("beginner",     1 in completed),
-            ("intermediate", all(x in completed for x in [1, 2])),
-            ("expert",       all(x in completed for x in [1, 2])),
-            ("deciwise",     all(x in completed for x in range(1, 3))),
+            ("intermediate", all(x in completed for x in [1,2,3,4])),
+            ("expert",       all(x in completed for x in [1,2,3,4,5,6])),
+            ("deciwise",     all(x in completed for x in range(1, 7))),
             ("perfect_run",  pct == 1.0),
             ("speedster",    app.fast_answers >= 5),
         ]

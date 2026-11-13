@@ -444,6 +444,91 @@
           "explanation": "Responsible parenthood means raising children with love, care, and thoughtful preparation."
         }
       ]
+    },
+    {
+      "id": 3,
+      "title": "Condom",
+      "difficulty": "Easy",
+      "difficulty_color": "#3498db",
+      "quiz_type": "hangman",
+      "story": "Welcome to Chapter 2, Level 1: Condom!\n\nIn this level you will play Hangman to test your knowledge about condoms — how they work, how to use them, and why they matter.\n\n(Video story coming soon)\n\nGet ready for Hangman!",
+      "story_image": "health_center",
+      "hangman": [
+        {"word": "CONDOM",        "hint": "A barrier method that helps prevent pregnancy and STIs"},
+        {"word": "LATEX",         "hint": "The most common material used to make external condoms"},
+        {"word": "LUBRICATION",   "hint": "This helps reduce friction — use water-based with latex condoms"},
+        {"word": "EXPIRATION",    "hint": "Always check this date before using a condom"},
+        {"word": "BARRIER",       "hint": "A condom acts as this — blocking sperm from reaching an egg"},
+        {"word": "SPERM",         "hint": "The condom prevents this from reaching the egg"},
+        {"word": "PROTECTION",    "hint": "What a condom provides against pregnancy and STIs"},
+        {"word": "REUSE",         "hint": "You should NEVER do this with a condom"},
+        {"word": "HIV",           "hint": "A sexually transmitted virus that condoms help reduce the risk of"},
+        {"word": "OVULATION",     "hint": "The release of an egg — pregnancy risk is highest around this time"}
+      ],
+      "questions": [
+        {"question": "Placeholder", "options": ["A"], "answer": "A", "explanation": "Hangman level."}
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Birth Control Pills",
+      "difficulty": "Easy",
+      "difficulty_color": "#e67e22",
+      "quiz_type": "jigsaw",
+      "story": "Welcome to Chapter 2, Level 2: Birth Control Pills!\n\nIn this level you will play a Jigsaw Puzzle to explore birth control pills — how they work and how they help prevent pregnancy.\n\n(Video story coming soon)\n\nGet ready for Jigsaw!",
+      "story_image": "seminar",
+      "jigsaw": [
+        {"label": "Combined Pill",          "description": "Contains estrogen and progestin. Prevents ovulation."},
+        {"label": "Progestin-Only Pill",    "description": "Contains only progestin. Also called the mini-pill."},
+        {"label": "Ovulation",              "description": "Birth control pills mainly work by stopping this process."},
+        {"label": "Cervical Mucus",         "description": "Some pills thicken this to block sperm."},
+        {"label": "Daily Use",              "description": "Pills must be taken every day at the same time."},
+        {"label": "No STI Protection",      "description": "Pills prevent pregnancy but NOT sexually transmitted infections."},
+        {"label": "Side Effects",           "description": "May include nausea or changes in menstrual bleeding."},
+        {"label": "Healthcare Professional","description": "Always consult one before starting birth control pills."},
+        {"label": "Emergency Contraception","description": "Morning-after pill — prevents pregnancy after unprotected sex."},
+        {"label": "Fertility Returns",       "description": "Usually restores within 1-3 months after stopping the pill."}
+      ],
+      "questions": [
+        {"question": "Placeholder", "options": ["A"], "answer": "A", "explanation": "Jigsaw level."}
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Symptom-Based Methods",
+      "difficulty": "Medium",
+      "difficulty_color": "#9b59b6",
+      "quiz_type": "crossword",
+      "story": "Welcome to Chapter 3, Level 1: Symptom-Based Methods!\n\nIn this level you will complete a Crossword Puzzle about symptom-based fertility awareness methods — tracking body signs to understand fertility.\n\n(Video story coming soon)\n\nGet ready for the Crossword!",
+      "story_image": "midwife",
+      "crossword": [
+        {"word": "MUCUS",         "hint": "Cervical ___ — changes in thickness signal fertile days"},
+        {"word": "TEMPERATURE",   "hint": "Basal body ___ rises slightly after ovulation"},
+        {"word": "OVULATION",     "hint": "Release of an egg from the ovary"},
+        {"word": "FERTILE",       "hint": "Days when pregnancy is most likely to occur"},
+        {"word": "CERVIX",        "hint": "The lower part of the uterus that produces mucus"},
+        {"word": "CYCLE",         "hint": "Menstrual ___ — the monthly hormonal pattern"},
+        {"word": "SYMPTOM",       "hint": "A sign the body shows to indicate fertility"},
+        {"word": "CHARTING",      "hint": "Recording daily body signs to track fertility patterns"},
+        {"word": "SPERM",         "hint": "Can survive inside the body for up to 5 days"},
+        {"word": "HORMONE",       "hint": "Chemical signal that drives the menstrual cycle"}
+      ],
+      "questions": [
+        {"question": "Placeholder", "options": ["A"], "answer": "A", "explanation": "Crossword level."}
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Calendar-Based Methods",
+      "difficulty": "Medium",
+      "difficulty_color": "#e74c3c",
+      "quiz_type": "image_hint",
+      "story": "Welcome to Chapter 3, Level 2: Calendar-Based Methods!\n\nIn this level you will use image clues to identify calendar-based fertility awareness methods.\n\n(Video story and images coming soon)\n\nThis game is under construction — check back soon!",
+      "story_image": "counselor",
+      "image_hint": [],
+      "questions": [
+        {"question": "Placeholder", "options": ["A"], "answer": "A", "explanation": "Image hint level — coming soon."}
+      ]
     }
   ]
 }
