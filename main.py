@@ -2906,35 +2906,256 @@ class JigsawScreen(tk.Frame):
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Crossword  (Coming Soon placeholder)
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Crossword Puzzle (Symptom-Based Fertility Awareness)
+# ══════════════════════════════════════════════════════════════════════════════
 class CrosswordScreen(tk.Frame):
+    # Grid dimensions
+    _ROWS = 11
+    _COLS = 15
+    _CELL = 32   # px per cell
+
+    # Word definitions: (word, direction, start_row, start_col, number, hint)
+    _WORDS = [
+        ("CYCLE",     "D", 0,  0, 1, "Menstrual ___: the repeating monthly hormonal pattern"),
+        ("SPERM",     "A", 0,  1, 2, "Male cell that fertilizes an egg — survives ~5 days in the body"),
+        ("CHARTING",  "A", 2,  0, 3, "Recording daily body signs to track fertility patterns"),
+        ("OVULATION", "D", 0, 10, 4, "Release of an egg from the ovary — when fertility peaks"),
+        ("MUCUS",     "A", 2,  9, 5, "Cervical ___ becomes clear and stretchy near ovulation"),
+        ("TEMP",      "A", 5, 10, 6, "Basal body ___ (abbreviated) rises slightly after ovulation"),
+        ("FERTILE",   "D", 3,  5, 7, "___ window: days when pregnancy is most likely to occur"),
+        ("SYMPTOM",   "D", 3,  3, 8, "A bodily sign or change that indicates fertility status"),
+    ]
+
     def __init__(self, parent, app):
         super().__init__(parent, bg=C["bg"])
         self.app = app
+        # Build solution grid
+        self._solution = {}   # (row,col) -> letter
+        self._cell_map  = {}  # (row,col) -> (word_idx, letter_idx)
+        for wi, (word, dirn, row, col, num, hint) in enumerate(self._WORDS):
+            for i, ch in enumerate(word):
+                r = row + (i if dirn == "D" else 0)
+                c = col + (i if dirn == "A" else 0)
+                self._solution[(r, c)] = ch
+                self._cell_map[(r, c)] = (wi, i)
+        # User input state
+        self._user    = {}   # (row,col) -> StringVar
+        self._entries = {}   # (row,col) -> tk.Entry widget
+        self._solved  = False
         self._build()
 
     def _build(self):
-        lvl = self.app.current_level
-        tk.Frame(self, bg="#9b59b6", height=3).pack(fill="x")
-        tk.Label(self, text="📝", font=("Segoe UI Emoji", 64),
-                 bg=C["bg"]).pack(pady=(50, 8))
-        tk.Label(self, text="CROSSWORD PUZZLE",
-                 font=_retro(20, "bold"),
-                 bg=C["bg"], fg="#9b59b6").pack()
-        tk.Label(self, text=f"{lvl['title']}",
-                 font=_retro(12),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
-        tk.Frame(self, bg="#9b59b6", height=2, width=200).pack(pady=12)
-        tk.Label(self, text="🚧  Coming Soon  🚧",
-                 font=_retro(14, "bold"),
-                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
-        tk.Label(self, text="This mini-game is under construction.\nCheck back soon!",
-                 font=_retro(10),
-                 bg=C["bg"], fg=C["grey"],
-                 justify="center").pack(pady=4)
-        Btn(self, "🏠  Back to Levels",
-            lambda: self.app.show("level_select"),
-            bg=C["card2"], fg=C["white"], w=240, fs=12,
-            pad_bg=C["bg"]).pack(pady=(30, 0))
+        for w in self.winfo_children():
+            w.destroy()
+
+        # ── Top bar ───────────────────────────────────────────────────────
+        top = tk.Frame(self, bg="#0d0820")
+        top.pack(fill="x")
+        tk.Frame(top, bg="#9b59b6", height=3).pack(fill="x")
+        bar = tk.Frame(top, bg="#0d0820", pady=7)
+        bar.pack(fill="x")
+        tk.Frame(top, bg="#4a235a", height=1).pack(fill="x")
+        tk.Label(bar, text="📝  CROSSWORD",
+                 font=_retro(13, "bold"),
+                 bg="#0d0820", fg="#9b59b6").pack(side="left", padx=10)
+        tk.Label(bar, text="Symptom-Based Methods",
+                 font=_retro(9), bg="#0d0820", fg="#aaaaaa").pack(side="left")
+        Btn(bar, "🏠", lambda: self.app.show("level_select"),
+            bg="#4a235a", fg="#ffffff", w=46, fs=10,
+            pad_bg="#0d0820").pack(side="right", padx=8)
+
+        # ── Scrollable body ───────────────────────────────────────────────
+        sf = ScrollFrame(self, bg=C["bg"])
+        sf.pack(fill="both", expand=True)
+        inn = sf.inner
+        inn.configure(padx=8, pady=6)
+
+        # ── Grid canvas ───────────────────────────────────────────────────
+        cw = self._COLS * self._CELL
+        ch = self._ROWS * self._CELL
+        grid_frame = tk.Frame(inn, bg=C["bg"])
+        grid_frame.pack()
+
+        self._cell_widgets = {}
+
+        for row in range(self._ROWS):
+            for col in range(self._COLS):
+                x = col * self._CELL
+                y = row * self._CELL
+                pos = (row, col)
+
+                if pos not in self._solution:
+                    # Black cell
+                    lbl = tk.Label(grid_frame, width=2, height=1,
+                                    bg="#111111",
+                                    relief="flat")
+                    lbl.grid(row=row, column=col, padx=1, pady=1,
+                              ipadx=4, ipady=4)
+                    continue
+
+                # White input cell
+                cell_f = tk.Frame(grid_frame, bg="#ffffff",
+                                   highlightbackground="#9b59b6",
+                                   highlightthickness=1)
+                cell_f.grid(row=row, column=col, padx=1, pady=1)
+
+                # Number label (top-left of cell) if this cell starts a word
+                num_text = ""
+                for wi, (word, dirn, wr, wc, num, hint) in enumerate(self._WORDS):
+                    if (wr, wc) == pos:
+                        num_text = str(num)
+                        break
+
+                if num_text:
+                    tk.Label(cell_f, text=num_text,
+                              font=_retro(6), bg="#ffffff",
+                              fg="#9b59b6", width=2).pack(anchor="nw")
+                else:
+                    tk.Label(cell_f, text=" ",
+                              font=_retro(6), bg="#ffffff",
+                              width=2).pack(anchor="nw")
+
+                # Letter entry
+                var = tk.StringVar()
+                self._user[pos] = var
+                entry = tk.Entry(cell_f, textvariable=var,
+                                  font=_retro(11, "bold"),
+                                  bg="#ffffff", fg="#1a0030",
+                                  insertbackground="#9b59b6",
+                                  justify="center",
+                                  width=2, relief="flat", bd=0)
+                entry.pack(padx=1, pady=(0,1))
+                # Limit to 1 uppercase char
+                var.trace_add("write", lambda *a, v=var: self._limit(v))
+                entry.bind("<Return>", lambda e: self._check())
+                self._entries[pos] = entry
+                self._cell_widgets[pos] = cell_f
+
+        # ── Check button ──────────────────────────────────────────────────
+        btn_row = tk.Frame(inn, bg=C["bg"])
+        btn_row.pack(pady=(10, 4))
+        Btn(btn_row, "✔  CHECK ANSWERS", self._check,
+            bg="#9b59b6", fg="#ffffff", w=220, fs=12,
+            pad_bg=C["bg"]).pack(side="left", padx=4)
+        Btn(btn_row, "💡  REVEAL ALL", self._reveal_all,
+            bg=C["card2"], fg=C["white"], w=140, fs=10,
+            pad_bg=C["bg"]).pack(side="left", padx=4)
+
+        # ── Score label ───────────────────────────────────────────────────
+        self._score_lbl = tk.Label(inn, text="",
+                                    font=_retro(10, "bold"),
+                                    bg=C["bg"], fg=C["accent"])
+        self._score_lbl.pack()
+
+        # ── Clues ─────────────────────────────────────────────────────────
+        tk.Label(inn, text="─── ACROSS ───",
+                 font=_retro(10, "bold"),
+                 bg=C["bg"], fg="#9b59b6").pack(anchor="w", pady=(12, 2))
+        for word, dirn, row, col, num, hint in self._WORDS:
+            if dirn == "A":
+                tk.Label(inn, text=f"  {num}. {hint}",
+                          font=_retro(9), bg=C["bg"], fg=C["white"],
+                          wraplength=380, justify="left",
+                          anchor="w").pack(fill="x")
+
+        tk.Label(inn, text="─── DOWN ───",
+                 font=_retro(10, "bold"),
+                 bg=C["bg"], fg="#9b59b6").pack(anchor="w", pady=(10, 2))
+        for word, dirn, row, col, num, hint in self._WORDS:
+            if dirn == "D":
+                tk.Label(inn, text=f"  {num}. {hint}",
+                          font=_retro(9), bg=C["bg"], fg=C["white"],
+                          wraplength=380, justify="left",
+                          anchor="w").pack(fill="x")
+
+        tk.Label(inn, text="", bg=C["bg"], height=2).pack()
+
+        # Done frame
+        self._done_f = tk.Frame(inn, bg=C["bg"])
+        self._done_f.pack()
+
+    def _limit(self, var):
+        """Keep only last typed char, force uppercase."""
+        v = var.get().upper()
+        if len(v) > 1:
+            var.set(v[-1])
+        elif v and not v.isalpha():
+            var.set("")
+        elif v != v.upper():
+            var.set(v.upper())
+
+    def _check(self):
+        if self._solved:
+            return
+        correct = 0
+        total   = len(self._solution)
+        for pos, correct_ch in self._solution.items():
+            user_ch = self._user[pos].get().upper()
+            cell_f  = self._cell_widgets.get(pos)
+            if cell_f:
+                if user_ch == correct_ch:
+                    correct += 1
+                    cell_f.configure(bg="#c8f5c8",
+                                      highlightbackground=C["correct"])
+                    self._entries[pos].configure(bg="#c8f5c8", fg="#1a4a1a")
+                elif user_ch:
+                    cell_f.configure(bg="#f5c8c8",
+                                      highlightbackground=C["wrong"])
+                    self._entries[pos].configure(bg="#f5c8c8", fg="#4a1a1a")
+                else:
+                    cell_f.configure(bg="#ffffff",
+                                      highlightbackground="#9b59b6")
+
+        self._score_lbl.configure(
+            text=f"✅ {correct} / {total} letters correct",
+            fg=C["correct"] if correct == total else C["medium"])
+        SFX.play("correct" if correct == total else "click")
+
+        if correct == total:
+            self._on_complete()
+
+    def _reveal_all(self):
+        for pos, correct_ch in self._solution.items():
+            self._user[pos].set(correct_ch)
+            cell_f = self._cell_widgets.get(pos)
+            if cell_f:
+                cell_f.configure(bg="#e8d8f8",
+                                  highlightbackground="#9b59b6")
+                self._entries[pos].configure(bg="#e8d8f8", fg="#4a235a")
+        self._score_lbl.configure(
+            text="All answers revealed — no XP awarded.",
+            fg=C["grey"])
+        SFX.play("wrong")
+
+    def _on_complete(self):
+        self._solved = True
+        SFX.play("win")
+        xp = 25
+        self.app.total_xp_session += xp
+        self.app.quiz_score += 1
+        self.app.quiz_answers.append({
+            "question": "Crossword: Symptom-Based Methods",
+            "chosen":   "Completed", "correct": "Completed",
+            "is_right": True, "xp": xp,
+            "explanation": "You completed the Symptom-Based Methods crossword!"
+        })
+        for w in self._done_f.winfo_children():
+            w.destroy()
+        tk.Label(self._done_f, text="🎉  CROSSWORD COMPLETE!",
+                 font=_retro(15, "bold"),
+                 bg=C["bg"], fg="#9b59b6").pack(pady=(8, 2))
+        tk.Label(self._done_f, text=f"⚡ +{xp} XP",
+                 font=_retro(12, "bold"),
+                 bg=C["bg"], fg=C["xp"]).pack()
+        Btn(self._done_f, "SEE RESULTS  ✔", self._finish,
+            bg="#9b59b6", fg="#ffffff", w=240, fs=13,
+            pad_bg=C["bg"]).pack(pady=(10, 4))
+
+    def _finish(self):
+        SFX.play("click")
+        self.app.quiz_index += 1
+        self.app.show("result")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
