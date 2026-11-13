@@ -1911,16 +1911,13 @@ class KahootScreen(tk.Frame):
                                 fill="#ffffff", width=w-16, anchor="center")
 
             draw_tile()
-            tile_cv.bind("<Configure>", lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i: (
-                draw_tile(c, t, cl, ic)
-            ))
-            tile_cv.bind("<Button-1>", lambda e, o=opt: self._pick(o))
-            tile_cv.bind("<Enter>",    lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i: (
-                self._hover_tile(c, t, cl, ic, True)
-            ))
-            tile_cv.bind("<Leave>",    lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i: (
-                self._hover_tile(c, t, cl, ic, False)
-            ))
+            tile_cv.bind("<Configure>", lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i:
+                         draw_tile(c, t, cl, ic))
+            tile_cv.bind("<Button-1>",  lambda e, o=opt: self._pick(o))
+            tile_cv.bind("<Enter>",     lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i:
+                         self._hover_tile(c, t, cl, ic, True))
+            tile_cv.bind("<Leave>",     lambda e, c=tile_cv, t=opt, cl=col_i, ic=icon_i:
+                         self._hover_tile(c, t, cl, ic, False))
             self._opts[opt] = (tile_cv, draw_tile)
 
         # Explanation label (hidden)
@@ -2189,9 +2186,8 @@ class MythFactScreen(tk.Frame):
             draw_btn()
             cv.bind("<Configure>", lambda e, c=cv, l=label, col=color: draw_btn(c, l, col))
             cv.bind("<Button-1>",  lambda e, ans=label: self._pick(ans))
-            cv.bind("<Enter>",     lambda e, c=cv, l=label, col=color: (
-                c.delete("all") or self._draw_hover(c, l, col, True)
-            ))
+            cv.bind("<Enter>",     lambda e, c=cv, l=label, col=color:
+                    self._draw_hover(c, l, col, True))
             cv.bind("<Leave>",     lambda e, c=cv, l=label, col=color: draw_btn(c, l, col))
             setattr(self, f"_btn_{label.lower()}", (cv, draw_btn))
 
@@ -2216,6 +2212,7 @@ class MythFactScreen(tk.Frame):
             pad_bg=C["bg"]).pack()
 
     def _draw_hover(self, cv, label, col, hover):
+        cv.delete("all")
         col2 = _lerp(col, "#ffffff", 0.30) if hover else col
         w = cv.winfo_width() or 180
         h = cv.winfo_height() or 160
