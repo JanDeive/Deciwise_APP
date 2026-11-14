@@ -522,12 +522,21 @@
       "title": "Calendar-Based Methods",
       "difficulty": "Medium",
       "difficulty_color": "#e74c3c",
-      "quiz_type": "image_hint",
-      "story": "Welcome to Chapter 3, Level 2: Calendar-Based Methods!\n\nIn this level you will use image clues to identify calendar-based fertility awareness methods.\n\n(Video story and images coming soon)\n\nThis game is under construction — check back soon!",
+      "quiz_type": "jotto",
+      "story": "Welcome to Chapter 3, Level 2: Calendar-Based Methods!\n\nIn this level you will play Jotto — a word guessing game using terms from calendar-based fertility awareness.\n\nGuess the secret 5-letter word! After each guess you will see how many letters your guess shares with the secret word.\n\nYou have 6 attempts. Good luck!",
       "story_image": "counselor",
-      "image_hint": [],
+      "jotto": [
+        {"word": "CYCLE", "hint": "The monthly hormonal pattern that fertility tracking follows"},
+        {"word": "OVARY", "hint": "The organ that releases an egg during ovulation"},
+        {"word": "CHART", "hint": "A record used to track daily fertility signs"},
+        {"word": "PHASE", "hint": "A stage within the menstrual cycle"},
+        {"word": "TRACK", "hint": "To monitor and record body signs over time"},
+        {"word": "BIRTH", "hint": "Related to childbirth — what family planning helps time"},
+        {"word": "MUCUS", "hint": "Cervical discharge that changes with the cycle"},
+        {"word": "BASAL", "hint": "___ body temperature — rises slightly after ovulation"}
+      ],
       "questions": [
-        {"question": "Placeholder", "options": ["A"], "answer": "A", "explanation": "Image hint level — coming soon."}
+        {"question": "Placeholder", "options": ["A"], "answer": "A", "explanation": "Jotto level."}
       ]
     }
   ]

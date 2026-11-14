@@ -353,6 +353,7 @@ class App(tk.Tk):
             "jigsaw":       JigsawScreen,
             "crossword":    CrosswordScreen,
             "image_hint":   ImageHintScreen,
+            "jotto":        JottoScreen,
             "result":       ResultScreen,
             "gameover":     GameOverScreen,
             "leaderboard":  LeaderboardScreen,
@@ -379,8 +380,8 @@ class App(tk.Tk):
             self.show("jigsaw")
         elif qt == "crossword":
             self.show("crossword")
-        elif qt == "image_hint":
-            self.show("image_hint")
+        elif qt == "jotto":
+            self.show("jotto")
         else:
             self.show("quiz")
 
@@ -1318,11 +1319,12 @@ class StoryScreen(tk.Frame):
                 bg="#8e44ad", fg=C["white"], w=260, fs=13,
                 pad_bg=C["bg"]).pack(pady=(0,4))
 
-        elif quiz_type in ("hangman", "jigsaw", "crossword", "image_hint"):
+        elif quiz_type in ("hangman", "jigsaw", "crossword", "image_hint", "jotto"):
             icons = {"hangman": "🎯", "jigsaw": "🧩",
-                     "crossword": "📝", "image_hint": "🖼️"}
+                     "crossword": "📝", "image_hint": "🖼️", "jotto": "🔤"}
             names = {"hangman": "HANGMAN", "jigsaw": "JIGSAW PUZZLE",
-                     "crossword": "CROSSWORD", "image_hint": "IMAGE HINT"}
+                     "crossword": "CROSSWORD", "image_hint": "IMAGE HINT",
+                     "jotto": "JOTTO"}
             icon = icons.get(quiz_type, "▶")
             name = names.get(quiz_type, quiz_type.upper())
             diff_label = tk.Label(self._diff_frame,
@@ -3161,6 +3163,304 @@ class CrosswordScreen(tk.Frame):
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Image Hint  (Coming Soon placeholder — not built yet)
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Jotto  (Calendar-Based Methods, 5-letter word guessing game)
+# ══════════════════════════════════════════════════════════════════════════════
+class JottoScreen(tk.Frame):
+    """
+    Jotto: guess the hidden 5-letter word.
+    After each guess, the game shows how many letters
+    in your guess also appear (anywhere) in the secret word.
+    6 attempts max.
+    """
+    _MAX_GUESSES = 6
+    _WORD_LEN    = 5
+    _COL_BG      = "#0a0d1a"
+    _COL_ACC     = "#e74c3c"
+
+    def __init__(self, parent, app):
+        super().__init__(parent, bg=C["bg"])
+        self.app = app
+        import random as _r
+        words_data = app.current_level.get("jotto", [])
+        entry      = _r.choice(words_data) if words_data else {"word":"CYCLE","hint":"Monthly pattern"}
+        self._secret = entry["word"].upper()
+        self._hint   = entry["hint"]
+        self._guesses   = []   # list of (guess_str, jotto_score)
+        self._game_over = False
+        self._won       = False
+        self._build()
+
+    # ── Build ─────────────────────────────────────────────────────────────────
+    def _build(self):
+        for w in self.winfo_children():
+            w.destroy()
+
+        # ── Top bar ───────────────────────────────────────────────────────
+        top = tk.Frame(self, bg=self._COL_BG)
+        top.pack(fill="x")
+        tk.Frame(top, bg=self._COL_ACC, height=3).pack(fill="x")
+        bar = tk.Frame(top, bg=self._COL_BG, pady=7)
+        bar.pack(fill="x")
+        tk.Frame(top, bg="#3a0a0a", height=1).pack(fill="x")
+        tk.Label(bar, text="🔤  JOTTO",
+                 font=_retro(13, "bold"),
+                 bg=self._COL_BG, fg=self._COL_ACC).pack(side="left", padx=10)
+        tk.Label(bar, text="Calendar-Based Methods",
+                 font=_retro(9), bg=self._COL_BG, fg="#aaaaaa").pack(side="left")
+        tk.Label(bar, text=f"⚡ {self.app.total_xp_session}",
+                 font=_retro(9, "bold"),
+                 bg=self._COL_BG, fg=C["xp"]).pack(side="left", padx=8)
+        Btn(bar, "🏠", lambda: self.app.show("level_select"),
+            bg="#3a0a0a", fg="#ffffff", w=46, fs=10,
+            pad_bg=self._COL_BG).pack(side="right", padx=8)
+
+        # ── Hint card ─────────────────────────────────────────────────────
+        hf = tk.Frame(self, bg="#1a0505", padx=14, pady=8)
+        hf.pack(fill="x")
+        tk.Label(hf, text="💡  Hint:",
+                 font=_retro(9, "bold"),
+                 bg="#1a0505", fg=self._COL_ACC).pack(anchor="w")
+        tk.Label(hf, text=self._hint,
+                 font=_retro(10),
+                 bg="#1a0505", fg="#ffcccc",
+                 wraplength=380, justify="left").pack(anchor="w")
+
+        # ── Rules card ────────────────────────────────────────────────────
+        rf = tk.Frame(self, bg="#0f0f1a", padx=14, pady=6)
+        rf.pack(fill="x")
+        tk.Label(rf, text=f"Guess the {self._WORD_LEN}-letter word  ·  "
+                           f"{self._MAX_GUESSES} attempts  ·  "
+                           f"Number = letters in common (any position)",
+                 font=_retro(8), bg="#0f0f1a", fg="#888888",
+                 wraplength=380, justify="left").pack(anchor="w")
+
+        # ── Guess history board ───────────────────────────────────────────
+        board_f = tk.Frame(self, bg=C["bg"], pady=6)
+        board_f.pack(fill="x", padx=16)
+
+        self._row_frames = []
+        for g_i in range(self._MAX_GUESSES):
+            row_f = tk.Frame(board_f, bg=C["bg"])
+            row_f.pack(fill="x", pady=2)
+            cells = []
+            for c_i in range(self._WORD_LEN):
+                cf = tk.Frame(row_f, bg="#1a1a2e",
+                               highlightbackground="#333355",
+                               highlightthickness=1,
+                               width=44, height=44)
+                cf.pack(side="left", padx=3)
+                cf.pack_propagate(False)
+                lbl = tk.Label(cf, text="",
+                                font=_retro(14, "bold"),
+                                bg="#1a1a2e", fg="#ffffff",
+                                anchor="center")
+                lbl.place(relx=0.5, rely=0.5, anchor="center")
+                cells.append((cf, lbl))
+            # Score badge on the right
+            score_lbl = tk.Label(row_f, text="",
+                                  font=_retro(14, "bold"),
+                                  bg=C["bg"], fg=self._COL_ACC,
+                                  width=4)
+            score_lbl.pack(side="left", padx=(8, 0))
+            self._row_frames.append((cells, score_lbl))
+
+        # Render any existing guesses (rebuild after wrong guess)
+        for i, (guess, score) in enumerate(self._guesses):
+            self._render_row(i, guess, score)
+
+        # ── Input area ────────────────────────────────────────────────────
+        self._input_f = tk.Frame(self, bg=C["bg"], pady=8)
+        self._input_f.pack(fill="x", padx=16)
+
+        if not self._game_over:
+            tk.Label(self._input_f,
+                     text=f"Enter a {self._WORD_LEN}-letter word:",
+                     font=_retro(10, "bold"),
+                     bg=C["bg"], fg=C["white"]).pack(anchor="w")
+
+            entry_row = tk.Frame(self._input_f, bg=C["bg"])
+            entry_row.pack(anchor="w", pady=(4, 0))
+
+            self._guess_var = tk.StringVar()
+            self._entry = tk.Entry(entry_row,
+                                    textvariable=self._guess_var,
+                                    font=_retro(16, "bold"),
+                                    bg="#1a1a2e", fg=self._COL_ACC,
+                                    insertbackground=self._COL_ACC,
+                                    relief="flat", bd=0,
+                                    highlightbackground=self._COL_ACC,
+                                    highlightthickness=2,
+                                    width=8, justify="center")
+            self._entry.pack(side="left", ipady=8)
+            self._entry.focus()
+            self._entry.bind("<Return>", lambda e: self._submit())
+
+            Btn(entry_row, "GUESS  ▶",
+                self._submit,
+                bg=self._COL_ACC, fg="#ffffff", w=120, fs=11,
+                pad_bg=C["bg"]).pack(side="left", padx=(8, 0))
+
+            self._msg_lbl = tk.Label(self._input_f, text="",
+                                      font=_retro(9),
+                                      bg=C["bg"], fg=C["wrong"])
+            self._msg_lbl.pack(anchor="w", pady=(4, 0))
+
+        # ── Alphabet tracker ─────────────────────────────────────────────
+        alpha_f = tk.Frame(self, bg=C["bg"], pady=4)
+        alpha_f.pack(fill="x", padx=16)
+        tk.Label(alpha_f, text="Letters used:",
+                 font=_retro(8, "bold"),
+                 bg=C["bg"], fg=C["grey"]).pack(anchor="w")
+        self._alpha_labels = {}
+        alpha_row = tk.Frame(alpha_f, bg=C["bg"])
+        alpha_row.pack(anchor="w")
+        for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            lbl = tk.Label(alpha_row, text=letter,
+                            font=_retro(8, "bold"),
+                            bg=C["bg"], fg="#444444", width=2)
+            lbl.pack(side="left")
+            self._alpha_labels[letter] = lbl
+        # Colour used letters
+        used = set("".join(g for g, s in self._guesses))
+        for letter in used:
+            if letter in self._alpha_labels:
+                self._alpha_labels[letter].configure(fg=C["medium"])
+
+        # ── Result frame ──────────────────────────────────────────────────
+        self._result_f = tk.Frame(self, bg=C["bg"])
+        self._result_f.pack(pady=6)
+        if self._game_over:
+            self._show_result()
+
+    # ── Render a completed guess row ──────────────────────────────────────────
+    def _render_row(self, row_i, guess, score):
+        cells, score_lbl = self._row_frames[row_i]
+        secret_set = set(self._secret)
+        for c_i, ch in enumerate(guess):
+            cf, lbl = cells[c_i]
+            lbl.configure(text=ch)
+            if ch in secret_set:
+                cf.configure(bg="#2a1a00",
+                              highlightbackground=C["medium"])
+                lbl.configure(bg="#2a1a00", fg=C["medium"])
+            else:
+                cf.configure(bg="#2a2a2a",
+                              highlightbackground="#444444")
+                lbl.configure(bg="#2a2a2a", fg="#666666")
+        pct = score / self._WORD_LEN
+        col = C["correct"] if score == self._WORD_LEN else \
+              C["medium"]  if pct >= 0.4 else C["wrong"]
+        score_lbl.configure(text=str(score), fg=col)
+
+    # ── Submit a guess ────────────────────────────────────────────────────────
+    def _submit(self):
+        if self._game_over:
+            return
+        guess = self._guess_var.get().strip().upper()
+
+        # Validate
+        if len(guess) != self._WORD_LEN:
+            self._msg_lbl.configure(
+                text=f"Must be exactly {self._WORD_LEN} letters.")
+            return
+        if not guess.isalpha():
+            self._msg_lbl.configure(text="Letters only — no spaces or numbers.")
+            return
+
+        self._msg_lbl.configure(text="")
+        self._guess_var.set("")
+
+        # Jotto score = count of letters in guess that appear in secret (no position)
+        secret_set = set(self._secret)
+        score = sum(1 for ch in guess if ch in secret_set)
+
+        self._guesses.append((guess, score))
+        row_i = len(self._guesses) - 1
+        self._render_row(row_i, guess, score)
+
+        # Update alphabet tracker
+        for ch in guess:
+            if ch in self._alpha_labels:
+                self._alpha_labels[ch].configure(fg=C["medium"])
+
+        SFX.play("correct" if score == self._WORD_LEN else
+                 "tick"    if score > 0 else "wrong")
+
+        if score == self._WORD_LEN:
+            self._game_over = True
+            self._won = True
+            self._finish_game()
+        elif len(self._guesses) >= self._MAX_GUESSES:
+            self._game_over = True
+            self._won = False
+            self._finish_game()
+
+    # ── End of game ───────────────────────────────────────────────────────────
+    def _finish_game(self):
+        # Disable input
+        if hasattr(self, "_entry"):
+            self._entry.configure(state="disabled")
+        if self._won:
+            SFX.play("win")
+            attempts = len(self._guesses)
+            xp = max(5, 25 - (attempts - 1) * 4)   # 25 XP for 1 try, 5 XP for 6
+            self.app.quiz_score += 1
+        else:
+            SFX.play("fail")
+            xp = 0
+            self.app.lives -= 1
+        self.app.total_xp_session += xp
+        self.app.quiz_answers.append({
+            "question": f"Jotto: {self._secret}",
+            "chosen":   self._guesses[-1][0] if self._guesses else "",
+            "correct":  self._secret,
+            "is_right": self._won, "xp": xp,
+            "explanation": self._hint
+        })
+        self._show_result()
+
+    def _show_result(self):
+        for w in self._result_f.winfo_children():
+            w.destroy()
+        if self._won:
+            attempts = len(self._guesses)
+            xp = max(5, 25 - (attempts - 1) * 4)
+            tk.Label(self._result_f,
+                     text=f"✅  Correct!  The word was {self._secret}",
+                     font=_retro(13, "bold"),
+                     bg=C["bg"], fg=C["correct"]).pack(pady=(4, 2))
+            tk.Label(self._result_f,
+                     text=f"Solved in {len(self._guesses)} guess"
+                          f"{'es' if len(self._guesses)>1 else ''}  ·  ⚡ +{xp} XP",
+                     font=_retro(10),
+                     bg=C["bg"], fg=C["xp"]).pack()
+        else:
+            tk.Label(self._result_f,
+                     text=f"❌  The word was:  {self._secret}",
+                     font=_retro(13, "bold"),
+                     bg=C["bg"], fg=C["wrong"]).pack(pady=(4, 2))
+            tk.Label(self._result_f,
+                     text=f"❤ {self.app.lives}/{MAX_LIVES} lives remaining",
+                     font=_retro(10), bg=C["bg"], fg=C["lives"]).pack()
+
+        if self.app.lives <= 0 and not self._won:
+            self.after(1500, lambda: self.app.show("gameover"))
+        else:
+            Btn(self._result_f, "SEE RESULTS  ✔",
+                self._next,
+                bg=self._COL_ACC, fg="#ffffff", w=240, fs=13,
+                pad_bg=C["bg"]).pack(pady=(10, 4))
+
+    def _next(self):
+        SFX.play("click")
+        self.app.quiz_index += 1
+        self.app.show("result")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SCREEN — Image Hint  (kept as placeholder — no longer used for level 6)
+# ══════════════════════════════════════════════════════════════════════════════
 class ImageHintScreen(tk.Frame):
     def __init__(self, parent, app):
         super().__init__(parent, bg=C["bg"])
@@ -3168,28 +3468,13 @@ class ImageHintScreen(tk.Frame):
         self._build()
 
     def _build(self):
-        lvl = self.app.current_level
-        tk.Frame(self, bg="#e74c3c", height=3).pack(fill="x")
-        tk.Label(self, text="🖼️", font=("Segoe UI Emoji", 64),
-                 bg=C["bg"]).pack(pady=(50, 8))
-        tk.Label(self, text="IMAGE WITH HINT",
-                 font=_retro(20, "bold"),
-                 bg=C["bg"], fg="#e74c3c").pack()
-        tk.Label(self, text=f"{lvl['title']}",
-                 font=_retro(12),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(4, 0))
-        tk.Frame(self, bg="#e74c3c", height=2, width=200).pack(pady=12)
-        tk.Label(self, text="🚧  Coming Soon  🚧",
-                 font=_retro(14, "bold"),
-                 bg=C["bg"], fg=C["medium"]).pack(pady=8)
-        tk.Label(self, text="This mini-game is under construction.\nImages and hints will be added soon!",
-                 font=_retro(10),
-                 bg=C["bg"], fg=C["grey"],
-                 justify="center").pack(pady=4)
-        Btn(self, "🏠  Back to Levels",
+        tk.Label(self, text="🖼️  Coming Soon",
+                 font=_retro(16, "bold"),
+                 bg=C["bg"], fg=C["accent"]).pack(pady=60)
+        Btn(self, "🏠  Back",
             lambda: self.app.show("level_select"),
-            bg=C["card2"], fg=C["white"], w=240, fs=12,
-            pad_bg=C["bg"]).pack(pady=(30, 0))
+            bg=C["card2"], fg=C["white"], w=200, fs=12,
+            pad_bg=C["bg"]).pack()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
