@@ -2924,19 +2924,19 @@ class JigsawScreen(tk.Frame):
 # SCREEN — Crossword Puzzle (Symptom-Based Fertility Awareness)
 # ══════════════════════════════════════════════════════════════════════════════
 class CrosswordScreen(tk.Frame):
-    # Grid dimensions
+     # Grid dimensions — 13 cols × 30px = 390px fits in 430px window
     _ROWS = 11
-    _COLS = 15
-    _CELL = 32   # px per cell
+    _COLS = 13
+    _CELL = 30   # px per cell
 
     # Word definitions: (word, direction, start_row, start_col, number, hint)
     _WORDS = [
         ("CYCLE",     "D", 0,  0, 1, "Menstrual ___: the repeating monthly hormonal pattern"),
         ("SPERM",     "A", 0,  1, 2, "Male cell that fertilizes an egg — survives ~5 days in the body"),
         ("CHARTING",  "A", 2,  0, 3, "Recording daily body signs to track fertility patterns"),
-        ("OVULATION", "D", 0, 10, 4, "Release of an egg from the ovary — when fertility peaks"),
-        ("MUCUS",     "A", 2,  9, 5, "Cervical ___ becomes clear and stretchy near ovulation"),
-        ("TEMP",      "A", 5, 10, 6, "Basal body ___ (abbreviated) rises slightly after ovulation"),
+        ("OVULATION", "D", 0,  9, 4, "Release of an egg from the ovary — when fertility peaks"),
+        ("MUCUS",     "A", 2,  8, 5, "Cervical ___ becomes clear and stretchy near ovulation"),
+        ("TEMP",      "A", 5,  9, 6, "Basal body ___ (abbreviated) rises slightly after ovulation"),
         ("FERTILE",   "D", 3,  5, 7, "___ window: days when pregnancy is most likely to occur"),
         ("SYMPTOM",   "D", 3,  3, 8, "A bodily sign or change that indicates fertility status"),
     ]
@@ -2983,66 +2983,70 @@ class CrosswordScreen(tk.Frame):
         sf = ScrollFrame(self, bg=C["bg"])
         sf.pack(fill="both", expand=True)
         inn = sf.inner
-        inn.configure(padx=8, pady=6)
+        inn.configure(padx=4, pady=6)
 
-        # ── Grid canvas ───────────────────────────────────────────────────
-        cw = self._COLS * self._CELL
-        ch = self._ROWS * self._CELL
-        grid_frame = tk.Frame(inn, bg=C["bg"])
+        # ── Grid ─────────────────────────────────────────────────────────
+        grid_frame = tk.Frame(inn, bg="#111111",
+                               highlightbackground="#9b59b6",
+                               highlightthickness=1)
         grid_frame.pack()
 
         self._cell_widgets = {}
+        cs = self._CELL   # cell size in px
+
+        # Pre-compute which cells start a word
+        starters = {}   # (row,col) -> number
+        for word, dirn, wr, wc, num, hint in self._WORDS:
+            starters[(wr, wc)] = num
 
         for row in range(self._ROWS):
             for col in range(self._COLS):
-                x = col * self._CELL
-                y = row * self._CELL
                 pos = (row, col)
 
                 if pos not in self._solution:
                     # Black cell
-                    lbl = tk.Label(grid_frame, width=2, height=1,
+                    lbl = tk.Label(grid_frame,
+                                    width=2, height=1,
                                     bg="#111111",
-                                    relief="flat")
-                    lbl.grid(row=row, column=col, padx=1, pady=1,
-                              ipadx=4, ipady=4)
+                                    relief="flat",
+                                    padx=0, pady=0)
+                    lbl.grid(row=row, column=col,
+                              ipadx=cs//2 - 4, ipady=cs//2 - 4,
+                              padx=0, pady=0)
                     continue
 
-                # White input cell
-                cell_f = tk.Frame(grid_frame, bg="#ffffff",
-                                   highlightbackground="#9b59b6",
+                # White cell frame (fixed size)
+                cell_f = tk.Frame(grid_frame,
+                                   width=cs, height=cs,
+                                   bg="#ffffff",
+                                   highlightbackground="#ccaadd",
                                    highlightthickness=1)
-                cell_f.grid(row=row, column=col, padx=1, pady=1)
+                cell_f.grid(row=row, column=col, padx=0, pady=0)
+                cell_f.grid_propagate(False)
 
-                # Number label (top-left of cell) if this cell starts a word
-                num_text = ""
-                for wi, (word, dirn, wr, wc, num, hint) in enumerate(self._WORDS):
-                    if (wr, wc) == pos:
-                        num_text = str(num)
-                        break
+                # Number in corner
+                if pos in starters:
+                    tk.Label(cell_f,
+                              text=str(starters[pos]),
+                              font=("Courier New", 6, "bold"),
+                              bg="#ffffff", fg="#9b59b6",
+                              padx=0, pady=0).place(x=1, y=1)
 
-                if num_text:
-                    tk.Label(cell_f, text=num_text,
-                              font=_retro(6), bg="#ffffff",
-                              fg="#9b59b6", width=2).pack(anchor="nw")
-                else:
-                    tk.Label(cell_f, text=" ",
-                              font=_retro(6), bg="#ffffff",
-                              width=2).pack(anchor="nw")
-
-                # Letter entry
+                # Single-letter entry, centred
                 var = tk.StringVar()
                 self._user[pos] = var
                 entry = tk.Entry(cell_f, textvariable=var,
-                                  font=_retro(11, "bold"),
+                                  font=_retro(10, "bold"),
                                   bg="#ffffff", fg="#1a0030",
                                   insertbackground="#9b59b6",
                                   justify="center",
-                                  width=2, relief="flat", bd=0)
-                entry.pack(padx=1, pady=(0,1))
-                # Limit to 1 uppercase char
+                                  width=1, relief="flat", bd=0,
+                                  highlightthickness=0)
+                entry.place(x=2, y=cs//2 - 9, width=cs-4, height=20)
                 var.trace_add("write", lambda *a, v=var: self._limit(v))
                 entry.bind("<Return>", lambda e: self._check())
+                # Tab/arrow navigation between cells
+                entry.bind("<Tab>", lambda e: e.widget.tk_focusNext().focus())
                 self._entries[pos] = entry
                 self._cell_widgets[pos] = cell_f
 
