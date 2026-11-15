@@ -822,115 +822,201 @@ class LevelSelectScreen(tk.Frame):
         unlocked  = p.get("unlocked_levels", [1])
         completed = p.get("completed_levels", [])
         scores    = p.get("high_scores", {})
-        total_xp  = p.get("total_xp", 0)
         lvl_map   = {l["id"]: l for l in levels}
 
-        # ── Top bar ───────────────────────────────────────────────────────
-        hdr = tk.Frame(self, bg="#ffffff", pady=0)
+        self._ch_idx = 0   # current chapter index
+        self._all_acts = list(ACT_MAP.items())   # [(act_id, (label, title, color, lids))]
+
+        # Chapter colors
+        self._CH_COLORS = {
+            1: ("#1a4d2e", "#3dba70"),
+            2: ("#0d3356", "#4a9fd4"),
+            3: ("#3a1a5c", "#a06abf"),
+        }
+
+        self._p         = p
+        self._unlocked  = unlocked
+        self._completed = completed
+        self._scores    = scores
+        self._lvl_map   = lvl_map
+        self._levels    = levels
+
+        # ── Fixed top bar ─────────────────────────────────────────────────
+        hdr = tk.Frame(self, bg="#ffffff")
         hdr.pack(fill="x")
         bar = tk.Frame(hdr, bg="#ffffff", pady=10, padx=16)
         bar.pack(fill="x")
-        # App name
         tk.Label(bar, text="DeciWise",
                  font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
                  bg="#ffffff", fg="#c97b5a").pack(side="left")
-        # Player + XP on right
         name = self.app.player_name or p.get("player_name", "Player")
-        right_f = tk.Frame(bar, bg="#ffffff")
-        right_f.pack(side="right")
-        tk.Label(right_f, text=f"👤 {name.upper()}",
+        tk.Label(bar, text=f"👤  {name.upper()}",
                  font=tkfont.Font(family="Segoe UI", size=9),
-                 bg="#ffffff", fg="#a08070").pack(side="left", padx=(0,12))
-        xp_pill = tk.Frame(right_f, bg="#c97b5a",
-                            highlightbackground="#c97b5a",
-                            highlightthickness=0)
-        xp_pill.pack(side="left")
-        tk.Label(xp_pill, text=f"⚡ {total_xp} XP",
-                 font=tkfont.Font(family="Segoe UI", size=9, weight="bold"),
-                 bg="#c97b5a", fg="#ffffff", padx=8, pady=3).pack()
-        # Thin separator line
+                 bg="#ffffff", fg="#a08070").pack(side="right", padx=4)
         tk.Frame(hdr, bg="#f0e8e0", height=1).pack(fill="x")
 
-        # ── Scrollable body ───────────────────────────────────────────────
-        sf = ScrollFrame(self, bg="#faf6f0")
-        sf.pack(fill="both", expand=True)
-        inner = sf.inner
-        inner.configure(padx=0)
-
-        # Journey title
-        title_f = tk.Frame(inner, bg="#faf6f0", pady=4)
+        # ── Journey title ─────────────────────────────────────────────────
+        title_f = tk.Frame(self, bg="#faf6f0", pady=8)
         title_f.pack(fill="x")
         tk.Label(title_f, text="Your Learning Journey",
                  font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
                  bg="#faf6f0", fg="#c97b5a").pack()
-        total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1, len(levels)+1))
+        total_stars = sum(scores.get(str(l["id"]),{}).get("stars",0) for l in levels)
         max_stars   = len(levels) * 3
-        tk.Label(title_f, text=f"⭐ {total_stars} of {max_stars} stars",
+        tk.Label(title_f, text=f"⭐  {total_stars} of {max_stars} stars",
                  font=tkfont.Font(family="Segoe UI", size=10),
                  bg="#faf6f0", fg="#e8a040").pack()
 
-        # ── Chapter sections ──────────────────────────────────────────────
-        # Chapter colors matching screenshot
-        CH_COLORS = {
-            1: ("#1a4d2e", "#3dba70"),   # dark green header, bright green dot
-            2: ("#0d3356", "#4a9fd4"),   # dark blue header, sky blue dot
-            3: ("#3a1a5c", "#a06abf"),   # dark purple header, mauve dot
-        }
+        # ── Chapter swipe area ────────────────────────────────────────────
+        # Nav row: ← Chapter N of N →
+        nav_f = tk.Frame(self, bg="#faf6f0", pady=4)
+        nav_f.pack(fill="x", padx=16)
 
-        for act_id, (act_label, act_title, act_color, lids) in ACT_MAP.items():
-            act_done    = all(lid in completed for lid in lids)
-            hdr_dark, dot_col = CH_COLORS.get(act_id, ("#333333", act_color))
+        self._prev_btn = tk.Label(nav_f, text="‹",
+                                   font=tkfont.Font(family="Segoe UI", size=22, weight="bold"),
+                                   bg="#faf6f0", fg="#c97b5a", cursor="hand2")
+        self._prev_btn.pack(side="left")
+        self._prev_btn.bind("<Button-1>", lambda e: self._nav(-1))
 
-            # Chapter header bar
-            ch_bar = tk.Frame(inner, bg=hdr_dark, pady=10, padx=16)
-            ch_bar.pack(fill="x", pady=(10, 0))
+        self._nav_lbl = tk.Label(nav_f, text="",
+                                  font=tkfont.Font(family="Segoe UI", size=10),
+                                  bg="#faf6f0", fg="#a08070")
+        self._nav_lbl.pack(side="left", expand=True)
 
-            # Coloured dot
-            dot_cv = tk.Canvas(ch_bar, width=10, height=10,
-                                bg=hdr_dark, highlightthickness=0)
-            dot_cv.pack(side="left", padx=(0, 8))
-            dot_cv.create_oval(0, 0, 10, 10, fill=dot_col, outline="")
+        self._next_btn = tk.Label(nav_f, text="›",
+                                   font=tkfont.Font(family="Segoe UI", size=22, weight="bold"),
+                                   bg="#faf6f0", fg="#c97b5a", cursor="hand2")
+        self._next_btn.pack(side="right")
+        self._next_btn.bind("<Button-1>", lambda e: self._nav(1))
 
-            tk.Label(ch_bar,
-                     text=f"{act_label}  ·  {act_title}",
-                     font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
-                     bg=hdr_dark, fg="#ffffff").pack(side="left")
+        # Dot indicators
+        dot_nav = tk.Frame(self, bg="#faf6f0")
+        dot_nav.pack()
+        self._dots = []
+        for i in range(len(self._all_acts)):
+            d = tk.Canvas(dot_nav, width=10, height=10,
+                           bg="#faf6f0", highlightthickness=0)
+            d.pack(side="left", padx=3)
+            d.create_oval(1, 1, 9, 9, fill="#e8ddd8", outline="", tags="dot")
+            self._dots.append(d)
 
-            if act_done:
-                tk.Label(ch_bar, text="✓ Complete",
-                         font=tkfont.Font(family="Segoe UI", size=9, weight="bold"),
-                         bg=hdr_dark, fg=dot_col).pack(side="right")
+        # Swipe bindings
+        self._drag_x = None
+        self.bind("<ButtonPress-1>",   self._swipe_start)
+        self.bind("<ButtonRelease-1>", self._swipe_end)
 
-            # Level cards
-            for lid in lids:
-                lvl     = lvl_map[lid]
-                is_open = lid in unlocked
-                is_done = lid in completed
-                s       = scores.get(str(lid), {})
-                self._card(inner, lvl, is_open, is_done, s,
-                            dot_col, hdr_dark)
+        # Scrollable chapter content area
+        self._ch_sf = ScrollFrame(self, bg="#faf6f0")
+        self._ch_sf.pack(fill="both", expand=True)
 
-        # ── Bottom button row ─────────────────────────────────────────────
-        bottom = tk.Frame(inner, bg="#faf6f0", pady=16)
-        bottom.pack(fill="x", padx=16)
+        # ── Bottom buttons ────────────────────────────────────────────────
+        btn_bar = tk.Frame(self, bg="#faf6f0", pady=10)
+        btn_bar.pack(fill="x")
+        sep = tk.Frame(btn_bar, bg="#f0e8e0", height=1)
+        sep.pack(fill="x", pady=(0,8))
+        btn_row = tk.Frame(btn_bar, bg="#faf6f0")
+        btn_row.pack()
 
-        # Pill-style grey buttons matching screenshot
-        for txt, cmd in [("🏠  Home", lambda: self.app.show("splash")),
-                          ("🏆  Leaderboard", lambda: self.app.show("leaderboard"))]:
-            btn_f = tk.Frame(bottom, bg="#ede0d8",
-                              highlightbackground="#d8c8bc",
-                              highlightthickness=1)
-            btn_f.pack(side="left", padx=6)
-            lbl = tk.Label(btn_f, text=txt,
-                            font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
-                            bg="#ede0d8", fg="#7a5a48",
-                            padx=18, pady=8, cursor="hand2")
-            lbl.pack()
-            lbl.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
-            btn_f.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
+        for icon, txt, cmd, bg_col, fg_col in [
+            ("🏠", "Home",        lambda: self.app.show("splash"),      "#fdf0e8", "#c97b5a"),
+            ("🏆", "Leaderboard", lambda: self.app.show("leaderboard"), "#fdf0e8", "#c97b5a"),
+        ]:
+            f = tk.Frame(btn_row, bg=bg_col,
+                          highlightbackground="#e8c8b0",
+                          highlightthickness=1)
+            f.pack(side="left", padx=8, ipadx=4)
+            inner_b = tk.Frame(f, bg=bg_col, padx=16, pady=8)
+            inner_b.pack()
+            tk.Label(inner_b, text=icon,
+                     font=("Segoe UI Emoji", 13),
+                     bg=bg_col, fg=fg_col).pack(side="left", padx=(0,4))
+            tk.Label(inner_b, text=txt,
+                     font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
+                     bg=bg_col, fg=fg_col).pack(side="left")
+            for w in [f, inner_b] + list(inner_b.winfo_children()):
+                w.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
+            # Hover effect
+            def _enter(e, fr=f, bg=bg_col):
+                fr.configure(highlightbackground="#c97b5a")
+            def _leave(e, fr=f):
+                fr.configure(highlightbackground="#e8c8b0")
+            f.bind("<Enter>", _enter)
+            f.bind("<Leave>", _leave)
 
-        tk.Label(inner, text="", bg="#faf6f0", height=2).pack()
+        # Render first chapter
+        self._render_chapter()
+
+    def _nav(self, direction):
+        new_idx = self._ch_idx + direction
+        if 0 <= new_idx < len(self._all_acts):
+            self._ch_idx = new_idx
+            SFX.play("click")
+            self._render_chapter()
+
+    def _swipe_start(self, event):
+        self._drag_x = event.x
+
+    def _swipe_end(self, event):
+        if self._drag_x is None:
+            return
+        dx = event.x - self._drag_x
+        self._drag_x = None
+        if dx < -40:
+            self._nav(1)
+        elif dx > 40:
+            self._nav(-1)
+
+    def _render_chapter(self):
+        """Redraw the scrollable chapter content for the current chapter index."""
+        # Clear content
+        for w in self._ch_sf.inner.winfo_children():
+            w.destroy()
+        self._ch_sf.top()
+
+        act_id, (act_label, act_title, act_color, lids) = self._all_acts[self._ch_idx]
+        hdr_dark, dot_col = self._CH_COLORS.get(act_id, ("#333333", act_color))
+        act_done = all(lid in self._completed for lid in lids)
+        inner = self._ch_sf.inner
+        inner.configure(padx=0)
+
+        # Nav label
+        total = len(self._all_acts)
+        self._nav_lbl.configure(
+            text=f"Chapter {self._ch_idx + 1} of {total}")
+
+        # Update dots
+        for i, d in enumerate(self._dots):
+            d.itemconfig("dot", fill=dot_col if i == self._ch_idx else "#e8ddd8")
+
+        # Prev/Next arrow visibility
+        self._prev_btn.configure(fg="#c97b5a" if self._ch_idx > 0 else "#e8ddd8")
+        self._next_btn.configure(fg="#c97b5a" if self._ch_idx < total-1 else "#e8ddd8")
+
+        # Chapter header
+        ch_bar = tk.Frame(inner, bg=hdr_dark, pady=12, padx=16)
+        ch_bar.pack(fill="x")
+        dot_cv = tk.Canvas(ch_bar, width=12, height=12,
+                            bg=hdr_dark, highlightthickness=0)
+        dot_cv.pack(side="left", padx=(0, 10))
+        dot_cv.create_oval(0, 0, 12, 12, fill=dot_col, outline="")
+        tk.Label(ch_bar,
+                 text=f"{act_label}  ·  {act_title}",
+                 font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
+                 bg=hdr_dark, fg="#ffffff").pack(side="left")
+        if act_done:
+            tk.Label(ch_bar, text="✓ Complete",
+                     font=tkfont.Font(family="Segoe UI", size=9, weight="bold"),
+                     bg=hdr_dark, fg=dot_col).pack(side="right")
+
+        # Level cards
+        for lid in lids:
+            lvl     = self._lvl_map[lid]
+            is_open = lid in self._unlocked
+            is_done = lid in self._completed
+            s       = self._scores.get(str(lid), {})
+            self._card(inner, lvl, is_open, is_done, s, dot_col, hdr_dark)
+
+        tk.Label(inner, text="", bg="#faf6f0", height=3).pack()
 
     def _card(self, parent, lvl, is_open, is_done, sd, dot_col, hdr_dark):
         lid        = lvl["id"]
