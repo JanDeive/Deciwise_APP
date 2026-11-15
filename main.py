@@ -1019,110 +1019,224 @@ class LevelSelectScreen(tk.Frame):
         tk.Label(inner, text="", bg="#faf6f0", height=1).pack()
 
     def _card(self, parent, lvl, is_open, is_done, sd, dot_col, hdr_dark):
-        lid        = lvl["id"]
-        diff_color = lvl["difficulty_color"]
-        stars_n    = sd.get("stars", 0)
-        hs_score   = sd.get("score", 0)
-        hs_total   = sd.get("total", 1)
+        lid      = lvl["id"]
+        stars_n  = sd.get("stars", 0)
+        hs_score = sd.get("score", 0)
+        hs_total = sd.get("total", 1)
 
-        # Card outer frame
-        outer = tk.Frame(parent, bg="#faf6f0", pady=0, padx=10)
+        # Game type info
+        qt_meta = {
+            "kahoot":    ("🎮", "Kahoot Quiz",    "#e8734a"),
+            "myth_fact": ("🧠", "Myth or Fact",   "#7a5abf"),
+            "hangman":   ("🎯", "Hangman",         "#4a9fd4"),
+            "jigsaw":    ("🧩", "Jigsaw Puzzle",   "#e8a040"),
+            "crossword": ("📝", "Crossword",       "#4abf8a"),
+            "jotto":     ("🔤", "Jotto",           "#d96b6b"),
+            "standard":  ("❓", "Quiz",            "#c97b5a"),
+        }
+        qt = lvl.get("quiz_type", "standard")
+        qt_icon, qt_name, qt_color = qt_meta.get(qt, ("❓", qt.title(), "#c97b5a"))
+
+        diff_colors = {"Easy": "#4abf8a", "Medium": "#e8a040", "Hard": "#d96b6b"}
+        diff_col = diff_colors.get(lvl["difficulty"], "#a08070")
+
+        # Card uses Canvas for rounded corners + gradient
+        card_h   = 115 if not is_done else 110
+        card_w   = WINDOW_W - 24   # 12px margin each side
+        pad_x    = 12
+
+        outer = tk.Frame(parent, bg="#faf6f0", pady=5, padx=pad_x)
         outer.pack(fill="x")
 
-        card = tk.Frame(outer, bg="#ffffff",
-                        highlightbackground="#e8ddd8",
-                        highlightthickness=1)
-        card.pack(fill="x")
+        cv = tk.Canvas(outer, width=card_w, height=card_h,
+                        bg="#faf6f0", highlightthickness=0)
+        cv.pack()
 
-        inner_row = tk.Frame(card, bg="#ffffff", padx=10, pady=7)
-        inner_row.pack(fill="x")
+        # Card colors — locked is desaturated
+        if not is_open:
+            card_bg  = "#e8e0da"
+            card_bg2 = "#ddd8d2"
+            text_col = "#b0a090"
+        else:
+            card_bg  = _lerp(dot_col, "#ffffff", 0.82)
+            card_bg2 = _lerp(dot_col, "#ffffff", 0.68)
+            text_col = "#2d1a0e"
 
-        # ── Numbered circle badge ─────────────────────────────────────────
-        badge_size = 34
-        num_cv = tk.Canvas(inner_row, width=badge_size, height=badge_size,
-                            bg="#ffffff", highlightthickness=0)
-        num_cv.pack(side="left", padx=(0, 10))
+        # Draw rounded card with gradient
+        r = 18
+        _grad_rr(cv, 0, 0, card_w, card_h,
+                  card_bg, card_bg2, r=r, steps=30)
 
-        badge_col = dot_col if is_open else "#c8b8b0"
-        # Gradient circle
-        for i in range(badge_size//2, 0, -1):
-            t = i / (badge_size//2)
-            col = _lerp(_lerp(badge_col, "#ffffff", 0.4), badge_col, t)
-            num_cv.create_oval(badge_size//2 - i, badge_size//2 - i,
-                                badge_size//2 + i, badge_size//2 + i,
-                                fill=col, outline="")
-        num_cv.create_text(badge_size//2, badge_size//2,
-                            text=str(lid),
-                            font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
+        # Left colored accent strip
+        if is_open:
+            for i in range(r):
+                t = i / r
+                strip_col = _lerp(dot_col, _lerp(dot_col, "#ffffff", 0.3), t)
+                cv.create_rectangle(0, i, 8, card_h-i, fill=strip_col, outline="")
+            rr(cv, 0, 0, 8, card_h, r=r, fill=dot_col, outline="")
+
+        # Level number badge (circle)
+        bx, by = 32, card_h // 2
+        badge_col = dot_col if is_open else "#b8a8a0"
+        # Shadow
+        cv.create_oval(bx-17, by-17, bx+19, by+19,
+                        fill=_darken(badge_col, 0.70), outline="")
+        # Main circle
+        cv.create_oval(bx-18, by-18, bx+18, by+18,
+                        fill=badge_col, outline="")
+        # Highlight
+        cv.create_oval(bx-14, by-16, bx+2, by-4,
+                        fill=_lerp(badge_col, "#ffffff", 0.4), outline="")
+        # Number
+        cv.create_text(bx, by,
+                        text=str(lid),
+                        font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
+                        fill="#ffffff")
+
+        # Title
+        cv.create_text(68, 28,
+                        text=lvl["title"],
+                        font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
+                        fill=text_col,
+                        anchor="w", width=card_w - 76)
+
+        # Difficulty pill
+        diff_pill_x = 68
+        cv.create_rectangle(diff_pill_x, 44, diff_pill_x+52, 58,
+                              fill=diff_col if is_open else "#c8c0bc",
+                              outline="")
+        cv.create_text(diff_pill_x + 26, 51,
+                        text=lvl["difficulty"],
+                        font=tkfont.Font(family="Segoe UI", size=8, weight="bold"),
+                        fill="#ffffff")
+
+        # Game type badge (rounded)
+        gx = diff_pill_x + 60
+        badge_w = len(qt_name) * 7 + 16
+        cv.create_rectangle(gx, 44, gx + badge_w, 58,
+                              fill=qt_color if is_open else "#c8c0bc",
+                              outline="")
+        cv.create_text(gx + badge_w//2, 51,
+                        text=f"{qt_icon} {qt_name}",
+                        font=tkfont.Font(family="Segoe UI", size=8),
+                        fill="#ffffff")
+
+        # Right side: PLAY button or stars or lock
+        if not is_open:
+            cv.create_text(card_w - 20, card_h//2,
+                            text="🔒",
+                            font=("Segoe UI Emoji", 20),
+                            anchor="e")
+        elif is_done:
+            # Star display
+            star_text = "⭐" * stars_n + "☆" * (3 - stars_n)
+            cv.create_text(card_w - 14, card_h//2 - 8,
+                            text=star_text,
+                            font=("Segoe UI", 16),
+                            fill="#e8a040", anchor="e")
+            cv.create_text(card_w - 14, card_h//2 + 14,
+                            text=f"{hs_score}/{hs_total}",
+                            font=tkfont.Font(family="Segoe UI", size=9),
+                            fill="#a08070", anchor="e")
+        else:
+            # PLAY button — pill shape on canvas
+            px1, py1 = card_w - 92, card_h//2 - 17
+            px2, py2 = card_w - 10, card_h//2 + 17
+            pr = 14
+            # Button shadow
+            rr(cv, px1+2, py1+2, px2+2, py2+2, r=pr,
+               fill=_darken(dot_col, 0.60), outline="")
+            # Button body gradient
+            _grad_rr(cv, px1, py1, px2, py2,
+                      _lerp(dot_col, "#ffffff", 0.30), dot_col,
+                      r=pr, steps=16)
+            cv.create_text((px1+px2)//2, (py1+py2)//2,
+                            text="PLAY  ▶",
+                            font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
                             fill="#ffffff")
 
-        # ── Title + subtitle ──────────────────────────────────────────────
-        info = tk.Frame(inner_row, bg="#ffffff")
-        info.pack(side="left", fill="x", expand=True)
+        # Hover / click bindings
+        def _on_enter(e, c=cv, bg=card_bg, bg2=card_bg2):
+            if is_open:
+                _grad_rr(c, 0, 0, card_w, card_h,
+                          _lerp(bg, "#ffffff", 0.3),
+                          _lerp(bg2, "#ffffff", 0.2),
+                          r=r, steps=30)
+                # Redraw accent strip, badge, text on hover
+                self._redraw_card(c, lvl, lid, dot_col, qt_icon, qt_name,
+                                   qt_color, diff_col, stars_n, hs_score,
+                                   hs_total, is_done, card_w, card_h, r,
+                                   text_col, True)
 
-        title_col = "#2d1a0e" if is_open else "#b0a0a0"
-        tk.Label(info,
-                 text=lvl["title"],
-                 font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
-                 bg="#ffffff", fg=title_col,
-                 anchor="w").pack(fill="x")
+        def _on_leave(e, c=cv, bg=card_bg, bg2=card_bg2):
+            if is_open:
+                _grad_rr(c, 0, 0, card_w, card_h, bg, bg2, r=r, steps=30)
+                self._redraw_card(c, lvl, lid, dot_col, qt_icon, qt_name,
+                                   qt_color, diff_col, stars_n, hs_score,
+                                   hs_total, is_done, card_w, card_h, r,
+                                   text_col, False)
 
-        qt_labels = {
-            "kahoot":    "Kahoot",
-            "myth_fact": "Myth or Fact",
-            "hangman":   "Hangman",
-            "jigsaw":    "Jigsaw",
-            "crossword": "Crossword",
-            "jotto":     "Jotto",
-            "standard":  "Quiz",
-        }
-        qt  = lvl.get("quiz_type", "standard")
-        sub = f"{lvl['difficulty']}  ·  10 Qs  ·  {qt_labels.get(qt, qt.title())}"
-        tk.Label(info,
-                 text=sub,
-                 font=tkfont.Font(family="Segoe UI", size=9),
-                 bg="#ffffff", fg="#a08070",
-                 anchor="w").pack(fill="x")
-
-        # ── Right side: PLAY or stars ─────────────────────────────────────
-        if not is_open:
-            tk.Label(inner_row, text="🔒",
-                     font=("Segoe UI Emoji", 16),
-                     bg="#ffffff", fg="#c8b8b0").pack(side="right", padx=4)
-        elif is_done:
-            right_f = tk.Frame(inner_row, bg="#ffffff")
-            right_f.pack(side="right", padx=4)
-            # Star row
-            stars_lbl = tk.Label(right_f,
-                                  text="⭐" * stars_n + "☆" * (3 - stars_n),
-                                  font=("Segoe UI", 14),
-                                  bg="#ffffff", fg="#e8a040")
-            stars_lbl.pack()
-            tk.Label(right_f,
-                     text=f"{hs_score}/{hs_total}",
-                     font=tkfont.Font(family="Segoe UI", size=9),
-                     bg="#ffffff", fg="#a08070").pack()
-        else:
-            play_lbl = tk.Label(inner_row,
-                                 text="PLAY ▶",
-                                 font=tkfont.Font(family="Segoe UI", size=11, weight="bold"),
-                                 bg="#ffffff", fg="#c97b5a",
-                                 cursor="hand2")
-            play_lbl.pack(side="right", padx=8)
-
-        # Bind click on whole card
         if is_open:
-            for w in [card, inner_row, info, num_cv] + list(info.winfo_children()):
-                try:
-                    w.bind("<Button-1>", lambda e, l=lvl: self._open(l))
-                except Exception:
-                    pass
-            card.bind("<Enter>",
-                       lambda e: card.configure(bg="#fff8f4",
-                                                 highlightbackground="#c97b5a"))
-            card.bind("<Leave>",
-                       lambda e: card.configure(bg="#ffffff",
-                                                 highlightbackground="#e8ddd8"))
+            cv.bind("<Enter>",    _on_enter)
+            cv.bind("<Leave>",    _on_leave)
+            cv.bind("<Button-1>", lambda e, l=lvl: self._open(l))
+
+    def _redraw_card(self, cv, lvl, lid, dot_col, qt_icon, qt_name,
+                     qt_color, diff_col, stars_n, hs_score, hs_total,
+                     is_done, card_w, card_h, r, text_col, hovered):
+        """Redraw card content after gradient is redrawn on hover/leave."""
+        # Left accent strip
+        rr(cv, 0, 0, 8, card_h, r=r,
+           fill=_lerp(dot_col, "#ffffff", 0.1 if hovered else 0), outline="")
+        # Badge
+        bx, by = 32, card_h // 2
+        cv.create_oval(bx-17, by-17, bx+19, by+19,
+                        fill=_darken(dot_col, 0.70), outline="")
+        cv.create_oval(bx-18, by-18, bx+18, by+18, fill=dot_col, outline="")
+        cv.create_oval(bx-14, by-16, bx+2, by-4,
+                        fill=_lerp(dot_col, "#ffffff", 0.4), outline="")
+        cv.create_text(bx, by, text=str(lid),
+                        font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
+                        fill="#ffffff")
+        # Title
+        cv.create_text(68, 28, text=lvl["title"],
+                        font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
+                        fill=text_col, anchor="w", width=card_w - 76)
+        # Difficulty pill
+        dpx = 68
+        cv.create_rectangle(dpx, 44, dpx+52, 58, fill=diff_col, outline="")
+        cv.create_text(dpx+26, 51, text=lvl["difficulty"],
+                        font=tkfont.Font(family="Segoe UI", size=8, weight="bold"),
+                        fill="#ffffff")
+        # Game badge
+        gx = dpx + 60
+        bw = len(qt_name) * 7 + 16
+        cv.create_rectangle(gx, 44, gx+bw, 58, fill=qt_color, outline="")
+        cv.create_text(gx+bw//2, 51, text=f"{qt_icon} {qt_name}",
+                        font=tkfont.Font(family="Segoe UI", size=8),
+                        fill="#ffffff")
+        # Right side
+        if is_done:
+            cv.create_text(card_w-14, card_h//2-8,
+                            text="⭐"*stars_n+"☆"*(3-stars_n),
+                            font=("Segoe UI", 16), fill="#e8a040", anchor="e")
+            cv.create_text(card_w-14, card_h//2+14,
+                            text=f"{hs_score}/{hs_total}",
+                            font=tkfont.Font(family="Segoe UI", size=9),
+                            fill="#a08070", anchor="e")
+        else:
+            px1, py1 = card_w-92, card_h//2-17
+            px2, py2 = card_w-10, card_h//2+17
+            pr = 14
+            rr(cv, px1+2, py1+2, px2+2, py2+2, r=pr,
+               fill=_darken(dot_col, 0.60), outline="")
+            _grad_rr(cv, px1, py1, px2, py2,
+                      _lerp(dot_col, "#ffffff", 0.30), dot_col,
+                      r=pr, steps=16)
+            cv.create_text((px1+px2)//2, (py1+py2)//2,
+                            text="PLAY  ▶",
+                            font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
+                            fill="#ffffff")
 
     def _open(self, lvl):
         SFX.play("click")
