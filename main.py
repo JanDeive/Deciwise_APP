@@ -825,168 +825,218 @@ class LevelSelectScreen(tk.Frame):
         total_xp  = p.get("total_xp", 0)
         lvl_map   = {l["id"]: l for l in levels}
 
-        # ── Top bar ──────────────────────────────────────────────────────
-        hdr = tk.Frame(self, bg=C["banner"], pady=0)
+        # ── Top bar ───────────────────────────────────────────────────────
+        hdr = tk.Frame(self, bg="#ffffff", pady=0)
         hdr.pack(fill="x")
-        # Neon top edge
-        tk.Frame(hdr, bg=C["accent"], height=2).pack(fill="x")
-        inner_hdr = tk.Frame(hdr, bg=C["banner"], pady=8)
-        inner_hdr.pack(fill="x")
-        tk.Label(inner_hdr, text="  DeciWise",
-                 font=_retro(14, "bold"),
-                 bg=C["banner"], fg=C["accent"]).pack(side="left", padx=10)
-        name = self.app.player_name or p.get("player_name","Player")
-        # Player + XP pill on right
-        right_f = tk.Frame(inner_hdr, bg=C["banner"])
-        right_f.pack(side="right", padx=10)
-        tk.Label(right_f, text=f"⚡ {total_xp} XP",
-                 font=_retro(10, "bold"),
-                 bg=C["banner"], fg=C["xp"]).pack(side="right", padx=(4,0))
-        tk.Label(right_f, text=f"👤 {name}",
-                 font=_retro(9),
-                 bg=C["banner"], fg=C["grey"]).pack(side="right", padx=4)
-        # Neon bottom edge
-        tk.Frame(hdr, bg=C["accent3"], height=1).pack(fill="x")
+        bar = tk.Frame(hdr, bg="#ffffff", pady=10, padx=16)
+        bar.pack(fill="x")
+        # App name
+        tk.Label(bar, text="DeciWise",
+                 font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
+                 bg="#ffffff", fg="#c97b5a").pack(side="left")
+        # Player + XP on right
+        name = self.app.player_name or p.get("player_name", "Player")
+        right_f = tk.Frame(bar, bg="#ffffff")
+        right_f.pack(side="right")
+        tk.Label(right_f, text=f"👤 {name.upper()}",
+                 font=tkfont.Font(family="Segoe UI", size=9),
+                 bg="#ffffff", fg="#a08070").pack(side="left", padx=(0,12))
+        xp_pill = tk.Frame(right_f, bg="#c97b5a",
+                            highlightbackground="#c97b5a",
+                            highlightthickness=0)
+        xp_pill.pack(side="left")
+        tk.Label(xp_pill, text=f"⚡ {total_xp} XP",
+                 font=tkfont.Font(family="Segoe UI", size=9, weight="bold"),
+                 bg="#c97b5a", fg="#ffffff", padx=8, pady=3).pack()
+        # Thin separator line
+        tk.Frame(hdr, bg="#f0e8e0", height=1).pack(fill="x")
 
         # ── Scrollable body ───────────────────────────────────────────────
-        sf = ScrollFrame(self, bg=C["bg"])
+        sf = ScrollFrame(self, bg="#faf6f0")
         sf.pack(fill="both", expand=True)
         inner = sf.inner
+        inner.configure(padx=0)
 
-        tk.Label(inner, text="Your Learning Journey",
-                 font=_retro(11, "bold"),
-                 bg=C["bg"], fg=C["accent2"]).pack(pady=(16,2))
-
+        # Journey title
+        title_f = tk.Frame(inner, bg="#faf6f0", pady=4)
+        title_f.pack(fill="x")
+        tk.Label(title_f, text="Your Learning Journey",
+                 font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
+                 bg="#faf6f0", fg="#c97b5a").pack()
         total_stars = sum(scores.get(str(i),{}).get("stars",0)
-                          for i in range(1,7))
-        tk.Label(inner, text=f"⭐  {total_stars} of 18 stars",
-                 font=_retro(9),
-                 bg=C["bg"], fg=C["gold"]).pack(pady=(0,10))
+                          for i in range(1, len(levels)+1))
+        max_stars   = len(levels) * 3
+        tk.Label(title_f, text=f"⭐ {total_stars} of {max_stars} stars",
+                 font=tkfont.Font(family="Segoe UI", size=10),
+                 bg="#faf6f0", fg="#e8a040").pack()
 
-        # ── Act sections ─────────────────────────────────────────────────
+        # ── Chapter sections ──────────────────────────────────────────────
+        # Chapter colors matching screenshot
+        CH_COLORS = {
+            1: ("#1a4d2e", "#3dba70"),   # dark green header, bright green dot
+            2: ("#0d3356", "#4a9fd4"),   # dark blue header, sky blue dot
+            3: ("#3a1a5c", "#a06abf"),   # dark purple header, mauve dot
+        }
+
         for act_id, (act_label, act_title, act_color, lids) in ACT_MAP.items():
-            act_done = all(lid in completed for lid in lids)
-            act_open = any(lid in unlocked  for lid in lids)
+            act_done    = all(lid in completed for lid in lids)
+            hdr_dark, dot_col = CH_COLORS.get(act_id, ("#333333", act_color))
 
-            # Act header
-            ah = tk.Frame(inner, bg=_darken(act_color, 0.25), pady=8)
-            ah.pack(fill="x", padx=10, pady=(8,0))
-            tk.Label(ah, text=f"{act_label}  ·  {act_title}",
-                     font=_retro(12, "bold"),
-                     bg=_darken(act_color, 0.25),
-                     fg=act_color).pack(side="left", padx=12)
+            # Chapter header bar
+            ch_bar = tk.Frame(inner, bg=hdr_dark, pady=10, padx=16)
+            ch_bar.pack(fill="x", pady=(10, 0))
+
+            # Coloured dot
+            dot_cv = tk.Canvas(ch_bar, width=10, height=10,
+                                bg=hdr_dark, highlightthickness=0)
+            dot_cv.pack(side="left", padx=(0, 8))
+            dot_cv.create_oval(0, 0, 10, 10, fill=dot_col, outline="")
+
+            tk.Label(ch_bar,
+                     text=f"{act_label}  ·  {act_title}",
+                     font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
+                     bg=hdr_dark, fg="#ffffff").pack(side="left")
+
             if act_done:
-                tk.Label(ah, text="✔ COMPLETE",
-                         font=_retro(10, "bold"),
-                         bg=_darken(act_color, 0.25),
-                         fg=C["correct"]).pack(side="right", padx=12)
+                tk.Label(ch_bar, text="✓ Complete",
+                         font=tkfont.Font(family="Segoe UI", size=9, weight="bold"),
+                         bg=hdr_dark, fg=dot_col).pack(side="right")
 
+            # Level cards
             for lid in lids:
                 lvl     = lvl_map[lid]
                 is_open = lid in unlocked
                 is_done = lid in completed
                 s       = scores.get(str(lid), {})
-                self._card(inner, lvl, is_open, is_done, s, act_color)
+                self._card(inner, lvl, is_open, is_done, s,
+                            dot_col, hdr_dark)
 
-        # ── Bottom buttons ────────────────────────────────────────────────
-        brow = tk.Frame(inner, bg=C["bg"])
-        brow.pack(pady=18)
-        Btn(brow, "🏠 Home",
-            lambda: self.app.show("splash"),
-            bg=C["card2"], fg=C["white"], w=130, fs=10,
-            pad_bg=C["bg"]).pack(side="left", padx=6)
-        Btn(brow, "🏆 Leaderboard",
-            lambda: self.app.show("leaderboard"),
-            bg=C["card2"], fg=C["white"], w=160, fs=10,
-            pad_bg=C["bg"]).pack(side="left", padx=6)
-        tk.Label(inner, text="", bg=C["bg"], height=1).pack()
+        # ── Bottom button row ─────────────────────────────────────────────
+        bottom = tk.Frame(inner, bg="#faf6f0", pady=16)
+        bottom.pack(fill="x", padx=16)
 
-    def _card(self, parent, lvl, is_open, is_done, sd, act_color):
+        # Pill-style grey buttons matching screenshot
+        for txt, cmd in [("🏠  Home", lambda: self.app.show("splash")),
+                          ("🏆  Leaderboard", lambda: self.app.show("leaderboard"))]:
+            btn_f = tk.Frame(bottom, bg="#ede0d8",
+                              highlightbackground="#d8c8bc",
+                              highlightthickness=1)
+            btn_f.pack(side="left", padx=6)
+            lbl = tk.Label(btn_f, text=txt,
+                            font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
+                            bg="#ede0d8", fg="#7a5a48",
+                            padx=18, pady=8, cursor="hand2")
+            lbl.pack()
+            lbl.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
+            btn_f.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
+
+        tk.Label(inner, text="", bg="#faf6f0", height=2).pack()
+
+    def _card(self, parent, lvl, is_open, is_done, sd, dot_col, hdr_dark):
         lid        = lvl["id"]
         diff_color = lvl["difficulty_color"]
         stars_n    = sd.get("stars", 0)
         hs_score   = sd.get("score", 0)
-        hs_total   = sd.get("total", 5)
-        bg = C["card"] if is_open else C["locked"]
+        hs_total   = sd.get("total", 1)
 
-        outer = tk.Frame(parent, bg=C["bg"], pady=3, padx=12)
+        # Card outer frame
+        outer = tk.Frame(parent, bg="#faf6f0", pady=1, padx=12)
         outer.pack(fill="x")
 
-        # Neon left-border strip
-        wrap = tk.Frame(outer, bg=act_color if is_open else C["locked"])
-        wrap.pack(fill="x")
-        strip = tk.Frame(wrap, bg=act_color if is_open else C["locked"], width=4)
-        strip.pack(side="left", fill="y")
-        card = tk.Frame(wrap, bg=bg, padx=12, pady=10,
-                        highlightbackground=_darken(act_color,0.5) if is_open else bg,
-                        highlightthickness=1 if is_open else 0)
-        card.pack(side="left", fill="x", expand=True)
+        card = tk.Frame(outer, bg="#ffffff",
+                        highlightbackground="#e8ddd8",
+                        highlightthickness=1)
+        card.pack(fill="x")
 
-        row1 = tk.Frame(card, bg=bg)
-        row1.pack(fill="x")
+        inner_row = tk.Frame(card, bg="#ffffff", padx=12, pady=10)
+        inner_row.pack(fill="x")
 
-        # Level number pill badge — 3D extruded look
-        num_cv = tk.Canvas(row1, width=40, height=40,
-                            bg=bg, highlightthickness=0)
-        num_cv.pack(side="left", padx=(0,10))
-        if is_open:
-            ac = act_color
-            # Bottom-right drop shadow (depth layer)
-            num_cv.create_oval(5, 5, 37, 37,
-                               fill=_darken(ac, 0.25), outline="")
-            # Mid layer (side face of extrusion)
-            num_cv.create_oval(3, 3, 35, 35,
-                               fill=_darken(ac, 0.45), outline="")
-            # Main face gradient (top-left bright, bottom-right dark)
-            num_cv.create_oval(1, 1, 33, 33,
-                               fill=ac, outline="")
-            # Specular highlight (top-left inner gleam)
-            num_cv.create_oval(4, 4, 18, 16,
-                               fill=_lerp(ac, "#ffffff", 0.45), outline="")
-            # Inner subtle ring
-            num_cv.create_oval(2, 2, 32, 32,
-                               outline=_lerp(ac, "#ffffff", 0.25), fill="", width=1)
-        else:
-            num_cv.create_oval(3, 3, 37, 37,
-                               fill=_darken(C["locked"], 0.6), outline="")
-            num_cv.create_oval(1, 1, 35, 35,
-                               fill=C["locked"], outline="")
-        num_cv.create_text(17, 17, text=str(lid),
-                            fill=C["bg"] if is_open else C["grey"],
-                            font=_retro(11, "bold"))
+        # ── Numbered circle badge ─────────────────────────────────────────
+        badge_size = 36
+        num_cv = tk.Canvas(inner_row, width=badge_size, height=badge_size,
+                            bg="#ffffff", highlightthickness=0)
+        num_cv.pack(side="left", padx=(0, 12))
 
-        info = tk.Frame(row1, bg=bg)
+        badge_col = dot_col if is_open else "#c8b8b0"
+        # Gradient circle
+        for i in range(badge_size//2, 0, -1):
+            t = i / (badge_size//2)
+            col = _lerp(_lerp(badge_col, "#ffffff", 0.4), badge_col, t)
+            num_cv.create_oval(badge_size//2 - i, badge_size//2 - i,
+                                badge_size//2 + i, badge_size//2 + i,
+                                fill=col, outline="")
+        num_cv.create_text(badge_size//2, badge_size//2,
+                            text=str(lid),
+                            font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
+                            fill="#ffffff")
+
+        # ── Title + subtitle ──────────────────────────────────────────────
+        info = tk.Frame(inner_row, bg="#ffffff")
         info.pack(side="left", fill="x", expand=True)
-        tk.Label(info, text=lvl["title"],
-                 font=_retro(11, "bold"),
-                 bg=bg, fg=C["white"] if is_open else C["grey"]).pack(anchor="w")
-        tk.Label(info, text=f"{lvl['difficulty']}  ·  10 Qs  ·  Pick difficulty",
-                 font=_retro(8),
-                 bg=bg, fg=diff_color if is_open else C["locked"]).pack(anchor="w")
 
-        if is_open:
-            status = tk.Frame(row1, bg=bg)
-            status.pack(side="right")
-            if is_done:
-                tk.Label(status, text="⭐"*stars_n+"☆"*(3-stars_n),
-                         font=_retro(13), bg=bg, fg=C["gold"]).pack()
-                tk.Label(status, text=f"{hs_score}/{hs_total}",
-                         font=_retro(8), bg=bg, fg=C["grey"]).pack()
-            else:
-                tk.Label(status, text="PLAY ▶",
-                         font=_retro(10, "bold"),
-                         bg=bg, fg=C["accent"],
-                         cursor="hand2").pack()
+        title_col = "#2d1a0e" if is_open else "#b0a0a0"
+        tk.Label(info,
+                 text=lvl["title"],
+                 font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
+                 bg="#ffffff", fg=title_col,
+                 anchor="w").pack(fill="x")
+
+        qt_labels = {
+            "kahoot":    "Kahoot",
+            "myth_fact": "Myth or Fact",
+            "hangman":   "Hangman",
+            "jigsaw":    "Jigsaw",
+            "crossword": "Crossword",
+            "jotto":     "Jotto",
+            "standard":  "Quiz",
+        }
+        qt  = lvl.get("quiz_type", "standard")
+        sub = f"{lvl['difficulty']}  ·  10 Qs  ·  {qt_labels.get(qt, qt.title())}"
+        tk.Label(info,
+                 text=sub,
+                 font=tkfont.Font(family="Segoe UI", size=9),
+                 bg="#ffffff", fg="#a08070",
+                 anchor="w").pack(fill="x")
+
+        # ── Right side: PLAY or stars ─────────────────────────────────────
+        if not is_open:
+            tk.Label(inner_row, text="🔒",
+                     font=("Segoe UI Emoji", 16),
+                     bg="#ffffff", fg="#c8b8b0").pack(side="right", padx=4)
+        elif is_done:
+            right_f = tk.Frame(inner_row, bg="#ffffff")
+            right_f.pack(side="right", padx=4)
+            # Star row
+            stars_lbl = tk.Label(right_f,
+                                  text="⭐" * stars_n + "☆" * (3 - stars_n),
+                                  font=("Segoe UI", 14),
+                                  bg="#ffffff", fg="#e8a040")
+            stars_lbl.pack()
+            tk.Label(right_f,
+                     text=f"{hs_score}/{hs_total}",
+                     font=tkfont.Font(family="Segoe UI", size=9),
+                     bg="#ffffff", fg="#a08070").pack()
         else:
-            tk.Label(row1, text="🔒",
-                     font=_retro(14), bg=bg,
-                     fg=C["grey"]).pack(side="right")
+            play_lbl = tk.Label(inner_row,
+                                 text="PLAY ▶",
+                                 font=tkfont.Font(family="Segoe UI", size=11, weight="bold"),
+                                 bg="#ffffff", fg="#c97b5a",
+                                 cursor="hand2")
+            play_lbl.pack(side="right", padx=8)
 
+        # Bind click on whole card
         if is_open:
-            for w in card.winfo_children() + [card]:
-                w.bind("<Button-1>", lambda e, l=lvl: self._open(l))
-            for w in row1.winfo_children() + [row1] + info.winfo_children():
-                w.bind("<Button-1>", lambda e, l=lvl: self._open(l))
+            for w in [card, inner_row, info, num_cv] + list(info.winfo_children()):
+                try:
+                    w.bind("<Button-1>", lambda e, l=lvl: self._open(l))
+                except Exception:
+                    pass
+            card.bind("<Enter>",
+                       lambda e: card.configure(bg="#fff8f4",
+                                                 highlightbackground="#c97b5a"))
+            card.bind("<Leave>",
+                       lambda e: card.configure(bg="#ffffff",
+                                                 highlightbackground="#e8ddd8"))
 
     def _open(self, lvl):
         SFX.play("click")
