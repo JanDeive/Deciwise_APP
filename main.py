@@ -2684,10 +2684,10 @@ class HangmanScreen(tk.Frame):
         hint_f.pack(fill="x")
         tk.Label(hint_f, text="💡  Hint:",
                  font=_retro(9, "bold"),
-                 bg="#fbe8dc", fg="#3498db").pack(anchor="w")
+                 bg="#fbe8dc", fg="#c97b5a").pack(anchor="w")
         tk.Label(hint_f, text=self._hint,
                  font=_retro(10),
-                 bg="#fbe8dc", fg="#ccddee",
+                 bg="#fbe8dc", fg="#5a3020",
                  wraplength=380, justify="left").pack(anchor="w")
 
         # ── Word blanks ───────────────────────────────────────────────────
@@ -3474,10 +3474,10 @@ class JottoScreen(tk.Frame):
         hf.pack(fill="x")
         tk.Label(hf, text="💡  Hint:",
                  font=_retro(9, "bold"),
-                 bg="#fbe8dc", fg=self._COL_ACC).pack(anchor="w")
+                 bg="#fbe8dc", fg="#c97b5a").pack(anchor="w")
         tk.Label(hf, text=self._hint,
                  font=_retro(10),
-                 bg="#fbe8dc", fg="#ffcccc",
+                 bg="#fbe8dc", fg="#5a3020",
                  wraplength=380, justify="left").pack(anchor="w")
 
         # ── Rules card ────────────────────────────────────────────────────
