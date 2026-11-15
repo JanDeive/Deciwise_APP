@@ -856,7 +856,7 @@ class LevelSelectScreen(tk.Frame):
         tk.Frame(hdr, bg="#f0e8e0", height=1).pack(fill="x")
 
         # ── Journey title ─────────────────────────────────────────────────
-        title_f = tk.Frame(self, bg="#faf6f0", pady=8)
+        title_f = tk.Frame(self, bg="#faf6f0", pady=3)
         title_f.pack(fill="x")
         tk.Label(title_f, text="Your Learning Journey",
                  font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
@@ -869,7 +869,7 @@ class LevelSelectScreen(tk.Frame):
 
         # ── Chapter swipe area ────────────────────────────────────────────
         # Nav row: ← Chapter N of N →
-        nav_f = tk.Frame(self, bg="#faf6f0", pady=4)
+        nav_f = tk.Frame(self, bg="#faf6f0", pady=1)
         nav_f.pack(fill="x", padx=16)
 
         self._prev_btn = tk.Label(nav_f, text="‹",
@@ -891,7 +891,7 @@ class LevelSelectScreen(tk.Frame):
 
         # Dot indicators
         dot_nav = tk.Frame(self, bg="#faf6f0")
-        dot_nav.pack()
+        dot_nav.pack(pady=(0,2))
         self._dots = []
         for i in range(len(self._all_acts)):
             d = tk.Canvas(dot_nav, width=10, height=10,
@@ -910,10 +910,10 @@ class LevelSelectScreen(tk.Frame):
         self._ch_sf.pack(fill="both", expand=True)
 
         # ── Bottom buttons ────────────────────────────────────────────────
-        btn_bar = tk.Frame(self, bg="#faf6f0", pady=10)
+        btn_bar = tk.Frame(self, bg="#faf6f0", pady=4)
         btn_bar.pack(fill="x")
         sep = tk.Frame(btn_bar, bg="#f0e8e0", height=1)
-        sep.pack(fill="x", pady=(0,8))
+        sep.pack(fill="x", pady=(0,4))
         btn_row = tk.Frame(btn_bar, bg="#faf6f0")
         btn_row.pack()
 
@@ -925,7 +925,7 @@ class LevelSelectScreen(tk.Frame):
                           highlightbackground="#e8c8b0",
                           highlightthickness=1)
             f.pack(side="left", padx=8, ipadx=4)
-            inner_b = tk.Frame(f, bg=bg_col, padx=16, pady=8)
+            inner_b = tk.Frame(f, bg=bg_col, padx=14, pady=6)
             inner_b.pack()
             tk.Label(inner_b, text=icon,
                      font=("Segoe UI Emoji", 13),
@@ -993,7 +993,7 @@ class LevelSelectScreen(tk.Frame):
         self._next_btn.configure(fg="#c97b5a" if self._ch_idx < total-1 else "#e8ddd8")
 
         # Chapter header
-        ch_bar = tk.Frame(inner, bg=hdr_dark, pady=12, padx=16)
+        ch_bar = tk.Frame(inner, bg=hdr_dark, pady=8, padx=14)
         ch_bar.pack(fill="x")
         dot_cv = tk.Canvas(ch_bar, width=12, height=12,
                             bg=hdr_dark, highlightthickness=0)
@@ -1016,7 +1016,7 @@ class LevelSelectScreen(tk.Frame):
             s       = self._scores.get(str(lid), {})
             self._card(inner, lvl, is_open, is_done, s, dot_col, hdr_dark)
 
-        tk.Label(inner, text="", bg="#faf6f0", height=3).pack()
+        tk.Label(inner, text="", bg="#faf6f0", height=1).pack()
 
     def _card(self, parent, lvl, is_open, is_done, sd, dot_col, hdr_dark):
         lid        = lvl["id"]
@@ -1026,7 +1026,7 @@ class LevelSelectScreen(tk.Frame):
         hs_total   = sd.get("total", 1)
 
         # Card outer frame
-        outer = tk.Frame(parent, bg="#faf6f0", pady=1, padx=12)
+        outer = tk.Frame(parent, bg="#faf6f0", pady=0, padx=10)
         outer.pack(fill="x")
 
         card = tk.Frame(outer, bg="#ffffff",
@@ -1034,14 +1034,14 @@ class LevelSelectScreen(tk.Frame):
                         highlightthickness=1)
         card.pack(fill="x")
 
-        inner_row = tk.Frame(card, bg="#ffffff", padx=12, pady=10)
+        inner_row = tk.Frame(card, bg="#ffffff", padx=10, pady=7)
         inner_row.pack(fill="x")
 
         # ── Numbered circle badge ─────────────────────────────────────────
-        badge_size = 36
+        badge_size = 34
         num_cv = tk.Canvas(inner_row, width=badge_size, height=badge_size,
                             bg="#ffffff", highlightthickness=0)
-        num_cv.pack(side="left", padx=(0, 12))
+        num_cv.pack(side="left", padx=(0, 10))
 
         badge_col = dot_col if is_open else "#c8b8b0"
         # Gradient circle
