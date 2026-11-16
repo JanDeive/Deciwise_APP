@@ -436,38 +436,9 @@ class SplashScreen(tk.Frame):
         form = tk.Frame(self, bg="#fdf6f0")
         form.pack(fill="both", expand=True, padx=32)
 
-        # Subtitle only — no "Welcome!" heading
-        tk.Label(form, text="Enter your name to continue",
-                 font=tkfont.Font(family="Segoe UI", size=11),
-                 bg="#fdf6f0", fg="#a08070").pack(anchor="w", pady=(20, 12))
+        # Get Started button — full width, no name field
+        tk.Frame(form, bg="#fdf6f0").pack(pady=(20, 0))
 
-        # Name input field — no label above it
-        entry_f = tk.Frame(form, bg="#ffffff",
-                            highlightbackground="#e8c8b0",
-                            highlightthickness=1)
-        entry_f.pack(fill="x", pady=(0, 20))
-
-        self._name_var = tk.StringVar()
-        try:
-            p = load_json(PROGRESS_DB)
-            self._name_var.set(p.get("player_name", ""))
-        except Exception:
-            pass
-
-        entry = tk.Entry(entry_f, textvariable=self._name_var,
-                          font=tkfont.Font(family="Segoe UI", size=14),
-                          bg="#ffffff", fg="#3d2314",
-                          insertbackground="#c97b5a",
-                          relief="flat", bd=8,
-                          highlightthickness=0,
-                          justify="left")
-        entry.pack(fill="x")
-        entry.focus()
-        entry.bind("<Return>", lambda e: self._go())
-        entry.bind("<FocusIn>",  lambda e: entry_f.configure(highlightbackground="#c97b5a"))
-        entry.bind("<FocusOut>", lambda e: entry_f.configure(highlightbackground="#e8c8b0"))
-
-        # Get Started button — full width
         start_f = tk.Frame(form, bg="#c97b5a",
                             highlightbackground=_darken("#c97b5a", 0.80),
                             highlightthickness=1)
@@ -481,8 +452,7 @@ class SplashScreen(tk.Frame):
         for w in [start_f, start_lbl]:
             w.bind("<Button-1>", lambda e: self._go())
         start_f.bind("<Enter>",
-                      lambda e: start_f.configure(bg=_lerp("#c97b5a","#ffffff",0.1),
-                                                    highlightbackground=_darken("#c97b5a",0.7)))
+                      lambda e: start_f.configure(bg=_lerp("#c97b5a","#ffffff",0.1)))
         start_lbl.bind("<Enter>",
                         lambda e: [start_f.configure(bg=_lerp("#c97b5a","#ffffff",0.1)),
                                    start_lbl.configure(bg=_lerp("#c97b5a","#ffffff",0.1))])
@@ -519,14 +489,7 @@ class SplashScreen(tk.Frame):
                  bg="#fdf6f0", fg="#c0a898").pack(side="bottom", pady=8)
 
     def _go(self):
-        name = self._name_var.get().strip() or "Player"
-        self.app.player_name = name
-        try:
-            p = load_json(PROGRESS_DB)
-            p["player_name"] = name
-            save_json(PROGRESS_DB, p)
-        except Exception:
-            pass
+        self.app.player_name = "Player"
         SFX.play("start")
         self.app.show("level_select")
 
