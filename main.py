@@ -308,8 +308,10 @@ class App(tk.Tk):
         self.title("DeciWise — Family Planning Quiz")
         self.geometry(f"{WINDOW_W}x{WINDOW_H}")
         self.resizable(False, False)
-        self.configure(bg=C["bg"])
+        self.configure(bg="#222222")   # phone bezel color
         self.update_idletasks()
+
+        # Center on screen
         x = (self.winfo_screenwidth()  - WINDOW_W) // 2
         y = (self.winfo_screenheight() - WINDOW_H) // 2
         self.geometry(f"{WINDOW_W}x{WINDOW_H}+{x}+{y}")
