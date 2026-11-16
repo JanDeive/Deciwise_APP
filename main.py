@@ -436,23 +436,16 @@ class SplashScreen(tk.Frame):
         form = tk.Frame(self, bg="#fdf6f0")
         form.pack(fill="both", expand=True, padx=32)
 
-        # Welcome label
-        tk.Label(form, text="Welcome!",
-                 font=tkfont.Font(family="Segoe UI", size=18, weight="bold"),
-                 bg="#fdf6f0", fg="#3d2314").pack(anchor="w", pady=(20, 2))
-        tk.Label(form, text="Enter your name to get started",
-                 font=tkfont.Font(family="Segoe UI", size=10),
-                 bg="#fdf6f0", fg="#a08070").pack(anchor="w", pady=(0, 16))
+        # Subtitle only — no "Welcome!" heading
+        tk.Label(form, text="Enter your name to continue",
+                 font=tkfont.Font(family="Segoe UI", size=11),
+                 bg="#fdf6f0", fg="#a08070").pack(anchor="w", pady=(20, 12))
 
-        # Name input field
-        tk.Label(form, text="Your Name",
-                 font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
-                 bg="#fdf6f0", fg="#6a4030").pack(anchor="w")
-
+        # Name input field — no label above it
         entry_f = tk.Frame(form, bg="#ffffff",
                             highlightbackground="#e8c8b0",
                             highlightthickness=1)
-        entry_f.pack(fill="x", pady=(4, 20))
+        entry_f.pack(fill="x", pady=(0, 20))
 
         self._name_var = tk.StringVar()
         try:
@@ -474,7 +467,7 @@ class SplashScreen(tk.Frame):
         entry.bind("<FocusIn>",  lambda e: entry_f.configure(highlightbackground="#c97b5a"))
         entry.bind("<FocusOut>", lambda e: entry_f.configure(highlightbackground="#e8c8b0"))
 
-        # Get Started button — full width, rounded, warm
+        # Get Started button — full width
         start_f = tk.Frame(form, bg="#c97b5a",
                             highlightbackground=_darken("#c97b5a", 0.80),
                             highlightthickness=1)
@@ -501,30 +494,24 @@ class SplashScreen(tk.Frame):
                                    start_lbl.configure(bg="#c97b5a")])
 
         # Divider
-        div = tk.Frame(form, bg="#f0e0d8", height=1)
-        div.pack(fill="x", pady=(0, 14))
+        tk.Frame(form, bg="#f0e0d8", height=1).pack(fill="x", pady=(0, 14))
 
-        # Secondary buttons row
-        btn_row = tk.Frame(form, bg="#fdf6f0")
-        btn_row.pack(fill="x")
-        for icon, lbl_txt, cmd in [
-            ("🏆", "Leaderboard", lambda: self.app.show("leaderboard")),
-            ("🎖", "Badges",      lambda: self.app.show("badges")),
-        ]:
-            bf = tk.Frame(btn_row, bg="#fef0e6",
-                           highlightbackground="#e8c8b0",
-                           highlightthickness=1)
-            bf.pack(side="left", expand=True, fill="x", padx=(0,8) if lbl_txt=="Leaderboard" else (0,0))
-            inner_b = tk.Frame(bf, bg="#fef0e6", pady=8)
-            inner_b.pack()
-            tk.Label(inner_b, text=icon,
-                      font=("Segoe UI Emoji", 13),
-                      bg="#fef0e6", fg="#c97b5a").pack(side="left", padx=(8,4))
-            tk.Label(inner_b, text=lbl_txt,
-                      font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
-                      bg="#fef0e6", fg="#c97b5a").pack(side="left", padx=(0,8))
-            for w in [bf, inner_b] + list(inner_b.winfo_children()):
-                w.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
+        # Badges button only (Leaderboard removed)
+        bf = tk.Frame(form, bg="#fef0e6",
+                       highlightbackground="#e8c8b0",
+                       highlightthickness=1)
+        bf.pack(fill="x")
+        inner_b = tk.Frame(bf, bg="#fef0e6", pady=10)
+        inner_b.pack()
+        tk.Label(inner_b, text="🎖",
+                  font=("Segoe UI Emoji", 14),
+                  bg="#fef0e6", fg="#c97b5a").pack(side="left", padx=(8,4))
+        tk.Label(inner_b, text="Badges & Achievements",
+                  font=tkfont.Font(family="Segoe UI", size=11, weight="bold"),
+                  bg="#fef0e6", fg="#c97b5a").pack(side="left", padx=(0,8))
+        for w in [bf, inner_b] + list(inner_b.winfo_children()):
+            w.bind("<Button-1>", lambda e: (SFX.play("click"),
+                                             self.app.show("badges")))
 
         # Version footer
         tk.Label(self, text="v2.0  ·  DeciWise  ·  Family Planning Quiz",
