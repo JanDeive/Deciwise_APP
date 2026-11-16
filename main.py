@@ -381,180 +381,158 @@ class App(tk.Tk):
 # ══════════════════════════════════════════════════════════════════════════════
 class SplashScreen(tk.Frame):
     def __init__(self, parent, app):
-        super().__init__(parent, bg=C["bg"])
+        super().__init__(parent, bg="#fdf6f0")
         self.app = app
         self._build()
 
     def _build(self):
-        # Animated title canvas
-        self._cv = tk.Canvas(self, width=WINDOW_W, height=220,
-                              bg=C["bg"], highlightthickness=0)
-        self._cv.pack()
-        self._draw_header()
+        self.configure(bg="#fdf6f0")
 
-        body = tk.Frame(self, bg=C["bg"])
-        body.pack(fill="both", expand=True, padx=28)
+        # ── Hero section ──────────────────────────────────────────────────
+        hero = tk.Frame(self, bg="#fbe8dc")
+        hero.pack(fill="x")
 
-        tk.Label(body, text="Family Planning Quiz System",
-                 font=_retro(8), bg=C["bg"],
-                 fg=C["grey"]).pack(pady=(4,2))
+        # Decorative top bar
+        tk.Frame(hero, bg="#c97b5a", height=4).pack(fill="x")
 
-        # Neon divider
-        sep = tk.Canvas(body, width=320, height=4,
-                        bg=C["bg"], highlightthickness=0)
-        sep.pack(pady=(0,16))
-        sep.create_rectangle(0, 1, 320, 2, fill=C["accent3"], outline="")
-        sep.create_rectangle(20, 0, 300, 3, fill=C["accent2"], outline="")
+        # Hero canvas — soft illustrated header
+        hcv = tk.Canvas(hero, width=WINDOW_W, height=230,
+                         bg="#fbe8dc", highlightthickness=0)
+        hcv.pack()
 
-        # Name entry
-        tk.Label(body, text="Your name",
-                 font=_retro(10, "bold"),
-                 bg=C["bg"], fg=C["accent"]).pack(anchor="w")
+        # Background soft circles (decorative)
+        hcv.create_oval(-40, -40, 180, 180, fill="#f5ddd0", outline="")
+        hcv.create_oval(260, 60, 480, 280, fill="#f5ddd0", outline="")
+        hcv.create_oval(140, 20, 300, 180, fill="#fdf0e8", outline="")
+
+        # App icon circle
+        cx, cy = WINDOW_W // 2, 90
+        hcv.create_oval(cx-50, cy-50, cx+50, cy+50,
+                         fill="#c97b5a", outline="")
+        hcv.create_oval(cx-44, cy-44, cx+44, cy+44,
+                         fill=_lerp("#c97b5a", "#ffffff", 0.15), outline="")
+        hcv.create_text(cx, cy, text="💑",
+                         font=("Segoe UI Emoji", 32))
+
+        # App name
+        hcv.create_text(cx+1, 155, text="DeciWise",
+                         font=tkfont.Font(family="Segoe UI", size=26, weight="bold"),
+                         fill=_lerp("#c97b5a", "#000000", 0.1))
+        hcv.create_text(cx, 154, text="DeciWise",
+                         font=tkfont.Font(family="Segoe UI", size=26, weight="bold"),
+                         fill="#c97b5a")
+
+        # Tagline
+        hcv.create_text(cx, 182, text="Family Planning Quiz",
+                         font=tkfont.Font(family="Segoe UI", size=11),
+                         fill="#a08070")
+
+        # Dot decoration row
+        for i, col in enumerate(["#c97b5a","#e8a887","#f5ddd0","#e8a887","#c97b5a"]):
+            hcv.create_oval(cx - 32 + i*16, 206, cx - 24 + i*16, 214,
+                             fill=col, outline="")
+
+        # ── Form section ──────────────────────────────────────────────────
+        form = tk.Frame(self, bg="#fdf6f0")
+        form.pack(fill="both", expand=True, padx=32)
+
+        # Welcome label
+        tk.Label(form, text="Welcome!",
+                 font=tkfont.Font(family="Segoe UI", size=18, weight="bold"),
+                 bg="#fdf6f0", fg="#3d2314").pack(anchor="w", pady=(20, 2))
+        tk.Label(form, text="Enter your name to get started",
+                 font=tkfont.Font(family="Segoe UI", size=10),
+                 bg="#fdf6f0", fg="#a08070").pack(anchor="w", pady=(0, 16))
+
+        # Name input field
+        tk.Label(form, text="Your Name",
+                 font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
+                 bg="#fdf6f0", fg="#6a4030").pack(anchor="w")
+
+        entry_f = tk.Frame(form, bg="#ffffff",
+                            highlightbackground="#e8c8b0",
+                            highlightthickness=1)
+        entry_f.pack(fill="x", pady=(4, 20))
+
         self._name_var = tk.StringVar()
-        # Load saved name
         try:
             p = load_json(PROGRESS_DB)
-            self._name_var.set(p.get("player_name",""))
+            self._name_var.set(p.get("player_name", ""))
         except Exception:
             pass
 
-        entry = tk.Entry(body, textvariable=self._name_var,
-                         font=_retro(13),
-                         bg="#ffffff", fg=C["white"],
-                         insertbackground=C["accent"],
-                         relief="flat", bd=0,
-                         highlightbackground=C["accent2"],
-                         highlightthickness=1,
-                         justify="center")
-        entry.pack(fill="x", ipady=8, pady=(6,24))
+        entry = tk.Entry(entry_f, textvariable=self._name_var,
+                          font=tkfont.Font(family="Segoe UI", size=14),
+                          bg="#ffffff", fg="#3d2314",
+                          insertbackground="#c97b5a",
+                          relief="flat", bd=8,
+                          highlightthickness=0,
+                          justify="left")
+        entry.pack(fill="x")
         entry.focus()
         entry.bind("<Return>", lambda e: self._go())
+        entry.bind("<FocusIn>",  lambda e: entry_f.configure(highlightbackground="#c97b5a"))
+        entry.bind("<FocusOut>", lambda e: entry_f.configure(highlightbackground="#e8c8b0"))
 
-        btn = Btn(body, "Get Started →", self._go,
-                  bg=C["accent"], fg=C["dark"], w=240, fs=13, pad_bg=C["bg"])
-        btn.pack(pady=(0,12))
+        # Get Started button — full width, rounded, warm
+        start_f = tk.Frame(form, bg="#c97b5a",
+                            highlightbackground=_darken("#c97b5a", 0.80),
+                            highlightthickness=1)
+        start_f.pack(fill="x", pady=(0, 14))
+        start_lbl = tk.Label(start_f,
+                              text="Get Started  →",
+                              font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
+                              bg="#c97b5a", fg="#ffffff",
+                              pady=12, cursor="hand2")
+        start_lbl.pack(fill="x")
+        for w in [start_f, start_lbl]:
+            w.bind("<Button-1>", lambda e: self._go())
+        start_f.bind("<Enter>",
+                      lambda e: start_f.configure(bg=_lerp("#c97b5a","#ffffff",0.1),
+                                                    highlightbackground=_darken("#c97b5a",0.7)))
+        start_lbl.bind("<Enter>",
+                        lambda e: [start_f.configure(bg=_lerp("#c97b5a","#ffffff",0.1)),
+                                   start_lbl.configure(bg=_lerp("#c97b5a","#ffffff",0.1))])
+        start_f.bind("<Leave>",
+                      lambda e: [start_f.configure(bg="#c97b5a"),
+                                 start_lbl.configure(bg="#c97b5a")])
+        start_lbl.bind("<Leave>",
+                        lambda e: [start_f.configure(bg="#c97b5a"),
+                                   start_lbl.configure(bg="#c97b5a")])
 
-        # Nav row
-        nav = tk.Frame(body, bg=C["bg"])
-        nav.pack(pady=(0,8))
-        Btn(nav, "🏆  Leaderboard",
-            lambda: self.app.show("leaderboard"),
-            bg=C["card2"], fg=C["xp"], w=166, fs=9,
-            pad_bg=C["bg"]).pack(side="left", padx=5)
-        Btn(nav, "🎖  Badges",
-            lambda: self.app.show("badges"),
-            bg=C["card2"], fg=C["gold"], w=166, fs=9,
-            pad_bg=C["bg"]).pack(side="left", padx=5)
+        # Divider
+        div = tk.Frame(form, bg="#f0e0d8", height=1)
+        div.pack(fill="x", pady=(0, 14))
 
-        # Theme toggle button
-        theme_row = tk.Frame(body, bg=C["bg"])
-        theme_row.pack(pady=(4, 0))
-        self._theme_btn_frame = theme_row
-        self._build_theme_btn(theme_row)
+        # Secondary buttons row
+        btn_row = tk.Frame(form, bg="#fdf6f0")
+        btn_row.pack(fill="x")
+        for icon, lbl_txt, cmd in [
+            ("🏆", "Leaderboard", lambda: self.app.show("leaderboard")),
+            ("🎖", "Badges",      lambda: self.app.show("badges")),
+        ]:
+            bf = tk.Frame(btn_row, bg="#fef0e6",
+                           highlightbackground="#e8c8b0",
+                           highlightthickness=1)
+            bf.pack(side="left", expand=True, fill="x", padx=(0,8) if lbl_txt=="Leaderboard" else (0,0))
+            inner_b = tk.Frame(bf, bg="#fef0e6", pady=8)
+            inner_b.pack()
+            tk.Label(inner_b, text=icon,
+                      font=("Segoe UI Emoji", 13),
+                      bg="#fef0e6", fg="#c97b5a").pack(side="left", padx=(8,4))
+            tk.Label(inner_b, text=lbl_txt,
+                      font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
+                      bg="#fef0e6", fg="#c97b5a").pack(side="left", padx=(0,8))
+            for w in [bf, inner_b] + list(inner_b.winfo_children()):
+                w.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
 
+        # Version footer
         tk.Label(self, text="v2.0  ·  DeciWise  ·  Family Planning Quiz",
-                 font=_retro(7), bg=C["bg"],
-                 fg=C["grey"]).pack(side="bottom", pady=6)
-        self._blink_insert(self.winfo_children()[-1])
-
-    def _build_theme_btn(self, parent):
-        """Draw the light/dark toggle switch canvas."""
-        for w in parent.winfo_children():
-            w.destroy()
-        is_light = _IS_LIGHT
-        sw_bg  = C["card2"]
-        label  = "☀  Light Mode" if not is_light else "🌙  Dark Mode"
-        lbl_fg = C["medium"] if not is_light else C["xp"]
-        Btn(parent, label, self._toggle_theme,
-            bg=sw_bg, fg=lbl_fg, w=340, fs=10,
-            pad_bg=C["bg"]).pack()
-
-    def _toggle_theme(self):
-        SFX.play("click")
-        _apply_theme(not _IS_LIGHT)
-        # Rebuild splash from scratch with new colors
-        self.app.show("splash")
-
-    def _draw_header(self):
-        cv = self._cv
-        cv.delete("all")
-        # Gradient background — dark top, slightly lighter bottom
-        _grad(cv, 0, 0, WINDOW_W, 220,
-              _lerp(C["bg"], "#000000", 0.3), _lerp(C["bg"], C["accent3"], 0.5),
-              steps=40)
-        # Scanlines
-        for y in range(0, 220, 3):
-            cv.create_line(0, y, WINDOW_W, y, fill="#171d17", width=1)
-        # Outer border — double neon line
-        cv.create_rectangle(6, 6, WINDOW_W-6, 214,
-                             outline=C["accent3"], width=1)
-        cv.create_rectangle(4, 4, WINDOW_W-4, 216,
-                             outline=C["accent"], width=2)
-        # Chunky corner squares
-        corner = 12
-        for cx2, cy2 in [(4,4),(WINDOW_W-4-corner,4),
-                          (4,216-corner),(WINDOW_W-4-corner,216-corner)]:
-            cv.create_rectangle(cx2, cy2, cx2+corner, cy2+corner,
-                                 fill=C["accent"], outline="")
-        # Neon glow under title (3-layer blur simulation)
-        # Neon glow layers under title (bloom effect)
-        for off, alpha in [(8,"#0d1f0d"),(6,"#1a3a22"),(4,"#204d2e"),(2,"#2e6640")]:
-            cv.create_text(WINDOW_W//2, 78+off//2,
-                            text="DECIWISE",
-                            font=_retro(38, "bold"),
-                            fill=alpha)
-        # 3D extrusion — stacked offset layers (bottom-right shadow)
-        for step in range(5, 0, -1):
-            shade = _lerp("#000000", _darken(C["accent"], 0.5), step / 5)
-            cv.create_text(WINDOW_W//2 + step, 75 + step,
-                            text="DECIWISE",
-                            font=_retro(38, "bold"),
-                            fill=shade)
-        # Main face
-        cv.create_text(WINDOW_W//2, 75,
-                        text="DECIWISE",
-                        font=_retro(38, "bold"),
-                        fill=C["accent"])
-        # Top-left specular highlight (bright edge)
-        cv.create_text(WINDOW_W//2 - 1, 74,
-                        text="DECIWISE",
-                        font=_retro(38, "bold"),
-                        fill=_lerp(C["accent"], "#ffffff", 0.35))
-        # Horizontal neon divider under title
-        cv.create_line(40, 100, WINDOW_W-40, 100,
-                        fill=C["accent3"], width=1)
-        cv.create_line(60, 102, WINDOW_W-60, 102,
-                        fill=C["accent2"], width=1)
-        # Subtitle
-        cv.create_text(WINDOW_W//2, 120, text="★  QUIZ EDITION  ★",
-                        font=_retro(12, "bold"), fill=C["medium"])
-        # Tagline
-        cv.create_text(WINDOW_W//2, 148, text="LEARN  //  DECIDE  //  GROW",
-                        font=_retro(9), fill=C["grey"])
-        self._after(cv)
-
-    def _after(self, cv, on=True):
-        """Blink a cursor on the header canvas."""
-        try:
-            cv.delete("cursor_line")
-            if on:
-                cv.create_oval(WINDOW_W//2 - 6, 193, WINDOW_W//2 + 6, 205,
-                               fill=C["accent2"], outline="",
-                               tags="cursor_line")
-            self._cv.after(500, lambda: self._after(cv, not on))
-        except Exception:
-            pass
-
-    def _blink_insert(self, lbl, on=True):
-        """Blink the INSERT COIN label."""
-        try:
-            lbl.configure(fg=C["accent"] if on else C["accent3"])
-            lbl.after(600, lambda: self._blink_insert(lbl, not on))
-        except Exception:
-            pass
+                 font=tkfont.Font(family="Segoe UI", size=8),
+                 bg="#fdf6f0", fg="#c0a898").pack(side="bottom", pady=8)
 
     def _go(self):
-        name = self._name_var.get().strip() or "PLAYER_1"
+        name = self._name_var.get().strip() or "Player"
         self.app.player_name = name
         try:
             p = load_json(PROGRESS_DB)
