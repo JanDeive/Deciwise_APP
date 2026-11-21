@@ -21,6 +21,8 @@ def _try_import_pygame():
         return None
 
 _pg = _try_import_pygame()
+_music = None
+_music_channel = None
 
 # ── Chiptune waveform generators ──────────────────────────────────────────────
 
@@ -212,6 +214,20 @@ def _build_sounds():
 
 _build_sounds()
 
+def _build_music():
+    global _music
+    if _pg is None:
+        return
+    _music = _chip_seq([
+        (262, 300), (330, 300), (392, 300), (330, 300),
+        (220, 300), (262, 300), (330, 300), (262, 300),
+        (175, 300), (220, 300), (262, 300), (220, 300),
+        (196, 300), (247, 300), (294, 300), (247, 300),
+    ], volume=0.16, duty=0.25)
+
+
+_build_music()
+
 
 # ── Public API ────────────────────────────────────────────────────────────────
 
@@ -224,8 +240,27 @@ def play(name: str):
         return
     threading.Thread(target=snd.play, daemon=True).start()
 
+def start_music():
+    """Start the generated background loop if audio is available and enabled."""
+    global _music_channel
+    if not _ENABLED or _pg is None or _music is None:
+        return
+    if _music_channel is None:
+        _music_channel = _pg.mixer.Channel(0)
+    if not _music_channel.get_busy():
+        _music_channel.set_volume(0.24)
+        _music_channel.play(_music, loops=-1)
+
+def stop_music():
+    """Stop the background loop without affecting sound effects."""
+    if _music_channel is not None:
+        _music_channel.stop()
 
 def mute(state: bool = True):
     """Globally mute (True) or unmute (False) all sounds."""
     global _ENABLED
     _ENABLED = not state
+    if state:
+        stop_music()
+    else:
+        start_music()

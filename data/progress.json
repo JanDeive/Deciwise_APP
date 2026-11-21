@@ -1,9 +1,60 @@
 {
-  "player_name": "",
-  "unlocked_levels": [1, 2, 3, 4, 5, 6],
-  "completed_levels": [],
-  "high_scores": {},
-  "total_xp": 0,
-  "badges": [],
-  "leaderboard": []
+  "player_name": "PLAYER_1",
+  "unlocked_levels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "completed_levels": [
+    4,
+    6
+  ],
+  "high_scores": {
+    "4": {
+      "score": 1,
+      "total": 1,
+      "stars": 3
+    },
+    "6": {
+      "score": 1,
+      "total": 1,
+      "stars": 3
+    }
+  },
+  "badges": [
+    "perfect_run"
+  ],
+  "leaderboard": [
+    {
+      "name": "PLAYER_1",
+      "level": 6,
+      "score": 1,
+      "total": 1,
+      "stars": 3
+    },
+    {
+      "name": "PLAYER_1",
+      "level": 6,
+      "score": 1,
+      "total": 1,
+      "stars": 3
+    },
+    {
+      "name": "PLAYER_1",
+      "level": 4,
+      "score": 1,
+      "total": 1,
+      "stars": 3
+    },
+    {
+      "name": "PLAYER_1",
+      "level": 4,
+      "score": 1,
+      "total": 1,
+      "stars": 3
+    }
+  ]
 }

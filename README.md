@@ -89,6 +89,25 @@ python main.py
 
 The game window will open at 430 × 800 pixels, centered on your screen.
 
+### Android Mobile App
+
+The native Kotlin version is in [`android-app/`](./android-app/). Open that
+folder in Android Studio, allow Gradle sync to finish, then select an emulator
+or connected Android device and press **Run**.
+
+To build a debug APK from Windows with Android SDK Platform 35 installed:
+
+```powershell
+cd android-app
+.\gradlew.bat assembleDebug
+```
+
+The APK is written to
+`android-app/app/build/outputs/apk/debug/app-debug.apk`. The mobile app uses
+the bundled question data and stores progress locally on the device. Its home,
+chapter select, story setup, and timed quiz screens follow the desktop flow in
+`main.py`, with touch-sized controls.
+
 ---
 
 ## 🗂 Project Structure
@@ -126,22 +145,20 @@ deciwise/
 ### Mechanics
 - ❤ **Lives system** — 3 hearts per level; lose one per wrong answer or timeout
 - ⏱ **Countdown timer** — colour-coded (green → amber → red)
-- ⚡ **XP system** — earn XP for correct answers and speed bonuses
 - ⏸ **Pause** — freeze timer mid-quiz
 - 🔒 **Progressive unlocking** — complete a level to unlock the next
 - ⭐ **Star ratings** — 1–3 stars per level based on score
 
 ### Progression
 - 🎖 **7 Badges** — earned by completing acts, perfect scores, and speed runs
-- 🏆 **Leaderboard** — top 10 scores saved locally, sorted by XP
-- 📊 **All-time XP** — accumulates across all sessions
+- 🏆 **Leaderboard** — top 10 scores saved locally, ranked by accuracy and stars
 
 ### Screens
 1. **Splash** — name entry, leaderboard and badge shortcuts
 2. **Level Select** — act-based journey map with score history
 3. **Story** — animated narrative with skip option
-4. **Quiz** — timed questions with live HUD (lives, timer, XP, progress bar)
-5. **Result** — score, XP, new badges, full answer review
+4. **Quiz** — timed questions with live HUD (lives, timer, progress bar)
+5. **Result** — score, stars, new badges, full answer review
 6. **Game Over** — triggered when lives reach zero
 7. **Leaderboard** — top 10 with gold/silver/bronze medals
 8. **Badges** — gallery of all achievements
@@ -151,7 +168,8 @@ deciwise/
 ## 🔊 Sound Effects
 
 All sounds are **synthesized in code** using pygame — no audio files are
-bundled. The `sound.py` module generates waveforms at runtime.
+bundled. The `sound.py` module generates waveforms at runtime, including
+looping background music that starts when the game opens.
 
 | Sound | Trigger |
 |---|---|
@@ -205,7 +223,6 @@ resetting progress. To reset all progress, replace the file contents with:
   "unlocked_levels": [1],
   "completed_levels": [],
   "high_scores": {},
-  "total_xp": 0,
   "badges": [],
   "leaderboard": [],
   "player_name": ""

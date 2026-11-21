@@ -53,7 +53,6 @@ C = {
     "timer_ok":  "#6abf8a",
     "timer_warn":"#e8a040",
     "timer_bad": "#d96b6b",
-    "xp":        "#c97b5a",   # terracotta XP
     "lives":     "#d96b6b",   # coral lives
     "banner":    "#fbe8dc",   # soft peach banner
     "glow":      "#f5ddd0",   # peach glow
@@ -85,7 +84,6 @@ _LIGHT_PALETTE = {
     "timer_ok":  "#5aaa7a",
     "timer_warn":"#d08830",
     "timer_bad": "#c05858",
-    "xp":        "#b56a48",
     "lives":     "#c05858",
     "banner":    "#fde8da",
     "glow":      "#f0d0c0",
@@ -109,10 +107,6 @@ QUIZ_MODE_KEY = "questions"
 TIMER = {"Easy": 30, "Medium": 22, "Hard": 16,
          "Beginner": 30, "Intermediate": 22, "Difficult": 16,
          "Kahoot": 20}
-XP_CORRECT   = 10
-XP_BONUS_FAST = 5   # answered in first half of timer
-XP_PERFECT   = 20   # bonus for 100% level
-
 # Lives
 MAX_LIVES = 3
 
@@ -267,21 +261,17 @@ def Btn(parent, text, cmd, bg=None, fg=None, w=None, h=None,
     cv = tk.Canvas(f, width=bw, height=bh, bg=pad_bg, highlightthickness=0)
     cv.pack()
 
+    def _capsule(x1, y1, x2, y2, fill):
+        rad = min((x2 - x1) / 2, (y2 - y1) / 2)
+        cv.create_oval(x1, y1, x1 + 2 * rad, y2, fill=fill, outline="")
+        cv.create_oval(x2 - 2 * rad, y1, x2, y2, fill=fill, outline="")
+        cv.create_rectangle(x1 + rad, y1, x2 - rad, y2, fill=fill, outline="")
+
     def draw(color=bg):
         cv.delete("all")
-        # Soft drop shadow (offset rectangle)
-        shadow_col = _darken(color, 0.82)
-        rr(cv, 3, 3, bw-1, bh-1, r=r, fill=shadow_col, outline="")
-        # Main pill body — solid fill, fully rounded
-        rr(cv, 1, 1, bw-4, bh-4, r=r, fill=color, outline="")
-        # Subtle inner top highlight
-        hi = _lerp(color, "#ffffff", 0.30)
-        rr(cv, 2, 2, bw-5, bh//2, r=r, fill=hi, outline="")
-        # Blend highlight back with semi-transparent effect
-        rr(cv, 2, 2, bw-5, bh//2, r=r,
-           fill=_lerp(color, hi, 0.35), outline="")
-        # Label
-        cv.create_text(bw//2, bh//2,
+        _capsule(3, 4, bw - 1, bh - 1, _darken(color, 0.82))
+        _capsule(1, 1, bw - 5, bh - 5, color)
+        cv.create_text((bw - 4) / 2, (bh - 4) / 2,
                        text=text, fill=fg, font=fnt)
 
     draw()
@@ -324,11 +314,11 @@ class App(tk.Tk):
         self.quiz_score       = 0
         self.quiz_answers     = []
         self.lives            = MAX_LIVES
-        self.total_xp_session = 0
         self.fast_answers     = 0
         self.congrats_level   = None   # set to level dict when player just passed
 
         self._frame = None
+        SFX.start_music()
         self.show("splash")
 
     # ── Navigate ──────────────────────────────────────────────────────────────
@@ -389,6 +379,21 @@ class SplashScreen(tk.Frame):
 
     def _build(self):
         self.configure(bg="#fdf6f0")
+        progress = load_json(PROGRESS_DB)
+        levels = load_json(QUESTIONS_DB)["levels"]
+        completed = set(progress.get("completed_levels", []))
+        unlocked = set(progress.get("unlocked_levels", [])) | {
+            level["id"] for level in levels
+        }
+        completed_count = sum(1 for level in levels if level["id"] in completed)
+        progress_ratio = completed_count / max(1, len(levels))
+        total_stars = sum(
+            progress.get("high_scores", {}).get(str(level["id"]), {}).get("stars", 0)
+            for level in levels)
+        next_level = next(
+            (level for level in levels
+             if level["id"] in unlocked and level["id"] not in completed),
+            None)
 
         # ── Hero section ──────────────────────────────────────────────────
         hero = tk.Frame(self, bg="#fbe8dc")
@@ -434,6 +439,49 @@ class SplashScreen(tk.Frame):
             hcv.create_oval(cx - 32 + i*16, 206, cx - 24 + i*16, 214,
                              fill=col, outline="")
 
+        journey = tk.Frame(self, bg="#ffffff",
+                           highlightbackground="#efe2d8",
+                           highlightthickness=1)
+        journey.pack(fill="x", padx=28, pady=(12, 0))
+        journey_body = tk.Frame(journey, bg="#ffffff", padx=14, pady=10)
+        journey_body.pack(fill="x")
+
+        journey_head = tk.Frame(journey_body, bg="#ffffff")
+        journey_head.pack(fill="x")
+        tk.Label(journey_head, text="YOUR ADVENTURE",
+                 font=("Segoe UI", 9, "bold"),
+                 bg="#ffffff", fg="#a08070").pack(side="left")
+        tk.Label(journey_head,
+                 text=f"🎖 {len(set(progress.get('badges', [])))} BADGES",
+                 font=("Segoe UI", 8, "bold"),
+                 bg="#fff4e8", fg="#c9842a",
+                 padx=7, pady=3).pack(side="right")
+
+        journey_stats = tk.Frame(journey_body, bg="#ffffff")
+        journey_stats.pack(fill="x", pady=(5, 0))
+        tk.Label(journey_stats,
+                 text=f"{completed_count} / {len(levels)} quests cleared",
+                 font=("Segoe UI", 11, "bold"),
+                 bg="#ffffff", fg="#3d2314").pack(side="left")
+        tk.Label(journey_stats,
+                 text=f"⭐ {total_stars} / {len(levels) * 3}",
+                 font=("Segoe UI", 10, "bold"),
+                 bg="#ffffff", fg="#c9842a").pack(side="right")
+
+        progress_track = tk.Frame(journey_body, bg="#f3e5dc", height=8)
+        progress_track.pack(fill="x", pady=(8, 6))
+        progress_track.pack_propagate(False)
+        if progress_ratio:
+            tk.Frame(progress_track, bg="#c97b5a").place(
+                relwidth=progress_ratio, relheight=1)
+
+        next_text = (f"NEXT QUEST  ·  {next_level['title']}"
+                     if next_level else "ALL QUESTS CLEARED  ·  AMAZING!")
+        tk.Label(journey_body, text=next_text,
+                 font=("Segoe UI", 8, "bold"),
+                 bg="#ffffff", fg="#c97b5a",
+                 anchor="w").pack(fill="x")
+
         # ── Form section ──────────────────────────────────────────────────
         form = tk.Frame(self, bg="#fdf6f0")
         form.pack(fill="both", expand=True, padx=32)
@@ -446,7 +494,10 @@ class SplashScreen(tk.Frame):
                             highlightthickness=1)
         start_f.pack(fill="x", pady=(0, 14))
         start_lbl = tk.Label(start_f,
-                              text="Get Started  →",
+                              text=("Replay Adventure  →"
+                                    if completed_count == len(levels) and levels
+                                    else "Continue Adventure  →"
+                                    if completed_count else "Start Your Adventure  →"),
                               font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
                               bg="#c97b5a", fg="#ffffff",
                               pady=12, cursor="hand2")
@@ -749,7 +800,9 @@ class LevelSelectScreen(tk.Frame):
     def _build(self):
         p         = load_json(PROGRESS_DB)
         levels    = load_json(QUESTIONS_DB)["levels"]
-        unlocked  = p.get("unlocked_levels", [1])
+        unlocked  = set(p.get("unlocked_levels", [])) | {
+            level["id"] for level in levels
+        }
         completed = p.get("completed_levels", [])
         scores    = p.get("high_scores", {})
         lvl_map   = {l["id"]: l for l in levels}
@@ -757,12 +810,12 @@ class LevelSelectScreen(tk.Frame):
         self._ch_idx = 0   # current chapter index
         self._all_acts = list(ACT_MAP.items())   # [(act_id, (label, title, color, lids))]
 
-        # Chapter colors
         self._CH_COLORS = {
-            1: ("#1a4d2e", "#3dba70"),
-            2: ("#0d3356", "#4a9fd4"),
-            3: ("#3a1a5c", "#a06abf"),
+            1: "#c97b5a",
+            2: "#d4922a",
+            3: "#8d5eaa",
         }
+        self._TAB_NAMES = {1: "Planning", 2: "Methods", 3: "Fertility"}
 
         self._p         = p
         self._unlocked  = unlocked
@@ -771,117 +824,75 @@ class LevelSelectScreen(tk.Frame):
         self._lvl_map   = lvl_map
         self._levels    = levels
 
-        # ── Fixed top bar ─────────────────────────────────────────────────
-        hdr = tk.Frame(self, bg="#ffffff")
-        hdr.pack(fill="x")
-        bar = tk.Frame(hdr, bg="#ffffff", pady=10, padx=16)
-        bar.pack(fill="x")
-        tk.Label(bar, text="DeciWise",
-                 font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
-                 bg="#ffffff", fg="#c97b5a").pack(side="left")
-        name = self.app.player_name or p.get("player_name", "Player")
-        tk.Label(bar, text=f"👤  {name.upper()}",
-                 font=tkfont.Font(family="Segoe UI", size=9),
-                 bg="#ffffff", fg="#a08070").pack(side="right", padx=4)
-        tk.Frame(hdr, bg="#f0e8e0", height=1).pack(fill="x")
+        page = "#fdf6f0"
+        ink  = "#3d2314"
+        mute = "#a08070"
 
-        # ── Journey title ─────────────────────────────────────────────────
-        title_f = tk.Frame(self, bg="#faf6f0", pady=3)
-        title_f.pack(fill="x")
-        tk.Label(title_f, text="Your Learning Journey",
-                 font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
-                 bg="#faf6f0", fg="#c97b5a").pack()
-        total_stars = sum(scores.get(str(l["id"]),{}).get("stars",0) for l in levels)
+        top = tk.Frame(self, bg=page)
+        top.pack(fill="x", padx=18, pady=(16, 0))
+        home = tk.Label(top, text="‹  Home",
+                        font=("Segoe UI", 11, "bold"),
+                        bg=page, fg="#c97b5a", cursor="hand2")
+        home.pack(side="left")
+        home.bind("<Button-1>",
+                  lambda e: (SFX.play("back"), self.app.show("splash")))
+
+        total_stars = sum(scores.get(str(l["id"]), {}).get("stars", 0) for l in levels)
         max_stars   = len(levels) * 3
-        tk.Label(title_f, text=f"⭐  {total_stars} of {max_stars} stars",
-                 font=tkfont.Font(family="Segoe UI", size=10),
-                 bg="#faf6f0", fg="#e8a040").pack()
+        hud = tk.Frame(top, bg=page)
+        hud.pack(side="right")
+        star_chip = tk.Frame(hud, bg="#fff4e8",
+                             highlightbackground="#f0d8c4", highlightthickness=1)
+        star_chip.pack(side="left", padx=(5, 0))
+        tk.Label(star_chip, text=f"★ {total_stars}/{max_stars}",
+                 font=("Segoe UI", 9, "bold"),
+                 bg="#fff4e8", fg="#c9842a",
+                 padx=7, pady=4).pack()
 
-        # ── Chapter swipe area ────────────────────────────────────────────
-        # Nav row: ← Chapter N of N →
-        nav_f = tk.Frame(self, bg="#faf6f0", pady=1)
-        nav_f.pack(fill="x", padx=16)
+        tk.Label(self, text="Choose your next quest",
+                 font=("Segoe UI", 22, "bold"),
+                 bg=page, fg=ink, anchor="w").pack(fill="x", padx=18, pady=(12, 0))
+        self._chapter_title = tk.Label(
+            self, text="",
+            font=("Segoe UI", 12),
+            bg=page, fg=mute, anchor="w")
+        self._chapter_title.pack(fill="x", padx=18, pady=(0, 12))
 
-        self._prev_btn = tk.Label(nav_f, text="‹",
-                                   font=tkfont.Font(family="Segoe UI", size=22, weight="bold"),
-                                   bg="#faf6f0", fg="#c97b5a", cursor="hand2")
-        self._prev_btn.pack(side="left")
-        self._prev_btn.bind("<Button-1>", lambda e: self._nav(-1))
+        tabs = tk.Frame(self, bg=page)
+        tabs.pack(fill="x", padx=16, pady=(0, 8))
+        self._tabs = []
+        for i, (act_id, (_label, _title, _color, _lids)) in enumerate(self._all_acts):
+            name = self._TAB_NAMES.get(act_id, f"Chapter {i+1}")
+            done = sum(1 for lid in _lids if lid in completed)
+            cell = tk.Frame(tabs, bg="#ffffff",
+                            highlightbackground="#efe2d8", highlightthickness=1)
+            cell.pack(side="left", expand=True, fill="x", padx=3)
+            lbl = tk.Label(cell, text=f"{name}  {done}/{len(_lids)}",
+                           font=("Segoe UI", 8, "bold"),
+                           bg="#ffffff", fg=mute, pady=10, cursor="hand2")
+            lbl.pack(fill="x")
+            for w in (cell, lbl):
+                w.bind("<Button-1>", lambda e, idx=i: self._go_chapter(idx))
+            self._tabs.append((cell, lbl))
 
-        self._nav_lbl = tk.Label(nav_f, text="",
-                                  font=tkfont.Font(family="Segoe UI", size=10),
-                                  bg="#faf6f0", fg="#a08070")
-        self._nav_lbl.pack(side="left", expand=True)
-
-        self._next_btn = tk.Label(nav_f, text="›",
-                                   font=tkfont.Font(family="Segoe UI", size=22, weight="bold"),
-                                   bg="#faf6f0", fg="#c97b5a", cursor="hand2")
-        self._next_btn.pack(side="right")
-        self._next_btn.bind("<Button-1>", lambda e: self._nav(1))
-
-        # Dot indicators
-        dot_nav = tk.Frame(self, bg="#faf6f0")
-        dot_nav.pack(pady=(0,2))
-        self._dots = []
-        for i in range(len(self._all_acts)):
-            d = tk.Canvas(dot_nav, width=10, height=10,
-                           bg="#faf6f0", highlightthickness=0)
-            d.pack(side="left", padx=3)
-            d.create_oval(1, 1, 9, 9, fill="#e8ddd8", outline="", tags="dot")
-            self._dots.append(d)
-
-        # Swipe bindings
         self._drag_x = None
         self.bind("<ButtonPress-1>",   self._swipe_start)
         self.bind("<ButtonRelease-1>", self._swipe_end)
 
-        # Scrollable chapter content area
-        self._ch_sf = ScrollFrame(self, bg="#faf6f0")
-        self._ch_sf.pack(fill="both", expand=True)
+        self._ch_sf = ScrollFrame(self, bg=page)
+        self._ch_sf.pack(fill="both", expand=True, pady=(6, 10))
 
-        # ── Bottom buttons ────────────────────────────────────────────────
-        btn_bar = tk.Frame(self, bg="#faf6f0", pady=4)
-        btn_bar.pack(fill="x")
-        sep = tk.Frame(btn_bar, bg="#f0e8e0", height=1)
-        sep.pack(fill="x", pady=(0,4))
-        btn_row = tk.Frame(btn_bar, bg="#faf6f0")
-        btn_row.pack()
+        self._render_chapter()
 
-        for icon, txt, cmd, bg_col, fg_col in [
-            ("🏠", "Home",        lambda: self.app.show("splash"),      "#fdf0e8", "#c97b5a"),
-            ("🏆", "Leaderboard", lambda: self.app.show("leaderboard"), "#fdf0e8", "#c97b5a"),
-        ]:
-            f = tk.Frame(btn_row, bg=bg_col,
-                          highlightbackground="#e8c8b0",
-                          highlightthickness=1)
-            f.pack(side="left", padx=8, ipadx=4)
-            inner_b = tk.Frame(f, bg=bg_col, padx=14, pady=6)
-            inner_b.pack()
-            tk.Label(inner_b, text=icon,
-                     font=("Segoe UI Emoji", 13),
-                     bg=bg_col, fg=fg_col).pack(side="left", padx=(0,4))
-            tk.Label(inner_b, text=txt,
-                     font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
-                     bg=bg_col, fg=fg_col).pack(side="left")
-            for w in [f, inner_b] + list(inner_b.winfo_children()):
-                w.bind("<Button-1>", lambda e, c=cmd: (SFX.play("click"), c()))
-            # Hover effect
-            def _enter(e, fr=f, bg=bg_col):
-                fr.configure(highlightbackground="#c97b5a")
-            def _leave(e, fr=f):
-                fr.configure(highlightbackground="#e8c8b0")
-            f.bind("<Enter>", _enter)
-            f.bind("<Leave>", _leave)
-
-        # Render first chapter
+    def _go_chapter(self, idx):
+        if idx == self._ch_idx or not (0 <= idx < len(self._all_acts)):
+            return
+        self._ch_idx = idx
+        SFX.play("click")
         self._render_chapter()
 
     def _nav(self, direction):
-        new_idx = self._ch_idx + direction
-        if 0 <= new_idx < len(self._all_acts):
-            self._ch_idx = new_idx
-            SFX.play("click")
-            self._render_chapter()
+        self._go_chapter(self._ch_idx + direction)
 
     def _swipe_start(self, event):
         self._drag_x = event.x
@@ -904,269 +915,143 @@ class LevelSelectScreen(tk.Frame):
         self._ch_sf.top()
 
         act_id, (act_label, act_title, act_color, lids) = self._all_acts[self._ch_idx]
-        hdr_dark, dot_col = self._CH_COLORS.get(act_id, ("#333333", act_color))
-        act_done = all(lid in self._completed for lid in lids)
+        dot_col = self._CH_COLORS.get(act_id, act_color)
+        done_n = sum(1 for lid in lids if lid in self._completed)
         inner = self._ch_sf.inner
-        inner.configure(padx=0)
+        inner.configure(padx=0, bg="#fdf6f0")
 
-        # Nav label
-        total = len(self._all_acts)
-        self._nav_lbl.configure(
-            text=f"Chapter {self._ch_idx + 1} of {total}")
+        self._chapter_title.configure(
+            text=f"{act_label}  ·  {act_title}   ·   {done_n} of {len(lids)} done")
 
-        # Update dots
-        for i, d in enumerate(self._dots):
-            d.itemconfig("dot", fill=dot_col if i == self._ch_idx else "#e8ddd8")
+        for i, (cell, lbl) in enumerate(self._tabs):
+            on = i == self._ch_idx
+            bg = dot_col if on else "#ffffff"
+            fg = "#ffffff" if on else "#a08070"
+            edge = dot_col if on else "#efe2d8"
+            cell.configure(bg=bg, highlightbackground=edge)
+            lbl.configure(bg=bg, fg=fg)
 
-        # Prev/Next arrow visibility
-        self._prev_btn.configure(fg="#c97b5a" if self._ch_idx > 0 else "#e8ddd8")
-        self._next_btn.configure(fg="#c97b5a" if self._ch_idx < total-1 else "#e8ddd8")
-
-        # Chapter header
-        ch_bar = tk.Frame(inner, bg=hdr_dark, pady=8, padx=14)
-        ch_bar.pack(fill="x")
-        dot_cv = tk.Canvas(ch_bar, width=12, height=12,
-                            bg=hdr_dark, highlightthickness=0)
-        dot_cv.pack(side="left", padx=(0, 10))
-        dot_cv.create_oval(0, 0, 12, 12, fill=dot_col, outline="")
-        tk.Label(ch_bar,
-                 text=f"{act_label}  ·  {act_title}",
-                 font=tkfont.Font(family="Segoe UI", size=13, weight="bold"),
-                 bg=hdr_dark, fg="#ffffff").pack(side="left")
-        if act_done:
-            tk.Label(ch_bar, text="✓ Complete",
-                     font=tkfont.Font(family="Segoe UI", size=9, weight="bold"),
-                     bg=hdr_dark, fg=dot_col).pack(side="right")
-
-        # Level cards
         for lid in lids:
             lvl     = self._lvl_map[lid]
             is_open = lid in self._unlocked
             is_done = lid in self._completed
             s       = self._scores.get(str(lid), {})
-            self._card(inner, lvl, is_open, is_done, s, dot_col, hdr_dark)
+            self._card(inner, lvl, is_open, is_done, s, dot_col)
 
-        tk.Label(inner, text="", bg="#faf6f0", height=1).pack()
+        tk.Label(inner, text="", bg="#fdf6f0", height=1).pack()
+        self._bind_wheel(inner)
 
-    def _card(self, parent, lvl, is_open, is_done, sd, dot_col, hdr_dark):
-        lid      = lvl["id"]
-        stars_n  = sd.get("stars", 0)
-        hs_score = sd.get("score", 0)
-        hs_total = sd.get("total", 1)
+    def _bind_wheel(self, widget):
+        widget.bind(
+            '<MouseWheel>',
+            lambda e: self._ch_sf._cv.yview_scroll(int(-1 * (e.delta / 120)), 'units'),
+            add='+')
+        for child in widget.winfo_children():
+            self._bind_wheel(child)
 
-        # Game type info
+    def _card(self, parent, lvl, is_open, is_done, sd, dot_col):
+        lid      = lvl['id']
+        stars_n  = sd.get('stars', 0)
+        hs_score = sd.get('score', 0)
+        hs_total = sd.get('total', 1)
+
         qt_meta = {
-            "kahoot":    ("🎮", "Kahoot Quiz",    "#e8734a"),
-            "myth_fact": ("🧠", "Myth or Fact",   "#7a5abf"),
-            "hangman":   ("🎯", "Hangman",         "#4a9fd4"),
-            "jigsaw":    ("🧩", "Jigsaw Puzzle",   "#e8a040"),
-            "crossword": ("📝", "Crossword",       "#4abf8a"),
-            "jotto":     ("🔤", "Jotto",           "#d96b6b"),
-            "standard":  ("❓", "Quiz",            "#c97b5a"),
+            'kahoot':    ('Kahoot',    '#e8734a'),
+            'myth_fact': ('Myth/Fact', '#7a5abf'),
+            'hangman':   ('Hangman',   '#4a9fd4'),
+            'jigsaw':    ('Jigsaw',    '#e8a040'),
+            'crossword': ('Crossword', '#4abf8a'),
+            'jotto':     ('Jotto',     '#d96b6b'),
+            'standard':  ('Quiz',      '#c97b5a'),
         }
-        qt = lvl.get("quiz_type", "standard")
-        qt_icon, qt_name, qt_color = qt_meta.get(qt, ("❓", qt.title(), "#c97b5a"))
+        qt = lvl.get('quiz_type', 'standard')
+        qt_name, qt_color = qt_meta.get(qt, (qt.title(), '#c97b5a'))
+        diff_colors = {'Easy': '#4abf8a', 'Medium': '#e8a040', 'Hard': '#d96b6b'}
+        diff_col = diff_colors.get(lvl['difficulty'], '#a08070')
 
-        diff_colors = {"Easy": "#4abf8a", "Medium": "#e8a040", "Hard": "#d96b6b"}
-        diff_col = diff_colors.get(lvl["difficulty"], "#a08070")
+        page = '#fdf6f0'
+        card_bg = '#ffffff' if is_open else '#f3ebe6'
+        ink = '#3d2314' if is_open else '#b0a090'
+        mute = '#a08070' if is_open else '#c4b4aa'
 
-        # Card uses Canvas for rounded corners + gradient
-        card_h   = 115 if not is_done else 110
-        card_w   = WINDOW_W - 24   # 12px margin each side
-        pad_x    = 12
+        outer = tk.Frame(parent, bg=page)
+        outer.pack(fill='x', padx=16, pady=7)
 
-        outer = tk.Frame(parent, bg="#faf6f0", pady=5, padx=pad_x)
-        outer.pack(fill="x")
+        card = tk.Frame(outer, bg=card_bg,
+                        highlightbackground='#efe2d8' if is_open else '#e6dbd4',
+                        highlightthickness=1)
+        card.pack(fill='x')
 
-        cv = tk.Canvas(outer, width=card_w, height=card_h,
-                        bg="#faf6f0", highlightthickness=0)
-        cv.pack()
+        accent = tk.Frame(card, bg=dot_col if is_open else '#ddd4cc', width=6)
+        accent.pack(side='left', fill='y')
 
-        # Card colors — locked is desaturated
-        if not is_open:
-            card_bg  = "#e8e0da"
-            card_bg2 = "#ddd8d2"
-            text_col = "#b0a090"
-        else:
-            card_bg  = _lerp(dot_col, "#ffffff", 0.82)
-            card_bg2 = _lerp(dot_col, "#ffffff", 0.68)
-            text_col = "#2d1a0e"
+        body = tk.Frame(card, bg=card_bg, padx=14, pady=16)
+        body.pack(side='left', fill='both', expand=True)
 
-        # Draw rounded card with gradient
-        r = 18
-        _grad_rr(cv, 0, 0, card_w, card_h,
-                  card_bg, card_bg2, r=r, steps=30)
+        top = tk.Frame(body, bg=card_bg)
+        top.pack(fill='x')
 
-        # Left colored accent strip
-        if is_open:
-            for i in range(r):
-                t = i / r
-                strip_col = _lerp(dot_col, _lerp(dot_col, "#ffffff", 0.3), t)
-                cv.create_rectangle(0, i, 8, card_h-i, fill=strip_col, outline="")
-            rr(cv, 0, 0, 8, card_h, r=r, fill=dot_col, outline="")
+        badge_bg = dot_col if is_open else '#ddd4cc'
+        badge = tk.Label(top, text=str(lid),
+                         font=('Segoe UI', 13, 'bold'),
+                         bg=badge_bg, fg='#ffffff',
+                         width=3, pady=6)
+        badge.pack(side='left')
 
-        # Level number badge (circle)
-        bx, by = 32, card_h // 2
-        badge_col = dot_col if is_open else "#b8a8a0"
-        # Shadow
-        cv.create_oval(bx-17, by-17, bx+19, by+19,
-                        fill=_darken(badge_col, 0.70), outline="")
-        # Main circle
-        cv.create_oval(bx-18, by-18, bx+18, by+18,
-                        fill=badge_col, outline="")
-        # Highlight
-        cv.create_oval(bx-14, by-16, bx+2, by-4,
-                        fill=_lerp(badge_col, "#ffffff", 0.4), outline="")
-        # Number
-        cv.create_text(bx, by,
-                        text=str(lid),
-                        font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
-                        fill="#ffffff")
+        title_col = tk.Frame(top, bg=card_bg)
+        title_col.pack(side='left', fill='x', expand=True, padx=(12, 8))
+        tk.Label(title_col, text=lvl['title'],
+                 font=('Segoe UI', 13, 'bold'),
+                 bg=card_bg, fg=ink,
+                 wraplength=250, justify='left', anchor='w').pack(anchor='w')
 
-        # Title
-        cv.create_text(68, 28,
-                        text=lvl["title"],
-                        font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
-                        fill=text_col,
-                        anchor="w", width=card_w - 76)
-
-        # Difficulty pill
-        diff_pill_x = 68
-        cv.create_rectangle(diff_pill_x, 44, diff_pill_x+52, 58,
-                              fill=diff_col if is_open else "#c8c0bc",
-                              outline="")
-        cv.create_text(diff_pill_x + 26, 51,
-                        text=lvl["difficulty"],
-                        font=tkfont.Font(family="Segoe UI", size=8, weight="bold"),
-                        fill="#ffffff")
-
-        # Game type badge (rounded)
-        gx = diff_pill_x + 60
-        badge_w = len(qt_name) * 7 + 16
-        cv.create_rectangle(gx, 44, gx + badge_w, 58,
-                              fill=qt_color if is_open else "#c8c0bc",
-                              outline="")
-        cv.create_text(gx + badge_w//2, 51,
-                        text=f"{qt_icon} {qt_name}",
-                        font=tkfont.Font(family="Segoe UI", size=8),
-                        fill="#ffffff")
-
-        # Right side: PLAY button or stars or lock
-        if not is_open:
-            cv.create_text(card_w - 20, card_h//2,
-                            text="🔒",
-                            font=("Segoe UI Emoji", 20),
-                            anchor="e")
-        elif is_done:
-            # Star display
-            star_text = "⭐" * stars_n + "☆" * (3 - stars_n)
-            cv.create_text(card_w - 14, card_h//2 - 8,
-                            text=star_text,
-                            font=("Segoe UI", 16),
-                            fill="#e8a040", anchor="e")
-            cv.create_text(card_w - 14, card_h//2 + 14,
-                            text=f"{hs_score}/{hs_total}",
-                            font=tkfont.Font(family="Segoe UI", size=9),
-                            fill="#a08070", anchor="e")
-        else:
-            # PLAY button — pill shape on canvas
-            px1, py1 = card_w - 92, card_h//2 - 17
-            px2, py2 = card_w - 10, card_h//2 + 17
-            pr = 14
-            # Button shadow
-            rr(cv, px1+2, py1+2, px2+2, py2+2, r=pr,
-               fill=_darken(dot_col, 0.60), outline="")
-            # Button body gradient
-            _grad_rr(cv, px1, py1, px2, py2,
-                      _lerp(dot_col, "#ffffff", 0.30), dot_col,
-                      r=pr, steps=16)
-            cv.create_text((px1+px2)//2, (py1+py2)//2,
-                            text="PLAY  ▶",
-                            font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
-                            fill="#ffffff")
-
-        # Hover / click bindings
-        def _on_enter(e, c=cv, bg=card_bg, bg2=card_bg2):
-            if is_open:
-                _grad_rr(c, 0, 0, card_w, card_h,
-                          _lerp(bg, "#ffffff", 0.3),
-                          _lerp(bg2, "#ffffff", 0.2),
-                          r=r, steps=30)
-                # Redraw accent strip, badge, text on hover
-                self._redraw_card(c, lvl, lid, dot_col, qt_icon, qt_name,
-                                   qt_color, diff_col, stars_n, hs_score,
-                                   hs_total, is_done, card_w, card_h, r,
-                                   text_col, True)
-
-        def _on_leave(e, c=cv, bg=card_bg, bg2=card_bg2):
-            if is_open:
-                _grad_rr(c, 0, 0, card_w, card_h, bg, bg2, r=r, steps=30)
-                self._redraw_card(c, lvl, lid, dot_col, qt_icon, qt_name,
-                                   qt_color, diff_col, stars_n, hs_score,
-                                   hs_total, is_done, card_w, card_h, r,
-                                   text_col, False)
-
-        if is_open:
-            cv.bind("<Enter>",    _on_enter)
-            cv.bind("<Leave>",    _on_leave)
-            cv.bind("<Button-1>", lambda e, l=lvl: self._open(l))
-
-    def _redraw_card(self, cv, lvl, lid, dot_col, qt_icon, qt_name,
-                     qt_color, diff_col, stars_n, hs_score, hs_total,
-                     is_done, card_w, card_h, r, text_col, hovered):
-        """Redraw card content after gradient is redrawn on hover/leave."""
-        # Left accent strip
-        rr(cv, 0, 0, 8, card_h, r=r,
-           fill=_lerp(dot_col, "#ffffff", 0.1 if hovered else 0), outline="")
-        # Badge
-        bx, by = 32, card_h // 2
-        cv.create_oval(bx-17, by-17, bx+19, by+19,
-                        fill=_darken(dot_col, 0.70), outline="")
-        cv.create_oval(bx-18, by-18, bx+18, by+18, fill=dot_col, outline="")
-        cv.create_oval(bx-14, by-16, bx+2, by-4,
-                        fill=_lerp(dot_col, "#ffffff", 0.4), outline="")
-        cv.create_text(bx, by, text=str(lid),
-                        font=tkfont.Font(family="Segoe UI", size=16, weight="bold"),
-                        fill="#ffffff")
-        # Title
-        cv.create_text(68, 28, text=lvl["title"],
-                        font=tkfont.Font(family="Segoe UI", size=12, weight="bold"),
-                        fill=text_col, anchor="w", width=card_w - 76)
-        # Difficulty pill
-        dpx = 68
-        cv.create_rectangle(dpx, 44, dpx+52, 58, fill=diff_col, outline="")
-        cv.create_text(dpx+26, 51, text=lvl["difficulty"],
-                        font=tkfont.Font(family="Segoe UI", size=8, weight="bold"),
-                        fill="#ffffff")
-        # Game badge
-        gx = dpx + 60
-        bw = len(qt_name) * 7 + 16
-        cv.create_rectangle(gx, 44, gx+bw, 58, fill=qt_color, outline="")
-        cv.create_text(gx+bw//2, 51, text=f"{qt_icon} {qt_name}",
-                        font=tkfont.Font(family="Segoe UI", size=8),
-                        fill="#ffffff")
-        # Right side
         if is_done:
-            cv.create_text(card_w-14, card_h//2-8,
-                            text="⭐"*stars_n+"☆"*(3-stars_n),
-                            font=("Segoe UI", 16), fill="#e8a040", anchor="e")
-            cv.create_text(card_w-14, card_h//2+14,
-                            text=f"{hs_score}/{hs_total}",
-                            font=tkfont.Font(family="Segoe UI", size=9),
-                            fill="#a08070", anchor="e")
+            status = f'QUEST CLEARED  ·  Best {hs_score}/{hs_total}'
+        elif is_open:
+            status = 'QUEST AVAILABLE'
         else:
-            px1, py1 = card_w-92, card_h//2-17
-            px2, py2 = card_w-10, card_h//2+17
-            pr = 14
-            rr(cv, px1+2, py1+2, px2+2, py2+2, r=pr,
-               fill=_darken(dot_col, 0.60), outline="")
-            _grad_rr(cv, px1, py1, px2, py2,
-                      _lerp(dot_col, "#ffffff", 0.30), dot_col,
-                      r=pr, steps=16)
-            cv.create_text((px1+px2)//2, (py1+py2)//2,
-                            text="PLAY  ▶",
-                            font=tkfont.Font(family="Segoe UI", size=10, weight="bold"),
-                            fill="#ffffff")
+            status = 'LOCKED  ·  Finish the previous quest'
+        tk.Label(title_col, text=status,
+                 font=('Segoe UI', 9),
+                 bg=card_bg, fg=mute, anchor='w').pack(anchor='w', pady=(2, 0))
+
+        chips = tk.Frame(body, bg=card_bg)
+        chips.pack(anchor='w', pady=(10, 0))
+        tk.Label(chips, text=lvl['difficulty'],
+                 font=('Segoe UI', 8, 'bold'),
+                 bg=diff_col if is_open else '#ddd4cc', fg='#ffffff',
+                 padx=8, pady=2).pack(side='left', padx=(0, 6))
+        tk.Label(chips, text=qt_name,
+                 font=('Segoe UI', 8, 'bold'),
+                 bg='#fff4e8' if is_open else '#efe6e0',
+                 fg=qt_color if is_open else mute,
+                 padx=8, pady=2).pack(side='left')
+
+        if is_done:
+            stars = '\u2605' * stars_n + '\u2606' * (3 - stars_n)
+            action = tk.Label(body, text=stars + '    Replay',
+                              font=('Segoe UI', 11, 'bold'),
+                              bg=card_bg, fg='#c9842a', anchor='w')
+            action.pack(anchor='w', pady=(12, 0))
+        elif is_open:
+            action = tk.Label(body, text='⚔  Start Quest  \u2192',
+                              font=('Segoe UI', 11, 'bold'),
+                              bg=dot_col, fg='#ffffff',
+                              padx=16, pady=6)
+            action.pack(anchor='w', pady=(12, 0))
+        else:
+            action = tk.Label(body, text='🔒  Clear the previous quest',
+                              font=('Segoe UI', 9),
+                              bg=card_bg, fg=mute, anchor='w')
+            action.pack(anchor='w', pady=(12, 0))
+
+        if is_open:
+            def _bind_click(widget, level=lvl):
+                widget.configure(cursor='hand2')
+                widget.bind('<Button-1>', lambda e, l=level: self._open(l))
+                for child in widget.winfo_children():
+                    _bind_click(child, level)
+            _bind_click(card)
 
     def _open(self, lvl):
         SFX.play("click")
@@ -1449,14 +1334,6 @@ class StoryScreen(tk.Frame):
                                bg=C["bg"], fg=C["bg"])
         self._info.pack(pady=(12,4))
 
-        # XP info
-        xp_est = 10 * XP_CORRECT
-        self._xp_lbl = tk.Label(inn,
-                                  text=f"⚡ Earn up to {xp_est + XP_PERFECT} XP",
-                                  font=_retro(9),
-                                  bg=C["bg"], fg=C["bg"])
-        self._xp_lbl.pack(pady=(0,8))
-
         # ── Difficulty picker or Begin button (revealed after story) ────────
         self._diff_frame = tk.Frame(inn, bg=C["bg"])
         self._diff_frame.pack(pady=(0,6))
@@ -1588,7 +1465,6 @@ class StoryScreen(tk.Frame):
         n = self._FADE_STEPS
         t = min(step/n, 1.0)
         self._info.configure(fg=_lerp(C["bg"], C["grey"], t))
-        self._xp_lbl.configure(fg=_lerp(C["bg"], C["xp"], t))
         self._diff_label.configure(
             fg=_lerp(C["bg"], C["accent"], t),
             bg=_lerp(C["bg"], C["bg"], t))
@@ -1618,7 +1494,6 @@ class StoryScreen(tk.Frame):
         self._hdr_lbl.configure(fg=C["accent"])
         self._st.configure(text=lvl["story"])
         self._info.configure(fg=C["grey"])
-        self._xp_lbl.configure(fg=C["xp"])
         self._diff_label.configure(fg=C["accent"])
         if not self._back_f.winfo_ismapped():
             self._back_f.pack(pady=(8, 24))
@@ -1633,7 +1508,7 @@ class StoryScreen(tk.Frame):
         self.app.show("level_select")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SCREEN — Quiz  (timer + lives + XP + pause)
+# SCREEN — Quiz  (timer + lives + pause)
 # ══════════════════════════════════════════════════════════════════════════════
 class QuizScreen(tk.Frame):
     def __init__(self, parent, app):
@@ -1684,11 +1559,6 @@ class QuizScreen(tk.Frame):
             font=_retro(10, "bold"),
             bg=C["banner"], fg=C["accent"])
         mode_badge.pack(side="left", padx=4)
-
-        # XP
-        tk.Label(hud, text=f"⚡ {app.total_xp_session}",
-                 font=_retro(9, "bold"),
-                 bg=C["banner"], fg=C["xp"]).pack(side="left", padx=4)
 
         # Timer
         self._timer_lbl = tk.Label(hud,
@@ -1818,12 +1688,11 @@ class QuizScreen(tk.Frame):
                                  wraplength=360, justify="left")
         self._expl_l.pack(anchor="w")
 
-        # XP flash (hidden)
-        self._xp_f = tk.Frame(inn, bg=C["bg"])
-        self._xp_l = tk.Label(self._xp_f, text="",
-                               font=_retro(12, "bold"),
-                               bg=C["bg"], fg=C["xp"])
-        self._xp_l.pack()
+        self._feedback_f = tk.Frame(inn, bg=C["bg"])
+        self._feedback_l = tk.Label(self._feedback_f, text="",
+                                     font=_retro(10, "bold"),
+                                     bg=C["bg"], fg=C["lives"])
+        self._feedback_l.pack()
 
         # Next button (hidden)
         self._next_f = tk.Frame(inn, bg=C["bg"], pady=6)
@@ -1873,8 +1742,10 @@ class QuizScreen(tk.Frame):
         self._expl_l.configure(
             text=f"⏱ Time's up!  {self._current_q.get('explanation','')}")
         self._expl_f.pack(fill="x", pady=(8,4))
-        self._xp_l.configure(text="No XP — Time's up!", fg=C["wrong"])
-        self._xp_f.pack(pady=(2,4))
+        self._feedback_l.configure(
+            text=f"❤ {self.app.lives}/{MAX_LIVES} lives remaining",
+            fg=C["lives"])
+        self._feedback_f.pack(pady=(2,4))
         if self.app.lives <= 0:
             self.after(1400, self._go_gameover)
         else:
@@ -1918,18 +1789,13 @@ class QuizScreen(tk.Frame):
         correct       = self._current_q["answer"]
         is_right      = (option == correct)
 
-        # XP calculation
-        xp_gained = 0
         if is_right:
-            xp_gained += XP_CORRECT
             if is_fast:
-                xp_gained += XP_BONUS_FAST
                 self.app.fast_answers += 1
             self.app.quiz_score += 1
         else:
             self.app.lives -= 1
 
-        self.app.total_xp_session += xp_gained
         SFX.play("correct" if is_right else "wrong")
 
         self.app.quiz_answers.append({
@@ -1937,7 +1803,6 @@ class QuizScreen(tk.Frame):
             "chosen":      option,
             "correct":     correct,
             "is_right":    is_right,
-            "xp":          xp_gained,
             "explanation": self._current_q.get("explanation","")
         })
 
@@ -1948,14 +1813,11 @@ class QuizScreen(tk.Frame):
             text=f"{icon}  {self._current_q.get('explanation','')}")
         self._expl_f.pack(fill="x", pady=(8,4))
 
-        # XP flash
-        if xp_gained > 0:
-            bonus = f"  +{XP_BONUS_FAST} speed bonus!" if is_fast and is_right else ""
-            self._xp_l.configure(text=f"⚡ +{xp_gained} XP{bonus}", fg=C["xp"])
-        else:
-            self._xp_l.configure(text=f"❤ {self.app.lives}/{MAX_LIVES} lives remaining",
-                                   fg=C["lives"])
-        self._xp_f.pack(pady=(2,4))
+        if not is_right:
+            self._feedback_l.configure(
+                text=f"❤ {self.app.lives}/{MAX_LIVES} lives remaining",
+                fg=C["lives"])
+            self._feedback_f.pack(pady=(2,4))
 
         if not is_right and self.app.lives <= 0:
             self.after(1500, self._go_gameover)
@@ -2039,10 +1901,6 @@ class KahootScreen(tk.Frame):
         tk.Label(bar, text=f"Q {idx+1} / {total}",
                  font=_retro(11, "bold"),
                  bg="#1a1a2e", fg="#ffffff").pack(side="left", padx=8)
-
-        tk.Label(bar, text=f"⚡ {app.total_xp_session}",
-                 font=_retro(9, "bold"),
-                 bg="#1a1a2e", fg="#f1c416").pack(side="left", padx=4)
 
         self._timer_lbl = tk.Label(bar, text=f"⏱ {self._t_left}",
                                     font=_retro(14, "bold"),
@@ -2132,12 +1990,11 @@ class KahootScreen(tk.Frame):
                                  wraplength=370, justify="center")
         self._expl_l.pack()
 
-        # XP label (hidden)
-        self._xp_f = tk.Frame(self, bg=C["bg"])
-        self._xp_l = tk.Label(self._xp_f, text="",
-                               font=_retro(12, "bold"),
-                               bg=C["bg"], fg="#f1c416")
-        self._xp_l.pack()
+        self._feedback_f = tk.Frame(self, bg=C["bg"])
+        self._feedback_l = tk.Label(self._feedback_f, text="",
+                                     font=_retro(10, "bold"),
+                                     bg=C["bg"], fg=C["lives"])
+        self._feedback_l.pack()
 
         # Next button (hidden)
         self._next_f = tk.Frame(self, bg=C["bg"], pady=6)
@@ -2200,8 +2057,10 @@ class KahootScreen(tk.Frame):
         self._reveal_answer(None)
         self._expl_l.configure(text=f"⏱ Time's up!  {self._current_q.get('explanation','')}")
         self._expl_f.pack(fill="x", pady=(4,4))
-        self._xp_l.configure(text="No XP — Time's up!", fg=C["wrong"])
-        self._xp_f.pack(pady=(2,4))
+        self._feedback_l.configure(
+            text=f"❤ {self.app.lives}/{MAX_LIVES} lives remaining",
+            fg=C["lives"])
+        self._feedback_f.pack(pady=(2,4))
         if self.app.lives <= 0:
             self.after(1400, lambda: self.app.show("gameover"))
         else:
@@ -2215,22 +2074,18 @@ class KahootScreen(tk.Frame):
         correct  = self._current_q["answer"]
         is_right = (option == correct)
 
-        xp_gained = 0
         if is_right:
-            xp_gained += XP_CORRECT
             if is_fast:
-                xp_gained += XP_BONUS_FAST
                 self.app.fast_answers += 1
             self.app.quiz_score += 1
         else:
             self.app.lives -= 1
 
-        self.app.total_xp_session += xp_gained
         SFX.play("correct" if is_right else "wrong")
         self.app.quiz_answers.append({
             "question": self._current_q["question"],
             "chosen": option, "correct": correct,
-            "is_right": is_right, "xp": xp_gained,
+            "is_right": is_right,
             "explanation": self._current_q.get("explanation","")
         })
 
@@ -2238,12 +2093,11 @@ class KahootScreen(tk.Frame):
         icon = "✅" if is_right else "❌"
         self._expl_l.configure(text=f"{icon}  {self._current_q.get('explanation','')}")
         self._expl_f.pack(fill="x", pady=(4,4))
-        bonus = f"  +{XP_BONUS_FAST} speed!" if is_fast and is_right else ""
-        self._xp_l.configure(
-            text=f"⚡ +{xp_gained} XP{bonus}" if xp_gained > 0
-            else f"❤ {self.app.lives}/{MAX_LIVES} lives",
-            fg="#f1c416" if xp_gained > 0 else C["lives"])
-        self._xp_f.pack(pady=(2,4))
+        if not is_right:
+            self._feedback_l.configure(
+                text=f"❤ {self.app.lives}/{MAX_LIVES} lives",
+                fg=C["lives"])
+            self._feedback_f.pack(pady=(2,4))
         if not is_right and self.app.lives <= 0:
             self.after(1500, lambda: self.app.show("gameover"))
         else:
@@ -2327,10 +2181,6 @@ class MythFactScreen(tk.Frame):
                  font=_retro(11, "bold"),
                  bg="#4a2a18", fg="#ffffff").pack(side="left", padx=8)
 
-        tk.Label(bar, text=f"⚡ {app.total_xp_session}",
-                 font=_retro(9, "bold"),
-                 bg="#4a2a18", fg="#d966ff").pack(side="left", padx=4)
-
         self._timer_lbl = tk.Label(bar, text=f"⏱ {self._t_left}",
                                     font=_retro(14, "bold"),
                                     bg="#4a2a18", fg="#d966ff")
@@ -2403,11 +2253,11 @@ class MythFactScreen(tk.Frame):
                                  wraplength=370, justify="center")
         self._expl_l.pack()
 
-        self._xp_f = tk.Frame(self, bg=C["bg"])
-        self._xp_l = tk.Label(self._xp_f, text="",
-                               font=_retro(12, "bold"),
-                               bg=C["bg"], fg="#d966ff")
-        self._xp_l.pack()
+        self._feedback_f = tk.Frame(self, bg=C["bg"])
+        self._feedback_l = tk.Label(self._feedback_f, text="",
+                                     font=_retro(10, "bold"),
+                                     bg=C["bg"], fg=C["lives"])
+        self._feedback_l.pack()
 
         self._next_f = tk.Frame(self, bg=C["bg"], pady=6)
         lbl_n = "NEXT  ➜" if idx+1 < total else "SEE RESULTS  ✔"
@@ -2453,8 +2303,10 @@ class MythFactScreen(tk.Frame):
         self._expl_l.configure(
             text=f"⏱ Time's up!  {self._current_q.get('explanation','')}")
         self._expl_f.pack(fill="x", pady=(4,4))
-        self._xp_l.configure(text="No XP — Time's up!", fg=C["wrong"])
-        self._xp_f.pack(pady=(2,4))
+        self._feedback_l.configure(
+            text=f"❤ {self.app.lives}/{MAX_LIVES} lives remaining",
+            fg=C["lives"])
+        self._feedback_f.pack(pady=(2,4))
         if self.app.lives <= 0:
             self.after(1400, lambda: self.app.show("gameover"))
         else:
@@ -2468,22 +2320,18 @@ class MythFactScreen(tk.Frame):
         correct  = self._current_q["answer"]   # "MYTH" or "FACT"
         is_right = (answer == correct)
 
-        xp_gained = 0
         if is_right:
-            xp_gained += XP_CORRECT
             if is_fast:
-                xp_gained += XP_BONUS_FAST
                 self.app.fast_answers += 1
             self.app.quiz_score += 1
         else:
             self.app.lives -= 1
 
-        self.app.total_xp_session += xp_gained
         SFX.play("correct" if is_right else "wrong")
         self.app.quiz_answers.append({
             "question": self._current_q["question"],
             "chosen": answer, "correct": correct,
-            "is_right": is_right, "xp": xp_gained,
+            "is_right": is_right,
             "explanation": self._current_q.get("explanation","")
         })
 
@@ -2515,11 +2363,11 @@ class MythFactScreen(tk.Frame):
         self._expl_l.configure(
             text=f"{icon}  {self._current_q.get('explanation','')}")
         self._expl_f.pack(fill="x", pady=(4,4))
-        self._xp_l.configure(
-            text=f"⚡ +{xp_gained} XP" if xp_gained > 0
-            else f"❤ {self.app.lives}/{MAX_LIVES} lives",
-            fg="#d966ff" if xp_gained > 0 else C["lives"])
-        self._xp_f.pack(pady=(2,4))
+        if not is_right:
+            self._feedback_l.configure(
+                text=f"❤ {self.app.lives}/{MAX_LIVES} lives",
+                fg=C["lives"])
+            self._feedback_f.pack(pady=(2,4))
         if not is_right and self.app.lives <= 0:
             self.after(1500, lambda: self.app.show("gameover"))
         else:
@@ -2588,9 +2436,6 @@ class HangmanScreen(tk.Frame):
         tk.Label(bar, text=f"Word {self._widx+1} / {self._total}",
                  font=_retro(10),
                  bg="#4a2a18", fg="#aaaaaa").pack(side="left", padx=6)
-        tk.Label(bar, text=f"⚡ {self.app.total_xp_session}",
-                 font=_retro(10, "bold"),
-                 bg="#4a2a18", fg=C["xp"]).pack(side="left", padx=4)
         Btn(bar, "🏠",
             lambda: self.app.show("level_select"),
             bg="#c97b5a", fg="#ffffff", w=46, fs=10,
@@ -2766,14 +2611,11 @@ class HangmanScreen(tk.Frame):
     # ── Win ───────────────────────────────────────────────────────────────────
     def _on_win(self):
         self._won = True
-        xp = 15 - self._wrong * 2   # more XP for fewer wrong guesses
-        xp = max(xp, 2)
-        self.app.total_xp_session += xp
         self.app.quiz_score += 1
         self.app.quiz_answers.append({
             "question": f"Hangman: {self._word}",
             "chosen": self._word, "correct": self._word,
-            "is_right": True, "xp": xp,
+            "is_right": True,
             "explanation": self._hint
         })
 
@@ -2782,10 +2624,6 @@ class HangmanScreen(tk.Frame):
         tk.Label(self._status_f, text="✅  CORRECT!",
                  font=_retro(16, "bold"),
                  bg=C["bg"], fg=C["correct"]).pack(pady=(6, 2))
-        tk.Label(self._status_f, text=f"⚡ +{xp} XP",
-                 font=_retro(11, "bold"),
-                 bg=C["bg"], fg=C["xp"]).pack()
-
         lbl = "NEXT WORD  ➜" if self._widx + 1 < self._total else "SEE RESULTS  ✔"
         Btn(self._status_f, lbl, self._next,
             bg="#3498db", fg="#ffffff", w=240, fs=13,
@@ -2798,7 +2636,7 @@ class HangmanScreen(tk.Frame):
         self.app.quiz_answers.append({
             "question": f"Hangman: {self._word}",
             "chosen": "", "correct": self._word,
-            "is_right": False, "xp": 0,
+            "is_right": False,
             "explanation": self._hint
         })
 
@@ -3059,13 +2897,11 @@ class JigsawScreen(tk.Frame):
     def _on_complete(self):
         self._solved = True
         SFX.play("win")
-        xp = 20
         self.app.quiz_score += 1
-        self.app.total_xp_session += xp
         self.app.quiz_answers.append({
             "question": "Jigsaw: Birth Control Pills",
             "chosen": "Completed", "correct": "Completed",
-            "is_right": True, "xp": xp,
+            "is_right": True,
             "explanation": "You assembled the Birth Control Pills jigsaw!"
         })
         for w in self._done_f.winfo_children():
@@ -3073,9 +2909,6 @@ class JigsawScreen(tk.Frame):
         tk.Label(self._done_f, text="🎉  PUZZLE COMPLETE!",
                  font=_retro(16, "bold"),
                  bg=C["bg"], fg="#e67e22").pack(pady=(4, 2))
-        tk.Label(self._done_f, text=f"⚡ +{xp} XP",
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["xp"]).pack()
         Btn(self._done_f, "SEE RESULTS  ✔", self._finish,
             bg="#e67e22", fg="#ffffff", w=240, fs=13,
             pad_bg=C["bg"]).pack(pady=(10, 4))
@@ -3086,52 +2919,98 @@ class JigsawScreen(tk.Frame):
         self.app.show("result")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SCREEN — Crossword  (Coming Soon placeholder)
-# ══════════════════════════════════════════════════════════════════════════════
-# ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Crossword Puzzle (Symptom-Based Fertility Awareness)
 # ══════════════════════════════════════════════════════════════════════════════
 class CrosswordScreen(tk.Frame):
-     # Grid dimensions — 13 cols × 30px = 390px fits in 430px window
-    _ROWS = 11
-    _COLS = 13
-    _CELL = 30   # px per cell
+    """
+    Interlocking crossword for the symptom-based methods level.
+    Every answer crosses at least one other answer.
+    """
+    _ROWS = 13
+    _COLS = 11
+    _CELL = 34
 
-    # Word definitions: (word, direction, start_row, start_col, number, hint)
-    _WORDS = [
-        ("CYCLE",     "D", 0,  0, 1, "Menstrual ___: the repeating monthly hormonal pattern"),
-        ("SPERM",     "A", 0,  1, 2, "Male cell that fertilizes an egg — survives ~5 days in the body"),
-        ("CHARTING",  "A", 2,  0, 3, "Recording daily body signs to track fertility patterns"),
-        ("OVULATION", "D", 0,  9, 4, "Release of an egg from the ovary — when fertility peaks"),
-        ("MUCUS",     "A", 2,  8, 5, "Cervical ___ becomes clear and stretchy near ovulation"),
-        ("TEMP",      "A", 5,  9, 6, "Basal body ___ (abbreviated) rises slightly after ovulation"),
-        ("FERTILE",   "D", 3,  5, 7, "___ window: days when pregnancy is most likely to occur"),
-        ("SYMPTOM",   "D", 3,  3, 8, "A bodily sign or change that indicates fertility status"),
+    # (word, direction, start_row, start_col) — validated interlocking layout
+    _PLACED = [
+        ("FERTILE",     "D", 0,  1),
+        ("SPERM",       "D", 0,  7),
+        ("CYCLE",       "D", 0, 10),
+        ("CERVIX",      "A", 1,  0),
+        ("HORMONE",     "A", 4,  4),
+        ("OVULATION",   "D", 4,  8),
+        ("TEMPERATURE", "A", 6,  0),
+        ("MUCUS",       "D", 6,  2),
+        ("SYMPTOM",     "A", 9,  4),
+        ("CHARTING",    "A", 12, 2),
     ]
+    _FALLBACK_HINTS = {
+        "MUCUS":       "Cervical ___ — changes in thickness signal fertile days",
+        "TEMPERATURE": "Basal body ___ rises slightly after ovulation",
+        "OVULATION":   "Release of an egg from the ovary",
+        "FERTILE":     "Days when pregnancy is most likely to occur",
+        "CERVIX":      "The lower part of the uterus that produces mucus",
+        "CYCLE":       "Menstrual ___ — the monthly hormonal pattern",
+        "SYMPTOM":     "A sign the body shows to indicate fertility",
+        "CHARTING":    "Recording daily body signs to track fertility patterns",
+        "SPERM":       "Can survive inside the body for up to 5 days",
+        "HORMONE":     "Chemical signal that drives the menstrual cycle",
+    }
 
     def __init__(self, parent, app):
         super().__init__(parent, bg=C["bg"])
         self.app = app
-        # Build solution grid
-        self._solution = {}   # (row,col) -> letter
-        self._cell_map  = {}  # (row,col) -> (word_idx, letter_idx)
-        for wi, (word, dirn, row, col, num, hint) in enumerate(self._WORDS):
+        hints = dict(self._FALLBACK_HINTS)
+        level = getattr(app, "current_level", None) or {}
+        for item in level.get("crossword", []):
+            word = str(item.get("word", "")).strip().upper()
+            if word and item.get("hint"):
+                hints[word] = item["hint"]
+
+        self._words = []          # (word, dir, row, col, number, hint)
+        self._solution = {}       # (r, c) -> letter
+        self._across_of = {}      # (r, c) -> word index
+        self._down_of = {}
+        self._word_cells = []     # word index -> [positions]
+        starts = []
+        for word, dirn, row, col in self._PLACED:
+            cells = []
             for i, ch in enumerate(word):
                 r = row + (i if dirn == "D" else 0)
                 c = col + (i if dirn == "A" else 0)
+                prev = self._solution.get((r, c))
+                if prev is not None and prev != ch:
+                    raise ValueError(f"Crossword conflict at {(r, c)}: {prev} vs {ch}")
                 self._solution[(r, c)] = ch
-                self._cell_map[(r, c)] = (wi, i)
-        # User input state
-        self._user    = {}   # (row,col) -> StringVar
-        self._entries = {}   # (row,col) -> tk.Entry widget
-        self._solved  = False
+                cells.append((r, c))
+            self._word_cells.append(cells)
+            starts.append((row, col, len(self._words)))
+            self._words.append([word, dirn, row, col, 0, hints.get(word, word)])
+            bucket = self._across_of if dirn == "A" else self._down_of
+            for pos in cells:
+                bucket[pos] = len(self._words) - 1
+
+        # Number start cells in reading order. A cell that starts both
+        # an across and a down word shares one number.
+        number = 1
+        seen = {}
+        for row, col, wi in sorted(starts):
+            if (row, col) not in seen:
+                seen[(row, col)] = number
+                number += 1
+            self._words[wi][4] = seen[(row, col)]
+
+        self._user = {}
+        self._entries = {}
+        self._cell_widgets = {}
+        self._paint_state = {}
+        self._solved = False
+        self._active_dir = "A"
         self._build()
 
     def _build(self):
         for w in self.winfo_children():
             w.destroy()
 
-        # ── Top bar ───────────────────────────────────────────────────────
         top = tk.Frame(self, bg="#4a2a18")
         top.pack(fill="x")
         tk.Frame(top, bg="#9b59b6", height=3).pack(fill="x")
@@ -3147,193 +3026,285 @@ class CrosswordScreen(tk.Frame):
             bg="#c97b5a", fg="#ffffff", w=46, fs=10,
             pad_bg="#4a2a18").pack(side="right", padx=8)
 
-        # ── Scrollable body ───────────────────────────────────────────────
-        sf = ScrollFrame(self, bg=C["bg"])
-        sf.pack(fill="both", expand=True)
-        inn = sf.inner
-        inn.configure(padx=4, pady=6)
+        # Size every square so all 13 rows and 11 columns fit in the window.
+        edge = 1
+        outer = min(
+            (WINDOW_W - 16) // self._COLS,
+            (WINDOW_H - 250) // self._ROWS,
+        )
+        outer = max(28, outer)
+        cs = outer - edge * 2
 
-        # ── Grid ─────────────────────────────────────────────────────────
-        grid_frame = tk.Frame(inn, bg="#ede0d8",
-                               highlightbackground="#9b59b6",
-                               highlightthickness=1)
-        grid_frame.pack()
+        grid_wrap = tk.Frame(self, bg=C["bg"])
+        grid_wrap.pack(pady=(6, 0))
+        grid = tk.Frame(grid_wrap, bg="#e7d9cf")
+        grid.pack()
+        for c in range(self._COLS):
+            grid.grid_columnconfigure(c, minsize=outer, uniform="cw")
+        for r in range(self._ROWS):
+            grid.grid_rowconfigure(r, minsize=outer, uniform="rh")
 
-        self._cell_widgets = {}
-        cs = self._CELL   # cell size in px
-
-        # Pre-compute which cells start a word
-        starters = {}   # (row,col) -> number
-        for word, dirn, wr, wc, num, hint in self._WORDS:
-            starters[(wr, wc)] = num
+        starters = {(w[2], w[3]): w[4] for w in self._words}
 
         for row in range(self._ROWS):
             for col in range(self._COLS):
                 pos = (row, col)
-
                 if pos not in self._solution:
-                    # Black cell
-                    lbl = tk.Label(grid_frame,
-                                    width=2, height=1,
-                                    bg="#ede0d8",
-                                    relief="flat",
-                                    padx=0, pady=0)
-                    lbl.grid(row=row, column=col,
-                              ipadx=cs//2 - 4, ipady=cs//2 - 4,
-                              padx=0, pady=0)
+                    blank = tk.Canvas(grid, width=cs, height=cs, bg="#e7d9cf",
+                                      highlightthickness=edge,
+                                      highlightbackground="#e7d9cf")
+                    blank.grid(row=row, column=col, sticky="nsew")
                     continue
 
-                # White cell frame (fixed size)
-                cell_f = tk.Frame(grid_frame,
-                                   width=cs, height=cs,
-                                   bg="#ffffff",
-                                   highlightbackground="#ccaadd",
-                                   highlightthickness=1)
-                cell_f.grid(row=row, column=col, padx=0, pady=0)
-                cell_f.grid_propagate(False)
+                cell = tk.Canvas(grid, width=cs, height=cs, bg="#ffffff",
+                                 highlightbackground="#d7c4ea",
+                                 highlightthickness=edge, takefocus=True)
+                cell.grid(row=row, column=col, sticky="nsew")
 
-                # Number in corner
+                num_id = None
                 if pos in starters:
-                    tk.Label(cell_f,
-                              text=str(starters[pos]),
-                              font=("Courier New", 6, "bold"),
-                              bg="#ffffff", fg="#9b59b6",
-                              padx=0, pady=0).place(x=1, y=1)
+                    num_id = cell.create_text(
+                        2, 1, text=str(starters[pos]), anchor="nw",
+                        font=("Segoe UI", 7, "bold"), fill="#6b2d91")
 
-                # Single-letter entry, centred
-                var = tk.StringVar()
-                self._user[pos] = var
-                entry = tk.Entry(cell_f, textvariable=var,
-                                  font=_retro(10, "bold"),
-                                  bg="#ffffff", fg="#1a0030",
-                                  insertbackground="#9b59b6",
-                                  justify="center",
-                                  width=1, relief="flat", bd=0,
-                                  highlightthickness=0)
-                entry.place(x=2, y=cs//2 - 9, width=cs-4, height=20)
-                var.trace_add("write", lambda *a, v=var: self._limit(v))
-                entry.bind("<Return>", lambda e: self._check())
-                # Tab/arrow navigation between cells
-                entry.bind("<Tab>", lambda e: e.widget.tk_focusNext().focus())
-                self._entries[pos] = entry
-                self._cell_widgets[pos] = cell_f
+                letter_id = cell.create_text(
+                    cs / 2, cs * 0.64, text="",
+                    font=("Segoe UI", 12, "bold"), fill="#1a0030")
+                self._user[pos] = ""
+                cell.bind("<KeyPress>", lambda e, p=pos: self._on_key(e, p))
+                cell.bind("<Button-1>", lambda e, p=pos: self._on_click(p))
+                cell.bind("<FocusIn>", lambda e, p=pos: self._on_focus(p))
+                cell.bind("<FocusOut>", lambda e, p=pos: self._on_blur(p))
+                self._entries[pos] = cell
+                self._cell_widgets[pos] = (cell, letter_id, num_id)
 
-        # ── Check button ──────────────────────────────────────────────────
-        btn_row = tk.Frame(inn, bg=C["bg"])
-        btn_row.pack(pady=(10, 4))
+        btn_row = tk.Frame(self, bg=C["bg"])
+        btn_row.pack(pady=(8, 2))
         Btn(btn_row, "✔  CHECK ANSWERS", self._check,
-            bg="#9b59b6", fg="#ffffff", w=220, fs=12,
+            bg="#9b59b6", fg="#ffffff", w=190, fs=11,
             pad_bg=C["bg"]).pack(side="left", padx=4)
         Btn(btn_row, "💡  REVEAL ALL", self._reveal_all,
-            bg=C["card2"], fg=C["white"], w=140, fs=10,
+            bg=C["card2"], fg=C["white"], w=130, fs=10,
             pad_bg=C["bg"]).pack(side="left", padx=4)
 
-        # ── Score label ───────────────────────────────────────────────────
-        self._score_lbl = tk.Label(inn, text="",
-                                    font=_retro(10, "bold"),
-                                    bg=C["bg"], fg=C["accent"])
-        self._score_lbl.pack()
+        self._score_lbl = tk.Label(self, text="Type a letter to move ahead. Arrows move around the grid.",
+                                    font=_retro(8),
+                                    bg=C["bg"], fg=C["grey"],
+                                    wraplength=400)
+        self._score_lbl.pack(pady=(0, 2))
 
-        # ── Clues ─────────────────────────────────────────────────────────
-        tk.Label(inn, text="─── ACROSS ───",
+        sf = ScrollFrame(self, bg=C["bg"])
+        sf.pack(fill="both", expand=True)
+        inn = sf.inner
+        inn.configure(padx=10, pady=4)
+
+        self._clue_labels = {}
+        tk.Label(inn, text="ACROSS",
                  font=_retro(10, "bold"),
-                 bg=C["bg"], fg="#9b59b6").pack(anchor="w", pady=(12, 2))
-        for word, dirn, row, col, num, hint in self._WORDS:
+                 bg=C["bg"], fg="#9b59b6").pack(anchor="w", pady=(4, 2))
+        for word, dirn, row, col, num, hint in self._words:
             if dirn == "A":
-                tk.Label(inn, text=f"  {num}. {hint}",
-                          font=_retro(9), bg=C["bg"], fg=C["white"],
-                          wraplength=380, justify="left",
-                          anchor="w").pack(fill="x")
+                lbl = tk.Label(inn, text=f"{num}.  {hint}   ({len(word)})",
+                               font=_retro(9), bg=C["bg"], fg=C["white"],
+                               wraplength=390, justify="left", anchor="w")
+                lbl.pack(fill="x", pady=1)
+                self._clue_labels[("A", num)] = lbl
 
-        tk.Label(inn, text="─── DOWN ───",
+        tk.Label(inn, text="DOWN",
                  font=_retro(10, "bold"),
-                 bg=C["bg"], fg="#9b59b6").pack(anchor="w", pady=(10, 2))
-        for word, dirn, row, col, num, hint in self._WORDS:
+                 bg=C["bg"], fg="#9b59b6").pack(anchor="w", pady=(8, 2))
+        for word, dirn, row, col, num, hint in self._words:
             if dirn == "D":
-                tk.Label(inn, text=f"  {num}. {hint}",
-                          font=_retro(9), bg=C["bg"], fg=C["white"],
-                          wraplength=380, justify="left",
-                          anchor="w").pack(fill="x")
+                lbl = tk.Label(inn, text=f"{num}.  {hint}   ({len(word)})",
+                               font=_retro(9), bg=C["bg"], fg=C["white"],
+                               wraplength=390, justify="left", anchor="w")
+                lbl.pack(fill="x", pady=1)
+                self._clue_labels[("D", num)] = lbl
 
-        tk.Label(inn, text="", bg=C["bg"], height=2).pack()
-
-        # Done frame
         self._done_f = tk.Frame(inn, bg=C["bg"])
         self._done_f.pack()
+        self._bind_clue_scroll(sf, inn)
 
-    def _limit(self, var):
-        """Keep only last typed char, force uppercase."""
-        v = var.get().upper()
-        if len(v) > 1:
-            var.set(v[-1])
-        elif v and not v.isalpha():
-            var.set("")
-        elif v != v.upper():
-            var.set(v.upper())
+        first = self._entries.get((0, 1)) or next(iter(self._entries.values()))
+        self.after(200, first.focus_set)
+
+    def _bind_clue_scroll(self, scroll_frame, widget):
+        widget.bind(
+            "<MouseWheel>",
+            lambda event: scroll_frame._cv.yview_scroll(
+                int(-1 * (event.delta / 120)), "units"),
+            add="+")
+        for child in widget.winfo_children():
+            self._bind_clue_scroll(scroll_frame, child)
+
+    def _set_letter(self, pos, ch):
+        self._user[pos] = ch
+        cell, letter_id, _num_id = self._cell_widgets[pos]
+        cell.itemconfig(letter_id, text=ch)
+
+    def _paint(self, pos, bg, fg, edge):
+        cell, letter_id, num_id = self._cell_widgets[pos]
+        self._paint_state[pos] = (bg, fg, edge)
+        cell.configure(bg=bg, highlightbackground=edge)
+        cell.itemconfig(letter_id, fill=fg)
+        if num_id is not None:
+            cell.itemconfig(num_id, fill="#6b2d91" if bg == "#ffffff" else "#3d2314")
+
+    def _word_index(self, pos):
+        across = self._across_of.get(pos)
+        down = self._down_of.get(pos)
+        if self._active_dir == "A" and across is not None:
+            return across
+        if self._active_dir == "D" and down is not None:
+            return down
+        if across is not None:
+            self._active_dir = "A"
+            return across
+        self._active_dir = "D"
+        return down
+
+    def _on_click(self, pos):
+        cell = self._entries[pos]
+        across = pos in self._across_of
+        down = pos in self._down_of
+        already = self.focus_get() == cell
+        if across and down and already:
+            self._active_dir = "D" if self._active_dir == "A" else "A"
+        elif across and not down:
+            self._active_dir = "A"
+        elif down and not across:
+            self._active_dir = "D"
+        cell.focus_set()
+
+    def _on_focus(self, pos):
+        if self._solved:
+            return
+        self._word_index(pos)
+        self._entries[pos].configure(highlightbackground="#c97b5a")
+
+    def _on_blur(self, pos):
+        _bg, _fg, edge = self._paint_state.get(pos, ("#ffffff", "#1a0030", "#d7c4ea"))
+        self._entries[pos].configure(highlightbackground=edge)
+
+    def _step(self, pos, delta):
+        wi = self._word_index(pos)
+        if wi is None:
+            return
+        cells = self._word_cells[wi]
+        try:
+            i = cells.index(pos)
+        except ValueError:
+            return
+        j = i + delta
+        if 0 <= j < len(cells):
+            self._entries[cells[j]].focus_set()
+
+    def _move(self, pos, dr, dc):
+        r, c = pos
+        while True:
+            r += dr
+            c += dc
+            if not (0 <= r < self._ROWS and 0 <= c < self._COLS):
+                return
+            if (r, c) in self._entries:
+                self._active_dir = "A" if dc else "D"
+                self._entries[(r, c)].focus_set()
+                return
+
+    def _on_key(self, event, pos):
+        if self._solved:
+            return "break"
+        key = event.keysym
+        if key == "BackSpace":
+            if self._user[pos]:
+                self._set_letter(pos, "")
+            else:
+                self._step(pos, -1)
+                prev_dir_pos = self._entries_focus_pos()
+                if prev_dir_pos and prev_dir_pos != pos:
+                    self._set_letter(prev_dir_pos, "")
+            return "break"
+        if key == "Left":
+            self._move(pos, 0, -1)
+            return "break"
+        if key == "Right":
+            self._move(pos, 0, 1)
+            return "break"
+        if key == "Up":
+            self._move(pos, -1, 0)
+            return "break"
+        if key == "Down":
+            self._move(pos, 1, 0)
+            return "break"
+        if key == "Return":
+            self._check()
+            return "break"
+        if key == "Tab":
+            return None
+        ch = event.char
+        if ch and ch.isalpha():
+            self._set_letter(pos, ch.upper())
+            self._step(pos, 1)
+            return "break"
+        return "break"
+
+    def _entries_focus_pos(self):
+        w = self.focus_get()
+        for pos, entry in self._entries.items():
+            if entry == w:
+                return pos
+        return None
 
     def _check(self):
         if self._solved:
             return
         correct = 0
-        total   = len(self._solution)
+        total = len(self._solution)
         for pos, correct_ch in self._solution.items():
-            user_ch = self._user[pos].get().upper()
-            cell_f  = self._cell_widgets.get(pos)
-            if cell_f:
-                if user_ch == correct_ch:
-                    correct += 1
-                    cell_f.configure(bg="#c8f5c8",
-                                      highlightbackground=C["correct"])
-                    self._entries[pos].configure(bg="#c8f5c8", fg="#1a4a1a")
-                elif user_ch:
-                    cell_f.configure(bg="#f5c8c8",
-                                      highlightbackground=C["wrong"])
-                    self._entries[pos].configure(bg="#f5c8c8", fg="#4a1a1a")
-                else:
-                    cell_f.configure(bg="#ffffff",
-                                      highlightbackground="#9b59b6")
+            user_ch = self._user[pos].strip().upper()
+            if user_ch == correct_ch:
+                correct += 1
+                self._paint(pos, "#c8f5c8", "#1a4a1a", C["correct"])
+            elif user_ch:
+                self._paint(pos, "#f5c8c8", "#4a1a1a", C["wrong"])
+            else:
+                self._paint(pos, "#ffffff", "#1a0030", "#d7c4ea")
 
         self._score_lbl.configure(
-            text=f"✅ {correct} / {total} letters correct",
-            fg=C["correct"] if correct == total else C["medium"])
+            text=f"{correct} / {total} letters correct",
+            fg=C["correct"] if correct == total else C["medium"],
+            font=_retro(10, "bold"))
         SFX.play("correct" if correct == total else "click")
-
         if correct == total:
             self._on_complete()
 
     def _reveal_all(self):
+        if self._solved:
+            return
         for pos, correct_ch in self._solution.items():
-            self._user[pos].set(correct_ch)
-            cell_f = self._cell_widgets.get(pos)
-            if cell_f:
-                cell_f.configure(bg="#e8d8f8",
-                                  highlightbackground="#9b59b6")
-                self._entries[pos].configure(bg="#e8d8f8", fg="#c97b5a")
+            self._set_letter(pos, correct_ch)
+            self._paint(pos, "#e8d8f8", "#c97b5a", "#9b59b6")
         self._score_lbl.configure(
-            text="All answers revealed — no XP awarded.",
-            fg=C["grey"])
+            text="All answers revealed.",
+            fg=C["grey"],
+            font=_retro(10, "bold"))
         SFX.play("wrong")
 
     def _on_complete(self):
         self._solved = True
         SFX.play("win")
-        xp = 25
-        self.app.total_xp_session += xp
         self.app.quiz_score += 1
         self.app.quiz_answers.append({
             "question": "Crossword: Symptom-Based Methods",
             "chosen":   "Completed", "correct": "Completed",
-            "is_right": True, "xp": xp,
+            "is_right": True,
             "explanation": "You completed the Symptom-Based Methods crossword!"
         })
         for w in self._done_f.winfo_children():
             w.destroy()
-        tk.Label(self._done_f, text="🎉  CROSSWORD COMPLETE!",
+        tk.Label(self._done_f, text="Crossword complete",
                  font=_retro(15, "bold"),
                  bg=C["bg"], fg="#9b59b6").pack(pady=(8, 2))
-        tk.Label(self._done_f, text=f"⚡ +{xp} XP",
-                 font=_retro(12, "bold"),
-                 bg=C["bg"], fg=C["xp"]).pack()
         Btn(self._done_f, "SEE RESULTS  ✔", self._finish,
             bg="#9b59b6", fg="#ffffff", w=240, fs=13,
             pad_bg=C["bg"]).pack(pady=(10, 4))
@@ -3342,7 +3313,6 @@ class CrosswordScreen(tk.Frame):
         SFX.play("click")
         self.app.quiz_index += 1
         self.app.show("result")
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SCREEN — Image Hint  (Coming Soon placeholder — not built yet)
@@ -3392,9 +3362,6 @@ class JottoScreen(tk.Frame):
                  bg=self._COL_BG, fg=self._COL_ACC).pack(side="left", padx=10)
         tk.Label(bar, text="Calendar-Based Methods",
                  font=_retro(9), bg=self._COL_BG, fg="#aaaaaa").pack(side="left")
-        tk.Label(bar, text=f"⚡ {self.app.total_xp_session}",
-                 font=_retro(9, "bold"),
-                 bg=self._COL_BG, fg=C["xp"]).pack(side="left", padx=8)
         Btn(bar, "🏠", lambda: self.app.show("level_select"),
             bg="#c97b5a", fg="#ffffff", w=46, fs=10,
             pad_bg=self._COL_BG).pack(side="right", padx=8)
@@ -3587,19 +3554,15 @@ class JottoScreen(tk.Frame):
             self._entry.configure(state="disabled")
         if self._won:
             SFX.play("win")
-            attempts = len(self._guesses)
-            xp = max(5, 25 - (attempts - 1) * 4)   # 25 XP for 1 try, 5 XP for 6
             self.app.quiz_score += 1
         else:
             SFX.play("fail")
-            xp = 0
             self.app.lives -= 1
-        self.app.total_xp_session += xp
         self.app.quiz_answers.append({
             "question": f"Jotto: {self._secret}",
             "chosen":   self._guesses[-1][0] if self._guesses else "",
             "correct":  self._secret,
-            "is_right": self._won, "xp": xp,
+            "is_right": self._won,
             "explanation": self._hint
         })
         self._show_result()
@@ -3608,17 +3571,15 @@ class JottoScreen(tk.Frame):
         for w in self._result_f.winfo_children():
             w.destroy()
         if self._won:
-            attempts = len(self._guesses)
-            xp = max(5, 25 - (attempts - 1) * 4)
             tk.Label(self._result_f,
                      text=f"✅  Correct!  The word was {self._secret}",
                      font=_retro(13, "bold"),
                      bg=C["bg"], fg=C["correct"]).pack(pady=(4, 2))
             tk.Label(self._result_f,
                      text=f"Solved in {len(self._guesses)} guess"
-                          f"{'es' if len(self._guesses)>1 else ''}  ·  ⚡ +{xp} XP",
+                          f"{'es' if len(self._guesses)>1 else ''}",
                      font=_retro(10),
-                     bg=C["bg"], fg=C["xp"]).pack()
+                     bg=C["bg"], fg=C["grey"]).pack()
         else:
             tk.Label(self._result_f,
                      text=f"❌  The word was:  {self._secret}",
@@ -3702,10 +3663,6 @@ class GameOverScreen(tk.Frame):
         tk.Label(sc, text="correct answers",
                  font=_retro(9),
                  bg=C["card"], fg=C["grey"]).pack()
-        tk.Label(sc, text=f"⚡ {app.total_xp_session} XP",
-                 font=_retro(11, "bold"),
-                 bg=C["card"], fg=C["xp"]).pack(pady=(6,0))
-
         tk.Label(self, text="Don't give up — knowledge saves lives!",
                  font=_retro(9),
                  bg=C["bg"], fg=C["grey"],
@@ -3721,7 +3678,6 @@ class GameOverScreen(tk.Frame):
 
     def _retry(self):
         SFX.play("start")
-        self.app.total_xp_session = 0
         self.app.show("story")
 
 # SCREEN — Result
@@ -3772,11 +3728,6 @@ class ResultScreen(tk.Frame):
         if lid not in p.get("completed_levels", []):
             p.setdefault("completed_levels", []).append(lid)
 
-        # XP
-        bonus_xp = XP_PERFECT if pct == 1.0 else 0
-        app.total_xp_session += bonus_xp
-        p["total_xp"] = p.get("total_xp", 0) + app.total_xp_session
-
         # Unlock next
         next_id = lid + 1
         all_ids = [l["id"] for l in load_json(QUESTIONS_DB)["levels"]]
@@ -3810,10 +3761,15 @@ class ResultScreen(tk.Frame):
             "level": lid,
             "score": score,
             "total": total,
-            "xp":    app.total_xp_session,
             "stars": stars,
         })
-        lb.sort(key=lambda x: (-x["xp"], -x["score"]))
+        for entry in lb:
+            entry.pop("xp", None)
+        p.pop("total_xp", None)
+        lb.sort(key=lambda x: (
+            -(x["score"] / max(1, x["total"])),
+            -x["stars"],
+            -x["score"]))
         p["leaderboard"] = lb[:10]
 
         # Flag for congrats popup on level select
@@ -3870,27 +3826,18 @@ class ResultScreen(tk.Frame):
         tk.Label(inn, text="⭐"*stars+"☆"*(3-stars),
                  font=_retro(28), bg=C["bg"], fg=C["gold"]).pack(pady=4)
 
-        # Score + XP row
+        # Score row
         row = tk.Frame(inn, bg=C["bg"])
         row.pack(fill="x", pady=12)
 
         sc_f = tk.Frame(row, bg=C["card"], padx=18, pady=12,
                         highlightbackground=C["accent3"], highlightthickness=1)
-        sc_f.pack(side="left", expand=True, fill="both", padx=(0,6))
+        sc_f.pack(fill="x")
         tk.Label(sc_f, text=f"{score}/{total}",
                  font=_retro(22, "bold"),
                  bg=C["card"], fg=C["white"]).pack()
         tk.Label(sc_f, text="Correct", font=_retro(9),
                  bg=C["card"], fg=C["grey"]).pack()
-
-        xp_f = tk.Frame(row, bg=C["card2"], padx=18, pady=12,
-                        highlightbackground=C["xp"], highlightthickness=1)
-        xp_f.pack(side="left", expand=True, fill="both", padx=(6,0))
-        tk.Label(xp_f, text=f"+{app.total_xp_session}",
-                 font=_retro(22, "bold"),
-                 bg=C["card2"], fg=C["xp"]).pack()
-        tk.Label(xp_f, text="XP Earned", font=_retro(9),
-                 bg=C["card2"], fg=C["grey"]).pack()
 
         # Progress bar
         bar_bg = tk.Frame(inn, bg=C["locked"], height=10)
@@ -3934,7 +3881,7 @@ class ResultScreen(tk.Frame):
                      bg=C["card"], fg=C["white"],
                      wraplength=366, justify="left").pack(anchor="w")
             tk.Label(row,
-                     text=f"{'✅' if is_r else '❌'}  {a['chosen']}  (⚡+{a.get('xp',0)} XP)",
+                     text=f"{'✅' if is_r else '❌'}  {a['chosen']}",
                      font=_retro(10),
                      bg=C["card"], fg=bc,
                      wraplength=366, justify="left").pack(anchor="w")
@@ -3957,15 +3904,10 @@ class ResultScreen(tk.Frame):
         Btn(inn, "🏠  Level Select",
             lambda: [SFX.play("back"), self.app.show("level_select")],
             bg=C["card"], fg=C["white"], w=250, fs=12,
-            pad_bg=C["bg"]).pack(pady=(0,6))
-        Btn(inn, "🏆  Leaderboard",
-            lambda: self.app.show("leaderboard"),
-            bg=C["card2"], fg=C["white"], w=250, fs=12,
             pad_bg=C["bg"]).pack(pady=(0,24))
 
     def _retry(self):
         SFX.play("start")
-        self.app.total_xp_session = 0
         self.app.show("story")
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -4031,9 +3973,9 @@ class LeaderboardScreen(tk.Frame):
                          bg=C["card"], fg=C["grey"]).pack(anchor="w")
 
                 tk.Label(row,
-                         text=f"⚡{entry['xp']} XP",
+                         text=f"{round(100 * entry['score'] / max(1, entry['total']))}%",
                          font=_retro(12, "bold"),
-                         bg=C["card"], fg=C["xp"]).pack(side="right")
+                         bg=C["card"], fg=mc).pack(side="right")
 
         # Reset button
         tk.Label(inn, text="", bg=C["bg"]).pack()
@@ -4080,16 +4022,12 @@ class BadgesScreen(tk.Frame):
         try:
             p       = load_json(PROGRESS_DB)
             earned  = p.get("badges", [])
-            total_xp= p.get("total_xp", 0)
         except Exception:
-            earned, total_xp = [], 0
+            earned = []
 
-        tk.Label(inn, text=f"Total XP: ⚡ {total_xp}",
-                 font=_retro(13, "bold"),
-                 bg=C["bg"], fg=C["xp"]).pack(pady=(16,4))
         tk.Label(inn, text=f"{len(earned)} / {len(BADGES)} badges unlocked",
                  font=_retro(10),
-                 bg=C["bg"], fg=C["grey"]).pack(pady=(0,14))
+                 bg=C["bg"], fg=C["grey"]).pack(pady=(16,14))
 
         for key, bd in BADGES.items():
             got = key in earned

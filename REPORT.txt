@@ -35,7 +35,7 @@ mobile quiz apps.
   main.py                  Core application — all screens, logic, and UI
   sound.py                 Sound engine — synthesizes all audio using pygame
   data/questions.json      Content database — levels, stories, questions
-  data/progress.json       Player save file — XP, scores, badges, leaderboard
+  data/progress.json       Player save file — scores, badges, leaderboard
   requirements.txt         Dependency list (pygame==2.6.1)
   run.bat                  Windows launcher with dependency auto-check
   README.md                Full setup and documentation guide
@@ -85,7 +85,7 @@ mobile quiz apps.
   - After answering:
       - Correct option turns green, wrong option turns red
       - Explanation text revealed below the options
-      - XP gain flashed on screen
+      - Answer feedback and explanation shown
   - Pause button (⏸) freezes the timer and shows a pause overlay
   - Pause overlay has Resume and Quit Level options
 
@@ -96,13 +96,11 @@ mobile quiz apps.
   - Lives displayed in the HUD and update in real time
   - If all 3 lives are lost mid-level → Game Over screen shown
 
-  3.5 XP SYSTEM
-  ─────────────
-  - +10 XP for each correct answer
-  - +5  XP speed bonus if answered in the first half of the timer
-  - +20 XP perfect score bonus at end of level (100% correct)
-  - Session XP shown in HUD and flashed after each answer
-  - Total all-time XP accumulates and is saved to progress.json
+  3.5 SCORING
+  ───────────
+  - Correct answers contribute to the level score
+  - Stars are awarded based on the final level score
+  - The Speedster badge is earned by answering 5 questions quickly
 
   3.6 BADGE / ACHIEVEMENT SYSTEM
   ───────────────────────────────
@@ -124,9 +122,9 @@ mobile quiz apps.
   3.7 LEADERBOARD
   ───────────────
   - Top 10 scores saved locally in data/progress.json
-  - Sorted by XP earned (descending), then by score
+  - Ranked by accuracy, then by stars and correct answers
   - Gold / Silver / Bronze medal icons for ranks 1–3
-  - Each entry shows: player name, level, score, stars, XP
+  - Each entry shows: player name, level, score, stars, and accuracy
   - Accessible from Splash, Level Select, and Result screens
   - "Clear Scores" button to reset the leaderboard
 
@@ -135,10 +133,10 @@ mobile quiz apps.
   Screen            Description
   ────────────────────────────────────────────────────────────────────────────
   Splash            Player name entry, Play button, Leaderboard/Badge links
-  Level Select      Act-based journey map with star ratings and XP display
+  Level Select      Act-based journey map with star ratings
   Story             Animated level narrative with skip option
-  Quiz              Timed questions with full HUD (lives, timer, XP, progress)
-  Result            Score, XP, new badges, complete answer review
+  Quiz              Timed questions with full HUD (lives, timer, progress)
+  Result            Score, stars, new badges, complete answer review
   Game Over         Triggered by 0 lives — shows score so far and retry option
   Leaderboard       Top 10 scores with medals
   Badges            Gallery of all 7 achievements (locked/unlocked state)
@@ -167,7 +165,6 @@ mobile quiz apps.
   - Unlocked levels
   - Completed levels
   - High scores (score, total, stars) per level
-  - Total all-time XP
   - Earned badges list
   - Top 10 leaderboard entries
   - Last used player name
@@ -245,7 +242,6 @@ mobile quiz apps.
       "unlocked_levels": [1],
       "completed_levels": [],
       "high_scores": {},
-      "total_xp": 0,
       "badges": [],
       "leaderboard": [],
       "player_name": ""
